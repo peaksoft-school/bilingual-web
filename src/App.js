@@ -1,7 +1,9 @@
+import { ThemeProvider } from 'styled-components'
+import { theme } from './assets/themeButton/StylesButton'
 import './App.css'
 
 function App() {
-   return <div>hi</div>
+   return <ThemeProvider theme={theme}>t</ThemeProvider>
 }
 
 export default App
