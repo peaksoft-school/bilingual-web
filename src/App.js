@@ -1,7 +1,12 @@
 import './App.css'
+import Footer from './layout/footer/Footer'
 
 function App() {
-   return <div>hi</div>
+   return (
+      <div>
+         <Footer />
+      </div>
+   )
 }
 
 export default App
