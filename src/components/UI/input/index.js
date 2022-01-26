@@ -6,7 +6,6 @@ const StyledTextField = makeStyles({
    root: {
       '& .MuiInputBase-root': {
          borderRadius: 8,
-         height: 56,
          paddingTop: 18,
          paddingLeft: 16,
          paddingBottom: 18,
