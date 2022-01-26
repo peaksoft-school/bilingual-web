@@ -1,9 +1,12 @@
-import { ThemeProvider } from 'styled-components'
-import { theme } from './assets/themeButton/StylesButton'
-import './App.css'
+import classes from './App.module.css'
+import Input from './components/UI/input'
 
 function App() {
-   return <ThemeProvider theme={theme}>t</ThemeProvider>
+   return (
+      <div className={classes.combox}>
+         <Input />
+      </div>
+   )
 }
 
 export default App
