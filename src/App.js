@@ -6,11 +6,11 @@ function App() {
    const [value, setValue] = useState(false)
    const [on, setOn] = useState(false)
 
-   const changeHandlerrr = () => {
+   const changeHandlerFirst = () => {
       setValue(!value)
    }
 
-   const changeHandler = () => {
+   const changeHandlerSecond = () => {
       setOn(!on)
    }
 
@@ -18,15 +18,13 @@ function App() {
       e.preventDefault(e)
    }
 
-   console.log(value)
-   console.log(on)
    return (
       <form onSubmit={submitHandler}>
          <div>
-            <ReusableSwitch checked={value} onChange={changeHandlerrr} />
+            <ReusableSwitch checked={value} onChange={changeHandlerFirst} />
          </div>
          <div>
-            <ReusableSwitch checked={on} onChange={changeHandler} />
+            <ReusableSwitch checked={on} onChange={changeHandlerSecond} />
          </div>
       </form>
    )
