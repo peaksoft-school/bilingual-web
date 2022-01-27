@@ -1,12 +1,5 @@
-import './App.css'
-import Card from './components/UI/card'
-
 function App() {
-   return (
-      <div>
-         <Card />
-      </div>
-   )
+   return <div>Hi</div>
 }
 
 export default App
