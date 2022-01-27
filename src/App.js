@@ -1,12 +1,5 @@
-import './App.css'
-import Footer from './layout/footer/Footer'
-
 function App() {
-   return (
-      <div>
-         <Footer />
-      </div>
-   )
+   return <div>Hi</div>
 }
 
 export default App
