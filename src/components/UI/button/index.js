@@ -16,8 +16,9 @@ const StyledMuiButton = styled(MuiButton)`
       box-shadow: none;
       font-family: 'DINNextRoundedLTPro-Bold';
       font-size: 14px;
+      font-weight: 'bold';
+      border: 2.5px;
       padding: 12.5px 24px;
-      line-height: 16px;
       &:hover {
          background-color: none;
       }
