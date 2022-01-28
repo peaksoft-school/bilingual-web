@@ -1,5 +1,5 @@
 import React from 'react'
-import { Select, Divider } from '@mui/material'
+import { Select } from '@mui/material'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import styled from 'styled-components'
@@ -25,22 +25,30 @@ const StyledMenuIte = styled(MenuItem)`
       border-radius: 8px;
       color: #fffeff;
    }
-`
+   ::before {
+      content: '';
+      position: absolute;
+      left: 10;
+      bottom: 0;
+      height: 1px;
+      width: 95%; /* or 100px */
+      border-bottom: 1px solid #d4d0d0;
+   }
 
-const StyledDivider = styled(Divider)`
-   margin: auto;
-   width: 868px;
-   height: 0px;
+   :last-child::before {
+      border-bottom: none;
+   }
 `
 const style = { margin: 1, width: 900 }
 
-export default function SelectRe() {
-   const [value, setValue] = React.useState('')
+export default function AppSelect({
+   options,
+   onChange,
+   value,
+   children,
+   ...props
+}) {
    const [open, setOpen] = React.useState(false)
-
-   const handleChange = (event) => {
-      setValue(event.target.value)
-   }
 
    const handleClose = () => {
       setOpen(false)
@@ -60,31 +68,16 @@ export default function SelectRe() {
                onClose={handleClose}
                onOpen={handleOpen}
                value={value}
-               onChange={handleChange}
+               onChange={onChange}
                sx={{ mb: 80 }}
                MenuProps={{ disablePortal: true }}
+               {...props}
             >
-               <StyledMenuIte value={5}>Describe image</StyledMenuIte>
-               <StyledDivider />
-               <StyledMenuIte value={10}>
-                  Select real English words
-               </StyledMenuIte>
-               <StyledDivider />
-               <StyledMenuIte value={20}>Listen and select word</StyledMenuIte>
-               <StyledDivider />
-               <StyledMenuIte value={40}>Record saying statement</StyledMenuIte>
-               <StyledDivider />
-               <StyledMenuIte value={50}>Describe Image</StyledMenuIte>
-               <StyledDivider />
-               <StyledMenuIte value={60}>
-                  Respond in at least N words
-               </StyledMenuIte>
-               <StyledDivider />
-               <StyledMenuIte value={70}>Highlight the answer</StyledMenuIte>
-               <StyledDivider />
-               <StyledMenuIte value={80}>Select main idea</StyledMenuIte>
-               <StyledDivider />
-               <StyledMenuIte value={90}>Sudmitted results page</StyledMenuIte>
+               {options.map((item) => (
+                  <StyledMenuIte key={item} value={item}>
+                     {item}
+                  </StyledMenuIte>
+               ))}
             </StyledSelect>
          </FormControl>
       </div>
