@@ -1,34 +1,29 @@
-import React, { useState } from 'react'
 import styled from 'styled-components'
 import Modal from './Modal'
-import { ReactComponent as Confirm } from '../../../assets/icons/Confirm.svg'
+import { ReactComponent as ConfirmIcon } from '../../../assets/icons/Confirm.svg'
 import { ModalFooter } from './ModalFooter'
-import Button from '../Button'
+import Button from '../button/index'
 
 function OnConfirmModal() {
-   const [isOpenModal, setIsopen] = useState(false)
-   const openHandler = () => {
-      setIsopen((prev) => !prev)
-   }
    return (
-      <Modal open={isOpenModal} onClose={openHandler}>
+      <Modal>
          <WrapperContent>
-            <Confirm />
+            <ConfirmIcon />
             <BoldText>Do you want delete?</BoldText>
             <Text>You can’t restore this file </Text>
          </WrapperContent>
          <ModalFooter>
-            <Div>
+            <Cansel>
                {' '}
                <Button variant="outlined" color="primary">
                   cansel{' '}
                </Button>
-            </Div>
-            <Div2>
+            </Cansel>
+            <Delete>
                <Button variant="contained" color="primary">
                   delete
                </Button>
-            </Div2>
+            </Delete>
          </ModalFooter>
       </Modal>
    )
@@ -52,10 +47,10 @@ export const Text = styled.div`
    color: #4c4859;
    padding: 7px;
 `
-const Div = styled.div`
+const Cansel = styled.div`
    margin-left: 140px;
 `
 
-const Div2 = styled.div`
+const Delete = styled.div`
    margin-right: 140px;
 `

@@ -1,16 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Modal from './Modal'
-import Button from '../Button'
+import Button from '../button/index'
 import { ReactComponent as SuccessIcon } from '../../../assets/icons/success.svg'
 import { BoldText, Text, WrapperContent } from './OnConfirmModal'
 import { ModalFooter } from './ModalFooter'
 import { ReactComponent as ErrorIcon } from '../../../assets/icons/delete.svg'
 
 function NotificationModal({ success, error }) {
-   const [isOpenModal, setIsopen] = useState(false)
-   const openHandler = () => {
-      setIsopen((prev) => !prev)
-   }
    let content
    if (success)
       content = (
@@ -30,17 +26,14 @@ function NotificationModal({ success, error }) {
          </>
       )
    return (
-      <>
-         <Button onClick={openHandler}> click</Button>
-         <Modal open={isOpenModal} onClose={openHandler}>
-            <WrapperContent>{content}</WrapperContent>
-            <ModalFooter>
-               <Button variant="contained" onClick={openHandler}>
-                  OK
-               </Button>
-            </ModalFooter>
-         </Modal>
-      </>
+      <Modal>
+         <WrapperContent>{content}</WrapperContent>
+         <ModalFooter>
+            <Button variant="contained" color="primary">
+               OK
+            </Button>
+         </ModalFooter>
+      </Modal>
    )
 }
 
