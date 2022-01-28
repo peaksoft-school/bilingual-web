@@ -1,10 +1,10 @@
 import classes from './App.module.css'
-import Input from './components/UI/input'
+import LoginPage from './components/login/LoginPage'
 
 function App() {
    return (
       <div className={classes.combox}>
-         <Input />
+         <LoginPage />
       </div>
    )
 }
