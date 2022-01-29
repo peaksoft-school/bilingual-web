@@ -41,13 +41,7 @@ const StyledMenuIte = styled(MenuItem)`
 `
 const style = { margin: 1, width: 900 }
 
-export default function AppSelect({
-   options,
-   onChange,
-   value,
-   children,
-   ...props
-}) {
+export default function AppSelect({ options, onChange, value, ...props }) {
    const [open, setOpen] = React.useState(false)
 
    const handleClose = () => {
