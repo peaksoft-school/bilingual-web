@@ -7,8 +7,8 @@ import styled from 'styled-components'
 const StyledSelect = styled(Select)`
    & .MuiModal-root {
       margin-top: 9px;
-      left: -8px;
    }
+   width: 900px;
 `
 
 const StyledMenuIte = styled(MenuItem)`
@@ -39,7 +39,6 @@ const StyledMenuIte = styled(MenuItem)`
       border-bottom: none;
    }
 `
-const style = { margin: 1, width: 900 }
 
 export default function AppSelect({ options, onChange, value, ...props }) {
    const [open, setOpen] = React.useState(false)
@@ -54,7 +53,7 @@ export default function AppSelect({ options, onChange, value, ...props }) {
 
    return (
       <div>
-         <FormControl sx={style}>
+         <FormControl>
             <StyledSelect
                labelId="dopen-select-label"
                id="open-select"
@@ -63,7 +62,6 @@ export default function AppSelect({ options, onChange, value, ...props }) {
                onOpen={handleOpen}
                value={value}
                onChange={onChange}
-               sx={{ mb: 80 }}
                MenuProps={{ disablePortal: true }}
                {...props}
             >
