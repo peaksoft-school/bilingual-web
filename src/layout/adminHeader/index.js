@@ -1,9 +1,6 @@
 import React from 'react'
-import { ThemeProvider } from '@emotion/react'
 import styled from 'styled-components'
 import Logo from '../../assets/icons/logo.svg'
-import Button from '../../components/UI/Button'
-import { theme } from '../../components/UI/StyleTheme'
 
 const StyledHeader = styled.div`
    margin-top: 0px;
@@ -52,6 +49,9 @@ const StyledTextButton = styled.button`
    line-height: 18px;
    cursor: pointer;
    background: none;
+   :hover {
+      color: #3a10e5;
+   }
    :focus {
       color: #3a10e5;
    }
@@ -59,24 +59,42 @@ const StyledTextButton = styled.button`
       transform: translateY(2px);
    }
 `
-const Header = () => {
+const StyledLogOutButton = styled.button`
+   width: 104px;
+   height: 42px;
+   background: none;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border: 2px solid #4c4859;
+   border-radius: 8px;
+   color: rgba(76, 72, 89, 1);
+   font-family: DINNextRoundedLTPro-Bold;
+   font-size: 14px;
+   text-transform: uppercase;
+   cursor: pointer;
+   box-sizing: border-box;
+   :hover {
+      color: #3a10e5;
+      border-color: #3a10e5;
+   }
+`
+const Header = (props) => {
    return (
-      <ThemeProvider theme={theme}>
-         <StyledHeader>
-            <StyledMainDiv>
-               <StyledLogoDiv>
-                  <StyledLogo src={Logo} alt="logo" />
-               </StyledLogoDiv>
-               <StyledButtonDiv>
-                  <StyledTextButton>tests</StyledTextButton>
-                  <StyledTextButton>submitted results</StyledTextButton>
-                  <Button variant="outlined" color="login">
-                     log out
-                  </Button>
-               </StyledButtonDiv>
-            </StyledMainDiv>
-         </StyledHeader>
-      </ThemeProvider>
+      <StyledHeader>
+         <StyledMainDiv>
+            <StyledLogoDiv>
+               <StyledLogo src={Logo} alt="logo" />
+            </StyledLogoDiv>
+            <StyledButtonDiv>
+               <StyledTextButton onClick={props}>tests</StyledTextButton>
+               <StyledTextButton onClick={props}>
+                  submitted results
+               </StyledTextButton>
+               <StyledLogOutButton onClick={props}>log out</StyledLogOutButton>
+            </StyledButtonDiv>
+         </StyledMainDiv>
+      </StyledHeader>
    )
 }
 
