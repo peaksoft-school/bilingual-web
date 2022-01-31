@@ -1,5 +1,22 @@
+import RadioButton from './components/UI/radioButton'
+
 function App() {
-   return <div>hi</div>
+   return (
+      <div>
+         <div>
+            {/* sfdsfdffd */}
+            <RadioButton />
+         </div>
+         <div>
+            {/* sfdsfdffd */}
+            <RadioButton />
+         </div>
+         <div>
+            {/* sfdsfdffd */}
+            <RadioButton />
+         </div>
+      </div>
+   )
 }
 
 export default App
