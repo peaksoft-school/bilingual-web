@@ -7,7 +7,7 @@ const StyledCardDiv = styled.div`
    max-width: 1440px;
 `
 const StyledContentCard = styled.div`
-   margin: 66px 155px;
+   margin-top: 66px;
    padding: 50px 115px;
    border-radius: 20px;
    box-shadow: 0px 4px 39px rgba(196, 196, 196, 0.6);
