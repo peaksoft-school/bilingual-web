@@ -1,5 +1,18 @@
+import { useState } from 'react'
+import Checkbox from './components/UI/checkbox'
+
 function App() {
-   return <div></div>
+   const [valu, setCheckbo] = useState(false)
+   return (
+      <div>
+         <Checkbox
+            label="1 вопрос"
+            value={valu}
+            checked={valu}
+            onChange={() => setCheckbo(!valu)}
+         />
+      </div>
+   )
 }
 
 export default App
