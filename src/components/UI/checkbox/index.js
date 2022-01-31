@@ -36,17 +36,18 @@ const Indicator = styled.div`
    border-radius: 4px;
 
    ${Input}:not(:disabled):checked & {
-      background: #d1d1d1;
+      background: black;
    }
 
    ${Label}:hover & {
-      background: #ccc;
+      background: none;
    }
 
    &::after {
       content: '';
       position: absolute;
       display: none;
+      background-color: black;
    }
 
    ${Input}:checked + &::after {
@@ -57,8 +58,9 @@ const Indicator = styled.div`
       height: 45%;
       border: solid #ffffff;
       border-width: 0 0.2em 0.2em 0;
+      background: black;
       animation-name: ${rotate};
-      animation-duration: 0.3s;
+      animation-duration: 0.1s;
       animation-fill-mode: forwards;
    }
 
