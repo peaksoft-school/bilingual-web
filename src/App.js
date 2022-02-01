@@ -1,10 +1,11 @@
 import ContentCard from './components/UI/adminContentCard'
+import MainContainer from './layout'
 
 function App() {
    return (
-      <div>
+      <MainContainer>
          <ContentCard />
-      </div>
+      </MainContainer>
    )
 }
 
