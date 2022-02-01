@@ -5,7 +5,6 @@ const StyledCardDiv = styled.div`
    margin-left: auto;
    margin-right: auto;
    width: 100%;
-   box-sizing: border-box;
 `
 const StyledContentCard = styled.div`
    margin-top: 66px;
