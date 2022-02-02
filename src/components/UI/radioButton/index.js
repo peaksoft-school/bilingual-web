@@ -3,12 +3,13 @@ import styled from 'styled-components'
 
 const RadioButton = (props) => {
    const { onChange, value } = props
+   const Lable = ''
    return (
       <FormControl>
          <FormControlLabel
             value={value}
             onChange={onChange}
-            label=""
+            label={Lable}
             control={<StyledRadioButton />}
          />
       </FormControl>
