@@ -2,14 +2,14 @@ import { FormControl, FormControlLabel, Radio } from '@mui/material'
 import styled from 'styled-components'
 
 const RadioButton = (props) => {
-   const { onChange, value } = props
-   const Lable = ''
+   const { onChange, value, ...other } = props
    return (
       <FormControl>
          <FormControlLabel
             value={value}
             onChange={onChange}
-            label={Lable}
+            {...other}
+            label=""
             control={<StyledRadioButton />}
          />
       </FormControl>
@@ -18,21 +18,7 @@ const RadioButton = (props) => {
 
 export default RadioButton
 const StyledRadioButton = styled(Radio)`
-   &.MuiRadio-root {
+   &.Mui-checked {
       color: #3a10e5;
-
-      /* :hover {
-         color: 0px 1px 2px rgba(81, 45, 224, 0.2),
-            0px 1px 2px rgba(81, 45, 224, 0.2);
-      } */
    }
-   /* & ::before {
-      color: red;
-   }
-   &.MuiRadio-root:active {
-      color: red;
-   } */
-   /* ::before {
-      color: #9a9a9a;
-   } */
 `
