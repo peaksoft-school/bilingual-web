@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import { ThemeProvider } from '@mui/material'
 import { useFormik } from 'formik'
+import { Link } from 'react-router-dom'
 import * as yup from 'yup'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import loginImg from '../../assets/icons/Group6.svg'
 import Icon from '../../assets/icons/key.svg'
 import classes from './LoginPage.module.css'
-import Input from '../UI/input/index'
-import Button from '../UI/button/index'
+import Input from '../../components/UI/input/index'
+import Button from '../../components/UI/button/index'
 import { theme } from '../../assets/styles/themeStyleButton/index'
 
 export default function LoginPage() {
@@ -23,14 +24,32 @@ export default function LoginPage() {
          .string('Enter your email')
          .email('Enter a valid email')
          .required('Email is required'),
+
       password: yup
          .string('Enter your password')
-         .min(8, 'Password should be of minimum 8 characters length')
+         .min(4, 'Password should be of minimum 4 characters length')
          .required('Password is required'),
    })
 
-   function submitchik(formValue) {
+   async function submitchik(formValue) {
       console.log(formValue)
+      try {
+         const response = await fetch('http://3.65.208.103/api/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               fullName: 'test',
+               gmail: formValue.email,
+               password: formValue.password,
+               roles: ['USER_ROLE'],
+            }),
+         })
+         if (!response.ok) throw new Error('something went wrong...')
+         const data = await response.json()
+         console.log(data)
+      } catch (e) {
+         console.error(e)
+      }
    }
 
    const formik = useFormik({
@@ -105,9 +124,15 @@ export default function LoginPage() {
                      >
                         SIGN IN
                      </Button>
-                     <Button variant="outlined" color="primary" sx={{ mt: 4 }}>
-                        REGISTRATION
-                     </Button>
+                     <Link to="/sign-up">
+                        <Button
+                           variant="outlined"
+                           color="primary"
+                           sx={{ mt: 4 }}
+                        >
+                           REGISTRATION
+                        </Button>
+                     </Link>
                   </form>
                </div>
             </div>
