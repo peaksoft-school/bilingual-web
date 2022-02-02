@@ -3,7 +3,7 @@ import { ReactComponent as ConfirmIcon } from '../../../assets/icons/Confirm.svg
 import Button from '../button/index'
 import ModalWrapper, { ModalFooter } from './ModalWrapper'
 
-function OnConfirmModal({ onCancel, onDelete }) {
+function ConfirmModal({ onCancel, onDelete }) {
    return (
       <ModalWrapper>
          <WrapperContent>
@@ -27,7 +27,7 @@ function OnConfirmModal({ onCancel, onDelete }) {
    )
 }
 
-export default OnConfirmModal
+export default ConfirmModal
 export const WrapperContent = styled.div`
    display: flex;
    justify-content: start;

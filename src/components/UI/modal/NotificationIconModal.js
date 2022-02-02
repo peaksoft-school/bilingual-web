@@ -5,7 +5,7 @@ import { BoldText, Text, WrapperContent } from './ConfirmModal'
 import { ReactComponent as ErrorIcon } from '../../../assets/icons/delete.svg'
 import ModalWrapper, { ModalFooter } from './ModalWrapper'
 
-function NotificationIconModal({ success, error }) {
+function NotificationIconModal({ success, error, onConfirm }) {
    let content
    if (success)
       content = (
@@ -28,7 +28,7 @@ function NotificationIconModal({ success, error }) {
       <ModalWrapper>
          <WrapperContent>{content}</WrapperContent>
          <ModalFooter>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={onConfirm}>
                OK
             </Button>
          </ModalFooter>
