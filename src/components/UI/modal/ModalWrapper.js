@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { DialogContent, Dialog as MuiDialog } from '@mui/material'
 import { ReactComponent as CloseIcon } from '../../../assets/icons/x-circle.svg'
 
-function Modal(props) {
+function ModalWrapper(props) {
    const { children, fullWidth, isOpenModal, onClose, ...other } = props
 
    return (
@@ -26,7 +26,7 @@ function Modal(props) {
    )
 }
 
-export default Modal
+export default ModalWrapper
 
 const WrapperIcon = styled.div`
    display: flex;
@@ -35,4 +35,14 @@ const WrapperIcon = styled.div`
    padding-right: 23px;
    padding-left: 476px;
    justify-content: flex-end;
+`
+export const ModalFooter = styled.footer`
+   background-color: #c4c4c4;
+   max-width: 637px;
+   min-width: 437px;
+   height: 94px;
+   margin-top: 40px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
 `

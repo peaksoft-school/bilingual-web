@@ -1,12 +1,11 @@
 import styled from 'styled-components'
-import Modal from './Modal'
 import { ReactComponent as ConfirmIcon } from '../../../assets/icons/Confirm.svg'
-import { ModalFooter } from './ModalFooter'
 import Button from '../button/index'
+import ModalWrapper, { ModalFooter } from './ModalWrapper'
 
-function OnConfirmModal() {
+function OnConfirmModal({ onCancel, onDelete }) {
    return (
-      <Modal>
+      <ModalWrapper>
          <WrapperContent>
             <ConfirmIcon />
             <BoldText>Do you want delete?</BoldText>
@@ -14,18 +13,17 @@ function OnConfirmModal() {
          </WrapperContent>
          <ModalFooter>
             <Cansel>
-               {' '}
-               <Button variant="outlined" color="primary">
-                  cansel{' '}
+               <Button onClick={onCancel} variant="outlined" color="primary">
+                  cancel
                </Button>
             </Cansel>
             <Delete>
-               <Button variant="contained" color="primary">
+               <Button onClick={onDelete} variant="contained" color="primary">
                   delete
                </Button>
             </Delete>
          </ModalFooter>
-      </Modal>
+      </ModalWrapper>
    )
 }
 

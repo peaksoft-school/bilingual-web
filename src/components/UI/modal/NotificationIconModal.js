@@ -1,12 +1,11 @@
 import React from 'react'
-import Modal from './Modal'
 import Button from '../button/index'
 import { ReactComponent as SuccessIcon } from '../../../assets/icons/success.svg'
-import { BoldText, Text, WrapperContent } from './OnConfirmModal'
-import { ModalFooter } from './ModalFooter'
+import { BoldText, Text, WrapperContent } from './ConfirmModal'
 import { ReactComponent as ErrorIcon } from '../../../assets/icons/delete.svg'
+import ModalWrapper, { ModalFooter } from './ModalWrapper'
 
-function NotificationModal({ success, error }) {
+function NotificationIconModal({ success, error }) {
    let content
    if (success)
       content = (
@@ -26,15 +25,15 @@ function NotificationModal({ success, error }) {
          </>
       )
    return (
-      <Modal>
+      <ModalWrapper>
          <WrapperContent>{content}</WrapperContent>
          <ModalFooter>
             <Button variant="contained" color="primary">
                OK
             </Button>
          </ModalFooter>
-      </Modal>
+      </ModalWrapper>
    )
 }
 
-export default NotificationModal
+export default NotificationIconModal
