@@ -1,19 +1,37 @@
 import React from 'react'
 import styled from 'styled-components'
+import { NavLink } from 'react-router-dom'
 import Logo from '../../assets/icons/logo.svg'
 
+const Header = () => {
+   return (
+      <StyledHeader>
+         <StyledMainDiv>
+            <StyledLogoDiv>
+               <StyledLogo src={Logo} alt="logo" />
+            </StyledLogoDiv>
+            <StyledButtonDiv>
+               <StyledNavLink to="/test">test</StyledNavLink>
+               <StyledNavLink to="/submittedResults">
+                  submitted results
+               </StyledNavLink>
+               <StyledNavLinkLogOut to="/login">log out</StyledNavLinkLogOut>
+            </StyledButtonDiv>
+         </StyledMainDiv>
+      </StyledHeader>
+   )
+}
+
 const StyledHeader = styled.div`
-   margin-top: 0px;
-   width: 100%;
+   margin: 0;
    height: 94px;
    background-color: white;
 `
 const StyledMainDiv = styled.div`
    margin-top: 0px;
-   margin-left: auto;
    margin-right: auto;
-   padding: 26px 167px 26px 168px;
-   max-width: 1440px;
+   margin-left: auto;
+   width: 1140px;
    height: 94px;
    display: flex;
    justify-content: space-between;
@@ -23,6 +41,9 @@ const StyledMainDiv = styled.div`
 const StyledLogoDiv = styled.div`
    width: 187px;
    height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
    box-sizing: border-box;
 `
 const StyledButtonDiv = styled.div`
@@ -37,29 +58,22 @@ const StyledLogo = styled.img`
    width: 174px;
    height: 42px;
 `
-const StyledTextButton = styled.button`
-   border: none;
-   color: rgba(76, 72, 89, 1);
-   margin-top: 0px;
-   padding: 0px;
+const StyledNavLink = styled(NavLink)`
    font-family: 'DINNextRoundedLTPro-bold';
    font-weight: bold;
    font-size: 14px;
+   color: rgba(76, 72, 89, 1);
+   list-style: none;
+   text-decoration: none;
    text-transform: uppercase;
    line-height: 18px;
    cursor: pointer;
-   background: none;
-   :hover {
+   &.active {
       color: #3a10e5;
-   }
-   :focus {
-      color: #3a10e5;
-   }
-   :active {
-      transform: translateY(2px);
    }
 `
-const StyledLogOutButton = styled.button`
+
+const StyledNavLinkLogOut = styled(NavLink)`
    width: 104px;
    height: 42px;
    background: none;
@@ -72,30 +86,12 @@ const StyledLogOutButton = styled.button`
    font-family: DINNextRoundedLTPro-Bold;
    font-size: 14px;
    text-transform: uppercase;
+   text-decoration: none;
    cursor: pointer;
    box-sizing: border-box;
-   :hover {
+   &.active {
       color: #3a10e5;
       border-color: #3a10e5;
    }
 `
-const Header = (props) => {
-   return (
-      <StyledHeader>
-         <StyledMainDiv>
-            <StyledLogoDiv>
-               <StyledLogo src={Logo} alt="logo" />
-            </StyledLogoDiv>
-            <StyledButtonDiv>
-               <StyledTextButton onClick={props}>tests</StyledTextButton>
-               <StyledTextButton onClick={props}>
-                  submitted results
-               </StyledTextButton>
-               <StyledLogOutButton onClick={props}>log out</StyledLogOutButton>
-            </StyledButtonDiv>
-         </StyledMainDiv>
-      </StyledHeader>
-   )
-}
-
 export default Header
