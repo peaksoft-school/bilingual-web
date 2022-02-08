@@ -1,7 +1,6 @@
 import { CircularProgress, ThemeProvider } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import classes from './App.module.css'
 import BilingualRoutes from './routes/BilingualRoutes'
 import { authActions } from './store'
 import { getFromLocalStorage } from './utils/helpers/localstorege/localStorege'
@@ -30,11 +29,9 @@ function App() {
    }
 
    return (
-      <div className={classes.combox}>
-         <ThemeProvider theme={theme}>
-            <BilingualRoutes />
-         </ThemeProvider>
-      </div>
+      <ThemeProvider theme={theme}>
+         <BilingualRoutes />
+      </ThemeProvider>
    )
 }
 
