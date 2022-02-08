@@ -1,30 +1,36 @@
-import React, { useState, useRef } from 'react'
-import { ThemeProvider } from '@mui/material'
+import React, { useState } from 'react'
 import { useFormik } from 'formik'
-// import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
+import { useNavigate } from 'react-router-dom'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-import loginImg from '../../assets/icons/Group6.svg'
-import Icon from '../../assets/icons/key.svg'
+import { ReactComponent as LockOutlineIcon } from '../../assets/icons/key.svg'
+import { ReactComponent as LoginImage } from '../../assets/icons/Group6.svg'
 import classes from './LoginPage.module.css'
 import Input from '../../components/UI/input/index'
 import Button from '../../components/UI/button/index'
-import { theme } from '../../assets/styles/themeStyleButton/index'
+import { signup } from '../../store/auth'
+import { ROUTES } from '../../utils/constants/general'
 
 export default function SignUp() {
-   // const dispatch = useDispatch()
-   const nameInputRef = useRef()
-   const emailInputRef = useRef()
-   const passwordInputRef = useRef()
+   const navigate = useNavigate()
+   const dispatch = useDispatch()
+
    const [visibility, setVisibility] = useState(false)
 
    const togglePasswordHandler = () => {
       setVisibility((prevVisibility) => !prevVisibility)
    }
 
+   function submitHandler(formValue) {
+      dispatch(signup(formValue))
+      return navigate(ROUTES.LOGIN)
+   }
+
    const validationSchema = yup.object({
-      email: yup
+      fullName: yup.string('Enter your name').required('Name is required'),
+      gmail: yup
          .string('Enter your email')
          .email('Enter a valid email')
          .required('Email is required'),
@@ -34,96 +40,98 @@ export default function SignUp() {
          .required('Password is required'),
    })
 
-   function submitchik(formValue) {
-      console.log(formValue)
-      const enteredName = nameInputRef.current.value
-      const enteredEmail = emailInputRef.current.value
-      const enteredPassword = passwordInputRef.current.value
-   }
-
    const formik = useFormik({
       initialValues: {
-         email: '',
+         fullName: '',
+         gmail: '',
          password: '',
       },
       validationSchema,
-      onSubmit: submitchik,
+      onSubmit: submitHandler,
    })
 
-   const errorValidation =
-      (formik.touched.password && formik.errors.password) ||
-      (formik.touched.email && formik.errors.email)
+   const errorMessage = () => {
+      const errorValidation =
+         (formik.touched.gmail && formik.errors.gmail) ||
+         (formik.touched.password && formik.errors.password)
+      return errorValidation
+   }
 
    return (
-      <ThemeProvider theme={theme}>
-         <div className={classes.container}>
-            <div className={classes.leftSide}>
-               <img
-                  className={classes.loginImg}
-                  src={loginImg}
-                  alt="loginImage"
-               />
-            </div>
-            <div className={classes.rightSide}>
-               <div className={classes.form_container}>
-                  <form onSubmit={formik.handleSubmit}>
-                     <img className={classes.icon} src={Icon} alt="Icon" />
-                     <h2>Create an Account</h2>
-                     <Input
-                        ref={nameInputRef}
-                        label="Name"
-                        variant="outlined"
-                        fullWidth
-                        sx={{ mb: 3 }}
-                     />
-                     <Input
-                        ref={emailInputRef}
-                        label="Email"
-                        variant="outlined"
-                        fullWidth
-                        id="email"
-                        sx={{ mb: 3 }}
-                        value={formik.values.email}
-                        onChange={formik.handleChange}
-                     />
-                     <Input
-                        ref={passwordInputRef}
-                        id="password"
-                        label="Password"
-                        type={visibility ? 'text' : 'password'}
-                        variant="outlined"
-                        fullWidth
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                        InputProps={{
-                           endAdornment: (
-                              <Button
-                                 sx={{ border: 'none' }}
-                                 onClick={togglePasswordHandler}
-                              >
-                                 {visibility ? (
-                                    <VisibilityIcon />
-                                 ) : (
-                                    <VisibilityOffIcon />
-                                 )}
-                              </Button>
-                           ),
-                        }}
-                     />
-                     <p>{errorValidation}</p>
-                     <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        sx={{ mt: 3 }}
-                     >
-                        SIGN UP
-                     </Button>
-                  </form>
-               </div>
+      <div className={classes.container}>
+         <div className={classes.leftSide}>
+            <LoginImage />
+         </div>
+         <div className={classes.rightSide}>
+            <div className={classes.form_container}>
+               <form onSubmit={formik.handleSubmit}>
+                  <LockOutlineIcon />
+                  <h2>Create an Account</h2>
+                  <Input
+                     label="FullName"
+                     variant="outlined"
+                     fullWidth
+                     id="fullName"
+                     sx={{ mb: 3 }}
+                     value={formik.values.fullName}
+                     onChange={formik.handleChange}
+                     error={
+                        formik.touched.fullName &&
+                        Boolean(formik.errors.fullName)
+                     }
+                  />
+                  <Input
+                     label="Email"
+                     variant="outlined"
+                     fullWidth
+                     id="gmail"
+                     sx={{ mb: 3 }}
+                     value={formik.values.gmail}
+                     onChange={formik.handleChange}
+                     error={
+                        formik.touched.gmail && Boolean(formik.errors.gmail)
+                     }
+                  />
+                  <Input
+                     id="password"
+                     label="Password"
+                     type={visibility ? 'text' : 'password'}
+                     variant="outlined"
+                     fullWidth
+                     value={formik.values.password}
+                     onChange={formik.handleChange}
+                     error={
+                        formik.touched.password &&
+                        Boolean(formik.errors.password)
+                     }
+                     InputProps={{
+                        endAdornment: (
+                           <Button
+                              sx={{ border: 'none' }}
+                              onClick={togglePasswordHandler}
+                           >
+                              {visibility ? (
+                                 <VisibilityIcon />
+                              ) : (
+                                 <VisibilityOffIcon />
+                              )}
+                           </Button>
+                        ),
+                     }}
+                  />
+                  <p>{errorMessage()}</p>
+                  <Button
+                     type="submit"
+                     variant="contained"
+                     color="primary"
+                     fullWidth
+                     sx={{ mt: 3 }}
+                  >
+                     SIGN UP
+                  </Button>
+               </form>
             </div>
          </div>
-      </ThemeProvider>
+      </div>
    )
 }

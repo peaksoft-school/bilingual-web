@@ -7,7 +7,7 @@
 }
 .leftSide {
    background-color: #6e50e5;
-   width: 50%;
+   width: 55%;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -18,7 +18,7 @@
    background-size: 370px, 650px;
 }
 .rightSide {
-   width: 50%;
+   width: 45%;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -38,5 +38,7 @@
 }
 form p {
    color: #f61414;
-   /* margin: 1px auto; */
+}
+.link {
+   text-decoration: none;
 }
