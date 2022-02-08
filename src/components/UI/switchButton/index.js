@@ -9,22 +9,22 @@ const Label = styled.label`
 
 const Switch = styled.div`
    position: relative;
-   width: 39px;
+   width: 35.2px;
    height: 22px;
    background: #b3b3b3;
    border-radius: 20px;
-   padding: 4px;
+   padding: 0px;
    transition: 300ms all;
 
    &:before {
       transition: 300ms all;
       content: '';
       position: absolute;
-      width: 22px;
-      height: 22.6px;
+      width: 18.64px;
+      height: 19.16px;
       border-radius: 20px;
-      top: 4.5px;
-      left: 1.5px;
+      top: 2.7px;
+      left: 0.8px;
       background: white;
       transform: translate(1px, -1.2px);
       transition: 0.3s;
@@ -39,7 +39,7 @@ const Input = styled.input`
       background: #2ab930;
 
       &:before {
-         transform: translate(21px, -1.2px);
+         transform: translate(14px, -1.2px);
       }
    }
 `
