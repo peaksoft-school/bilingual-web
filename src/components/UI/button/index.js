@@ -17,10 +17,11 @@ const StyledMuiButton = styled(MuiButton)`
       font-family: 'DINNextRoundedLTPro-Bold';
       font-size: 14px;
       font-weight: 'bold';
-      border: 2.5px;
+      border: 2.5px solid;
       padding: 12.5px 24px;
+      box-sizing: border-box;
       &:hover {
-         background-color: none;
+         border: 2.5px solid;
       }
    }
 `

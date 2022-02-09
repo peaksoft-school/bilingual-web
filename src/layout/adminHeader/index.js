@@ -1,9 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
+import LogOutModal from './LogOutModal'
 import Logo from '../../assets/icons/logo.svg'
 
 const Header = () => {
+   const [open, setOpen] = React.useState(false)
+   const handleOpen = () => setOpen(true)
+   const handleClose = () => setOpen(false)
    return (
       <StyledHeader>
          <StyledMainDiv>
@@ -15,9 +19,12 @@ const Header = () => {
                <StyledNavLink to="/submittedResults">
                   submitted results
                </StyledNavLink>
-               <StyledNavLinkLogOut to="/login">log out</StyledNavLinkLogOut>
+               <StyledNavLinkLogOut onClick={handleOpen}>
+                  log out
+               </StyledNavLinkLogOut>
             </StyledButtonDiv>
          </StyledMainDiv>
+         {open && <LogOutModal open onClose={handleClose} />}
       </StyledHeader>
    )
 }
@@ -73,7 +80,7 @@ const StyledNavLink = styled(NavLink)`
    }
 `
 
-const StyledNavLinkLogOut = styled(NavLink)`
+const StyledNavLinkLogOut = styled.button`
    width: 104px;
    height: 42px;
    background: none;

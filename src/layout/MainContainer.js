@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Header from './adminHeader'
 
 const Container = styled.div`
    width: 1140px;
@@ -7,6 +8,11 @@ const Container = styled.div`
 `
 
 const MainContainer = ({ children }) => {
-   return <Container>{children}</Container>
+   return (
+      <>
+         <Header />
+         <Container>{children}</Container>
+      </>
+   )
 }
 export default MainContainer

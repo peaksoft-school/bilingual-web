@@ -20,10 +20,10 @@ const Switch = styled.div`
       transition: 300ms all;
       content: '';
       position: absolute;
-      width: 18.64px;
+      width: 19.16px;
       height: 19.16px;
       border-radius: 20px;
-      top: 2.7px;
+      top: 2.9px;
       left: 0.8px;
       background: white;
       transform: translate(1px, -1.2px);
