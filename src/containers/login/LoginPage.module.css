@@ -42,3 +42,13 @@ form p {
 .link {
    text-decoration: none;
 }
+
+form .visibility {
+   color: red;
+   width: 20px;
+   height: 30px;
+}
+.visibilityOff {
+   width: 18px;
+   height: 16px;
+}

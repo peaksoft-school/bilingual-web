@@ -3,11 +3,11 @@ import { useFormik } from 'formik'
 import { useDispatch } from 'react-redux'
 import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import VisibilityIcon from '@mui/icons-material/Visibility'
+import { ReactComponent as VisibilityOffIcon } from '../../assets/icons/x-1.svg'
+import { ReactComponent as VisibilityIcon } from '../../assets/icons/x.svg'
 import { ReactComponent as LockOutlineIcon } from '../../assets/icons/key.svg'
 import { ReactComponent as LoginImage } from '../../assets/icons/Group6.svg'
-import classes from './LoginPage.module.css'
+import classes from '../login/LoginPage.module.css'
 import Input from '../../components/UI/input/index'
 import Button from '../../components/UI/button/index'
 import { signup } from '../../store/auth'
@@ -25,7 +25,10 @@ export default function SignUp() {
 
    function submitHandler(formValue) {
       dispatch(signup(formValue))
-      return navigate(ROUTES.LOGIN)
+         .unwrap()
+         .then(() => {
+            navigate(ROUTES.LOGIN)
+         })
    }
 
    const validationSchema = yup.object({

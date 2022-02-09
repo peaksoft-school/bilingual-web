@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import { Navigate, Link } from 'react-router-dom'
 import * as yup from 'yup'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import VisibilityIcon from '@mui/icons-material/Visibility'
+import { ReactComponent as VisibilityOffIcon } from '../../assets/icons/x-1.svg'
+import { ReactComponent as VisibilityIcon } from '../../assets/icons/x.svg'
 import { ReactComponent as LockOutlineIcon } from '../../assets/icons/key.svg'
 import { ReactComponent as LoginImage } from '../../assets/icons/Group6.svg'
 import classes from './LoginPage.module.css'
@@ -17,6 +17,7 @@ export default function LoginPage() {
    const dispatch = useDispatch()
    const isAuthorized = useSelector((state) => state.auth.isAuthorized)
    const role = useSelector((state) => state.auth.user.role)
+   console.log(role)
    const [visibility, setVisibility] = useState(false)
 
    const togglePasswordHandler = () => {

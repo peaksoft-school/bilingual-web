@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { BILINGUAL_TOKEN, BILINGUAL_USER } from '../utils/constants/general'
 import { saveToLocalStorage } from '../utils/helpers/localstorege/localStorege'
-import authService from './authService'
+import axiosInstance from '../api/axiosInstance'
 
 export const signup = createAsyncThunk(
    'auth/signup',
    async (signUpData, thunkAPI) => {
       try {
-         const response = await authService.signup(signUpData)
+         const response = await axiosInstance.signup(signUpData)
          return response.data
       } catch (error) {
          return thunkAPI.rejectWithValue(error.message)
@@ -19,7 +19,7 @@ export const login = createAsyncThunk(
    'auth/login',
    async (signUpData, thunkAPI) => {
       try {
-         const { data } = await authService.login(signUpData)
+         const { data } = await axiosInstance.login(signUpData)
          const payloadData = {
             user: {
                fullName: data.fullName,

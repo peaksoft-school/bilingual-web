@@ -1,10 +1,10 @@
 import { CircularProgress, ThemeProvider } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import BilingualRoutes from './routes/BilingualRoutes'
+import Routes from './routes/Routes'
 import { authActions } from './store'
 import { getFromLocalStorage } from './utils/helpers/localstorege/localStorege'
-import { theme } from './assets/styles/themeStyleButton'
+import { theme } from './assets/styles/themeStyle/theme'
 import { BILINGUAL_TOKEN, BILINGUAL_USER } from './utils/constants/general'
 
 function App() {
@@ -30,7 +30,7 @@ function App() {
 
    return (
       <ThemeProvider theme={theme}>
-         <BilingualRoutes />
+         <Routes />
       </ThemeProvider>
    )
 }

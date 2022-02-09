@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Navigate, Route, Routes } from 'react-router-dom'
 import LoginPage from '../containers/login/LoginPage'
-import SignUp from '../containers/login/SignUp'
+import SignUp from '../containers/signUp/SignUp'
 import { ROUTES } from '../utils/constants/general'
 
-export default function BilingualRoutes() {
+export default function AllRoutes() {
    const navigate = useNavigate()
    const isAuthorized = useSelector((state) => state.auth.isAuthorized)
    useEffect(() => {
