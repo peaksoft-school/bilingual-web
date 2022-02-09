@@ -17,7 +17,6 @@ export default function LoginPage() {
    const dispatch = useDispatch()
    const isAuthorized = useSelector((state) => state.auth.isAuthorized)
    const role = useSelector((state) => state.auth.user.role)
-   console.log(role)
    const [visibility, setVisibility] = useState(false)
 
    const togglePasswordHandler = () => {
