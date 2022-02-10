@@ -28,9 +28,7 @@ export default function BasicTable() {
          <Header />
          <MainContainer>
             <TableContainer component={StyledPaper}>
-               <Table
-                  sx={{ borderCollapse: 'separate', borderSpacing: '10px' }}
-               >
+               <StyledTable>
                   <TableHead>
                      <TableRow sx={{ color: '#4C4859' }}>
                         <StyledHead>#</StyledHead>
@@ -40,7 +38,6 @@ export default function BasicTable() {
                         </StyledHead>
                         <StyledHead align="center">Question Type</StyledHead>
                         <StyledHead align="center">Status</StyledHead>
-                        {/* <StyledHead>.</StyledHead> */}
                      </TableRow>
                   </TableHead>
                   {rows.map((row) => (
@@ -49,14 +46,16 @@ export default function BasicTable() {
                            {row.number}
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                           {row.userName}
+                           {/* {row.userName} */}
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                           {row.time}
+                           {/* {row.time} */}
                         </StyledTableCell>
-                        <StyledTableCell>{row.testNumber}</StyledTableCell>
                         <StyledTableCell align="center">
-                           {row.evoluate}
+                           {/* {row.testNumber} */}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                           {/* {row.evoluate} */}
                         </StyledTableCell>
                         <StyledTableCell align="center">
                            <Div>
@@ -66,7 +65,7 @@ export default function BasicTable() {
                         </StyledTableCell>
                      </StyletTableRow>
                   ))}
-               </Table>
+               </StyledTable>
             </TableContainer>
          </MainContainer>
       </>
@@ -76,13 +75,13 @@ export const StyletTableRow = styled(TableRow)`
    &.MuiTableRow-root {
       border-radius: 8px;
       background: #ffffff;
-      /* border-bottom: none !important; */
       box-shadow: 0px 3px 14px rgba(0, 0, 0, 0.09);
       padding: 30px;
       align-content: space-between;
       border-collapse: separate;
       border-spacing: 0 5em;
       padding-top: 15px;
+      font-size: 16px;
    }
 `
 
@@ -93,12 +92,18 @@ export const StyledTableCell = styled(TableCell)`
       font-size: 16px;
       font-family: 'DINNextRoundedLTW01-Regular';
       font-style: normal;
+      padding: 50px 115px;
    }
 `
 const DeleteIcon = styled(DeleteOutlined)`
    &.MuiSvgIcon-root {
       margin-top: 9px;
       margin-left: 20px;
+      color: #9a9a9a;
+      cursor: pointer;
+      &:hover {
+         color: #a9a9a9;
+      }
    }
 `
 const Div = styled.div`
@@ -122,12 +127,19 @@ export const StyledPaper = styled(Paper)`
 &.MuiPaper-root{
    border-radius: 20px;
    box-shadow: 0px 4px 39px rgba(196, 196, 196, 0.6);
-   padding: 50px 115px ;
-   width: 80%;
+   /* width: 111%; */
    height: 90%,
+   margin: auto;
    margin-left: auto;
    margin-top: 66px;
    border-collapse: separate;
    border-spacing: 0 5em;
 }
+`
+export const StyledTable = styled(Table)`
+   &.MuiTable-root {
+      border-collapse: separate;
+      border-spacing: 10px;
+      padding: 50px 115px;
+   }
 `

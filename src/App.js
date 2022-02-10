@@ -1,11 +1,5 @@
-import EvoluateWrapper from './components/UI/evoluateWrapper'
-
 function App() {
-   return (
-      <div>
-         <EvoluateWrapper>hello</EvoluateWrapper>
-      </div>
-   )
+   return <div></div>
 }
 
 export default App
