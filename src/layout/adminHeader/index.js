@@ -83,7 +83,7 @@ const StyledNavLinkLogOut = styled(NavLink)`
    border: 2px solid #4c4859;
    border-radius: 8px;
    color: rgba(76, 72, 89, 1);
-   font-family: DINNextRoundedLTPro-Bold;
+   font-family: 'DINNextRoundedLTPro-Bold';
    font-size: 14px;
    text-transform: uppercase;
    text-decoration: none;

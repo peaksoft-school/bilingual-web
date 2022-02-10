@@ -6,12 +6,12 @@ export default function ReCheckbox({ checked, onChange, ...otherProps }) {
       <Checkbox
          checked={checked}
          onChange={onChange}
-         {...otherProps}
          sx={{
-            '&.Mui-checked': {
+            '&.Mui-checked .MuiSvgIcon-root': {
                color: '#2AB930',
             },
          }}
+         {...otherProps}
       />
    )
 }
