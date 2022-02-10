@@ -1,11 +1,13 @@
 import * as React from 'react'
 import Table from '@mui/material/Table'
 import styled from 'styled-components'
-import { Paper } from '@mui/material'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
+import {
+   Paper,
+   TableCell,
+   TableContainer,
+   TableHead,
+   TableRow,
+} from '@mui/material'
 import Header from '../../../layout/adminHeader'
 import MainContainer from '../../../layout/MainContainer'
 import ReCheckbox from '../../UI/checkbox'
@@ -22,7 +24,7 @@ const rows = [
    createData('4'),
 ]
 
-export default function BasicTable() {
+export default function SubmittedResults() {
    return (
       <>
          <Header />
