@@ -2,14 +2,14 @@ import * as React from 'react'
 import Table from '@mui/material/Table'
 import styled from 'styled-components'
 import { Paper } from '@mui/material'
-import { DeleteOutlined } from '@mui/icons-material'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Header from '../../../layout/adminHeader'
 import MainContainer from '../../../layout/MainContainer'
-import ReCheckbox from '../checkbox'
+import ReCheckbox from '../../UI/checkbox'
+import { ReactComponent as DeleteIconn } from '../../../assets/icons/deleteIcon.svg'
 
 function createData(number, userName, time, testNumber, evoluate, icon) {
    return { number, userName, time, testNumber, evoluate, icon }
@@ -95,15 +95,12 @@ export const StyledTableCell = styled(TableCell)`
       padding: 50px 115px;
    }
 `
-const DeleteIcon = styled(DeleteOutlined)`
-   &.MuiSvgIcon-root {
-      margin-top: 9px;
-      margin-left: 20px;
-      color: #9a9a9a;
-      cursor: pointer;
-      &:hover {
-         color: #a9a9a9;
-      }
+const DeleteIcon = styled(DeleteIconn)`
+   margin-top: 9px;
+   margin-left: 20px;
+   cursor: pointer;
+   &:hover {
+      color: #f61414;
    }
 `
 const Div = styled.div`
@@ -127,8 +124,8 @@ export const StyledPaper = styled(Paper)`
 &.MuiPaper-root{
    border-radius: 20px;
    box-shadow: 0px 4px 39px rgba(196, 196, 196, 0.6);
-   /* width: 111%; */
-   height: 90%,
+   width: 100%;
+   height: 100%,
    margin: auto;
    margin-left: auto;
    margin-top: 66px;
