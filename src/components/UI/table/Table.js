@@ -46,10 +46,10 @@ export const StyledHead = styled(TableCell)`
       border-collapse: separate;
       background: transparent;
       border: none;
-
+      color: #4c4859;
+      font-weight: bold;
       font-family: 'DINNextRoundedLTW04-Medium';
       font-style: normal;
-      font-weight: 500;
       font-size: 16px;
    }
 `
@@ -71,7 +71,5 @@ export const StyledTable = styled(Table)`
       border-collapse: separate;
       border-spacing: 10px;
       padding: 50px 115px;
-      color: #4c4859;
-      font-weight: bold;
    }
 `
