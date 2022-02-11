@@ -1,8 +1,7 @@
 import { CircularProgress, ThemeProvider } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-// import Routes from './routes/Routes'
-import SubmittedResults from './components/checkingPages/submitedResultPage'
+import Routes from './routes/Routes'
 import { authActions } from './store'
 import { getFromLocalStorage } from './utils/helpers/localstorege/localStorege'
 import { theme } from './assets/styles/themeStyle/theme'
@@ -31,8 +30,7 @@ function App() {
 
    return (
       <ThemeProvider theme={theme}>
-         {/* <Routes /> */}
-         <SubmittedResults />
+         <Routes />
       </ThemeProvider>
    )
 }
