@@ -39,6 +39,7 @@ export const DeleteIcon = styled(DeleteIconn)`
 export const Div = styled.div`
    display: flex;
    justify-content: column;
+   width: 100%;
 `
 export const StyledHead = styled(TableCell)`
    &.MuiTableCell-head {
@@ -66,10 +67,11 @@ export const StyledPaper = styled(Paper)`
    border-spacing: 0 5em;
 }
 `
+
 export const StyledTable = styled(Table)`
    &.MuiTable-root {
       border-collapse: separate;
       border-spacing: 10px;
-      padding: 50px 115px;
+      padding: 0px 115px 50px 115px;
    }
 `
