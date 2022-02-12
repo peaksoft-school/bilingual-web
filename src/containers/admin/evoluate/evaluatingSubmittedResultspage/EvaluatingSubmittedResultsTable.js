@@ -1,38 +1,21 @@
 import React from 'react'
-import { TableContainer, TableHead, TableRow } from '@mui/material'
+import { TableHead, TableRow } from '@mui/material'
 import styled from 'styled-components'
 import Button from '../../../../components/UI/button/index'
 
 import {
    StyletTableRow,
    StyledTableCell,
-   StyledPaper,
    StyledHead,
    StyledTable,
 } from '../../../../components/UI/table/Table'
 
 function EvaluatingSubmittedResultsTable({ rows }) {
    return (
-      <TableContainer component={StyledPaper}>
-         <Wrapper>
-            <Divv>
-               <span>User: John Smith</span>
-               <span>Test: Test number 1</span>
-            </Divv>
-            <Wrapperr>
-               <span>Final Score: 0</span>
-               <span>Final Status: Evalauted</span>
-            </Wrapperr>
-         </Wrapper>
-         <Div>
-            <Button color="primary" variant="outlined">
-               SEND RESULTS TO USER’S EMAIL
-            </Button>
-         </Div>
+      <>
          <Linee>
             <Line />
          </Linee>
-
          <StyledTable>
             <TableHead>
                <TableRow>
@@ -61,7 +44,7 @@ function EvaluatingSubmittedResultsTable({ rows }) {
                </StyletTableRow>
             ))}
          </StyledTable>
-      </TableContainer>
+      </>
    )
 }
 
@@ -80,30 +63,4 @@ const Line = styled.div`
    display: flex;
    justify-content: center;
    align-items: center;
-`
-const Wrapper = styled.div`
-   display: flex;
-   justify-content: space-between;
-   padding: 0px 115px;
-   margin-top: 50px;
-`
-const Wrapperr = styled.div`
-   display: flex;
-   flex-direction: column;
-   text-align: end;
-   padding: 5px;
-`
-
-const Div = styled.div`
-   display: flex;
-   justify-content: flex-end;
-   padding: 20px;
-   margin: 0px 100px;
-   text-align: end;
-`
-const Divv = styled.div`
-   display: flex;
-   flex-direction: column;
-   padding: 5px;
-   color: #4c4859;
 `

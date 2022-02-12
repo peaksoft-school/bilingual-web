@@ -55,17 +55,13 @@ export const StyledHead = styled(TableCell)`
    }
 `
 export const StyledPaper = styled(Paper)`
-&.MuiPaper-root{
-   border-radius: 20px;
-   box-shadow: 0px 4px 39px rgba(196, 196, 196, 0.6);
-   width: 100%;
-   height: 100%,
-   margin: auto;
-   margin-left: auto;
-   margin-top: 66px;
-   border-collapse: separate;
-   border-spacing: 0 5em;
-}
+   &.MuiPaper-root {
+      border-radius: 20px;
+      box-shadow: 0px 4px 39px rgba(196, 196, 196, 0.6);
+      border-collapse: separate;
+      border-spacing: 0 5em;
+      margin: 66px 0;
+   }
 `
 
 export const StyledTable = styled(Table)`
