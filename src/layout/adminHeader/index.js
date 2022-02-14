@@ -1,13 +1,22 @@
 import React from 'react'
 import styled from 'styled-components'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import LogOutModal from './LogOutModal'
 import Logo from '../../assets/icons/logo.svg'
 
 const Header = () => {
-   const [open, setOpen] = React.useState(false)
-   const handleOpen = () => setOpen(true)
-   const handleClose = () => setOpen(false)
+   const navigate = useNavigate()
+
+   const [openModal, setOpenModal] = React.useState(false)
+   const modalHandler = () => {
+      setOpenModal((prev) => !prev)
+   }
+
+   const confirmationHandler = () => {
+      modalHandler()
+      navigate('/login')
+   }
+
    return (
       <StyledHeader>
          <StyledMainDiv>
@@ -19,12 +28,16 @@ const Header = () => {
                <StyledNavLink to="/submittedResults">
                   submitted results
                </StyledNavLink>
-               <StyledNavLinkLogOut onClick={handleOpen}>
+               <StyledNavLinkLogOut onClick={modalHandler}>
                   log out
                </StyledNavLinkLogOut>
             </StyledButtonDiv>
          </StyledMainDiv>
-         {open && <LogOutModal open onClose={handleClose} />}
+         <LogOutModal
+            open={openModal}
+            onClose={modalHandler}
+            onConfirm={confirmationHandler}
+         />
       </StyledHeader>
    )
 }
@@ -90,7 +103,7 @@ const StyledNavLinkLogOut = styled.button`
    border: 2px solid #4c4859;
    border-radius: 8px;
    color: rgba(76, 72, 89, 1);
-   font-family: DINNextRoundedLTPro-Bold;
+   font-family: 'DINNextRoundedLTPro-Bold';
    font-size: 14px;
    text-transform: uppercase;
    text-decoration: none;

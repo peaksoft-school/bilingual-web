@@ -3,35 +3,9 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import styled from 'styled-components'
 import Modal from '@mui/material/Modal'
-import { useNavigate } from 'react-router-dom'
 import Button from '../../components/UI/button/index'
 
-const style = {
-   position: 'absolute',
-   top: '50%',
-   left: '50%',
-   transform: 'translate(-50%, -50%)',
-   width: '407px',
-   borderRadius: '10px',
-   bgcolor: '#FFFFFF',
-   boxShadow: '0px 4px 39px -5px rgba(196, 196, 196, 0.6)',
-   p: '32px 82px 30px 82px',
-   boxSizing: 'border-box',
-}
-const StyledButton = styled.div`
-   margin-top: 34px;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   box-sizing: border-box;
-`
-
-export default function BasicModal({ open, onClose }) {
-   const navigate = useNavigate()
-
-   const buttonClickHandler = () => {
-      navigate('/login')
-   }
+export default function LogOutModal({ open, onClose, onConfirm }) {
    return (
       <div>
          <Modal
@@ -68,7 +42,7 @@ export default function BasicModal({ open, onClose }) {
                      CANCEL
                   </Button>
                   <Button
-                     onClick={buttonClickHandler}
+                     onClick={onConfirm}
                      variant="contained"
                      color="primary"
                      sx={{ height: '42px', letterSpacing: '0.02em' }}
@@ -81,3 +55,23 @@ export default function BasicModal({ open, onClose }) {
       </div>
    )
 }
+
+const style = {
+   position: 'absolute',
+   top: '50%',
+   left: '50%',
+   transform: 'translate(-50%, -50%)',
+   width: '407px',
+   borderRadius: '10px',
+   bgcolor: '#FFFFFF',
+   boxShadow: '0px 4px 39px -5px rgba(196, 196, 196, 0.6)',
+   p: '32px 82px 30px 82px',
+   boxSizing: 'border-box',
+}
+const StyledButton = styled.div`
+   margin-top: 34px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   box-sizing: border-box;
+`
