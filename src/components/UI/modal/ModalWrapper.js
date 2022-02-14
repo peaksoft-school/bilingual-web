@@ -41,7 +41,7 @@ export const ModalFooter = styled.footer`
    max-width: 637px;
    min-width: 437px;
    height: 94px;
-   margin-top: 40px;
+   margin-top: 87px;
    display: flex;
    justify-content: center;
    align-items: center;

@@ -8,14 +8,17 @@ const StyledSelect = styled(Select)`
    & .MuiModal-root {
       margin-top: 9px;
    }
-   width: 900px;
+   width: 910px;
+   margin-top: 9px;
 `
 
 const StyledMenuIte = styled(MenuItem)`
    color: #4c4859;
+   font-family: 'DINNextRoundedLTW01-Regular';
    font-size: 16px;
    line-height: 18px;
    display: flex;
+   height: 49px;
    padding-bottom: 14px;
    padding-top: 14px;
    text-align: center;

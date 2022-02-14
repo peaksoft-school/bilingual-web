@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import MainContainer from '../../../../layout/MainContainer'
-import ContentCard from '../../../UI/adminContentCard'
-import Button from '../../../UI/button/index'
+import MainContainer from '../../../layout/MainContainer'
+import ContentCard from '../../../components/UI/adminContentCard/index'
+import Button from '../../../components/UI/button/index'
 
 const AddNewTest = () => {
    const navigate = useNavigate()
