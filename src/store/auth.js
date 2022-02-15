@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { BILINGUAL_TOKEN, BILINGUAL_USER } from '../utils/constants/general'
-import { saveToLocalStorage } from '../utils/helpers/localstorege/localStorege'
+import {
+   saveToLocalStorage,
+   deleteFromLocalStorage,
+} from '../utils/helpers/localstorege/localStorege'
 import authService from '../api/authService'
 
 export const signup = createAsyncThunk(
@@ -37,6 +40,10 @@ export const login = createAsyncThunk(
    }
 )
 
+export const logout = createAsyncThunk('auth/logout', async () => {
+   deleteFromLocalStorage(BILINGUAL_TOKEN)
+})
+
 const initialState = {
    isAuthorized: false,
    user: {
@@ -71,6 +78,11 @@ const authSlice = createSlice({
       },
       [login.rejected]: (state) => {
          state.isAuthorized = false
+         state.user = null
+         state.token = ''
+      },
+      [logout.fulfilled]: (state) => {
+         state.isLoggedIn = false
          state.user = null
          state.token = ''
       },
