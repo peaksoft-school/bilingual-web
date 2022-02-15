@@ -3,21 +3,21 @@ import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import MainContainer from '../../../../layout/MainContainer'
 import ContentCard from '../../../UI/adminContentCard'
+import Input from '../../../UI/input/index'
 import Button from '../../../UI/button/index'
+import { sendNewTestRequest } from '../../../../api/testService'
 
 const AddNewTest = () => {
    const navigate = useNavigate()
 
    const [showAddQuestionsButton, setShowAddQuestionsButton] = useState(false)
-   const [title, setTitle] = useState('')
-   const [shortDescriptions, setShortDescriptions] = useState('')
+   const [newTest, setNewTest] = useState({ title: '', shortDescriptions: '' })
 
-   const onChangeTitle = (event) => {
-      setTitle(event.target.value)
-   }
-
-   const onChangeShortDescriptions = (event) => {
-      setShortDescriptions(event.target.value)
+   const onChangeHandle = (event) => {
+      setNewTest((prev) => ({
+         ...prev,
+         [event.target.name]: event.target.value,
+      }))
    }
 
    const onGoBackHandler = () => {
@@ -25,20 +25,34 @@ const AddNewTest = () => {
    }
 
    const onClickToAddMoreQuestionsPage = () => {
-      navigate('/addQuestionsPage')
+      navigate('/AddQuestionsPage')
    }
    const submitHandler = (event) => {
       event.preventDefault()
       setShowAddQuestionsButton(true)
+      sendNewTestRequest(newTest)
    }
    return (
       <MainContainer>
          <ContentCard>
             <form onSubmit={submitHandler}>
-               <StyledSpan>Title</StyledSpan>
-               <StyledInput onChange={onChangeTitle} />
-               <StyledSpan>Short Description</StyledSpan>
-               <StyledInput onChange={onChangeShortDescriptions} />
+               <div style={{ width: '100%' }}>
+                  <StyledSpan>Title</StyledSpan>
+                  <Input
+                     name="title"
+                     style={{ width: '100%', margin: '16px 0px 30px' }}
+                     value={newTest.title}
+                     onChange={onChangeHandle}
+                  />
+                  <StyledSpan>Short Description</StyledSpan>
+                  <Input
+                     name="shortDescriptions"
+                     style={{ width: '100%', margin: '16px 0px 30px' }}
+                     value={newTest.shortDescriptions}
+                     onChange={onChangeHandle}
+                  />
+               </div>
+
                <StyledDivOfButtons>
                   <Button
                      onClick={onGoBackHandler}
@@ -68,7 +82,7 @@ const AddNewTest = () => {
    )
 }
 
-const StyledSpan = styled.span`
+const StyledSpan = styled.p`
    margin: 0;
    padding: 0;
    font-family: 'DINNextRoundedLTW01-Regular';
@@ -77,23 +91,6 @@ const StyledSpan = styled.span`
    font-size: 16px;
    line-height: 18px;
    color: #4b4759;
-`
-
-const StyledInput = styled.input`
-   width: 100%;
-   height: 46px;
-   border: 1.53px solid #d4d0d0;
-   box-sizing: border-box;
-   border-radius: 8px;
-   outline: none;
-   margin: 16px auto 30px;
-   padding: 14px 20px 14px 20px;
-   font-family: 'DINNextRoundedLTW01-Regular';
-   font-style: normal;
-   font-weight: normal;
-   font-size: 16px;
-   line-height: 18px;
-   color: #4c4859;
 `
 
 const StyledDivOfButtons = styled.div`
