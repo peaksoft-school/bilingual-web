@@ -40,8 +40,8 @@ export const login = createAsyncThunk(
    }
 )
 
-export const logout = createAsyncThunk('auth/logout', async (key) => {
-   deleteFromLocalStorage(key)
+export const logout = createAsyncThunk('auth/logout', async () => {
+   deleteFromLocalStorage(BILINGUAL_TOKEN)
 })
 
 const initialState = {

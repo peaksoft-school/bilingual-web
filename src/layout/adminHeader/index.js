@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { logout } from '../../store/auth'
-import { BILINGUAL_TOKEN, ROUTES } from '../../utils/constants/general'
+import { ROUTES } from '../../utils/constants/general'
 import LogOutModal from './LogOutModal'
 import Logo from '../../assets/icons/logo.svg'
 
@@ -18,7 +18,7 @@ const Header = () => {
 
    const confirmationHandler = () => {
       modalHandler()
-      dispatch(logout(BILINGUAL_TOKEN))
+      dispatch(logout())
       navigate(ROUTES.LOGIN)
    }
 
