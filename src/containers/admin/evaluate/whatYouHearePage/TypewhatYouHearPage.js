@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Button from '../../../../components/UI/button/index'
 import { ReactComponent as Icon } from '../../../../assets/icons/play-circle.svg'
 import Input from '../../../../components/UI/input/index'
@@ -12,11 +12,31 @@ import {
    Btn,
    IconWrapper,
    Btnfooter,
-} from '../../../../components/UI/evaluatePages'
+} from '../../../../components/UI/evaluation'
+import Layout from '../../../../components/UI/adminContentCard'
 
-function TypewhatYouHearData({ question, user, playAudio, onSave, goBack }) {
+function TypewhatYouHearPage() {
+   const [user, setUser] = useState({
+      name: 'John Smith',
+   })
+
+   const [question, setQuestion] = useState({
+      testNum: 'Test number 1',
+      questionTitle: ' Type the statement that you hear',
+      duration: '0.30',
+      questionType: 'Type what you hear',
+      numberOfWords: '3',
+      correctAnswer: ' “Hello, how is it going?”',
+      enteredStatement: '“Hello, how is it going?”',
+      numberOfPlays: '1',
+   })
+   // useEffect(({}, []))
+
+   const saveHandler = () => {}
+   const gobackHandler = () => {}
+   const playAudioHandler = () => {}
    return (
-      <div>
+      <Layout>
          <User>User:</User>
          <Data>{user.name}</Data> <br />
          <User>Test: </User>
@@ -53,7 +73,7 @@ function TypewhatYouHearData({ question, user, playAudio, onSave, goBack }) {
          <Btn>
             <Button variant="outlined" sx={{ mr: '18px' }}>
                <IconWrapper>
-                  <Icon onClick={playAudio} />
+                  <Icon onClick={playAudioHandler} />
                </IconWrapper>
                PLAY AUDIO
             </Button>
@@ -73,16 +93,16 @@ function TypewhatYouHearData({ question, user, playAudio, onSave, goBack }) {
                color="primary"
                variant="outlined"
                sx={{ mr: '16px' }}
-               onClick={goBack}
+               onClick={gobackHandler}
             >
                GO BACK
             </Button>
-            <Button color="secondary" variant="contained" onClick={onSave}>
+            <Button color="secondary" variant="contained" onClick={saveHandler}>
                Save
             </Button>
          </Btnfooter>
-      </div>
+      </Layout>
    )
 }
 
-export default TypewhatYouHearData
+export default TypewhatYouHearPage
