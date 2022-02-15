@@ -36,22 +36,22 @@ const AddNewTest = () => {
       <MainContainer>
          <ContentCard>
             <form onSubmit={submitHandler}>
-               <div style={{ width: '100%' }}>
-                  <StyledSpan>Title</StyledSpan>
+               <StyledSpan>Title</StyledSpan>
+               <StyledDivofInput>
                   <Input
                      name="title"
-                     style={{ width: '100%', margin: '16px 0px 30px' }}
                      value={newTest.title}
                      onChange={onChangeHandle}
                   />
-                  <StyledSpan>Short Description</StyledSpan>
+               </StyledDivofInput>
+               <StyledSpan>Short Description</StyledSpan>
+               <StyledDivofInput>
                   <Input
                      name="shortDescriptions"
-                     style={{ width: '100%', margin: '16px 0px 30px' }}
                      value={newTest.shortDescriptions}
                      onChange={onChangeHandle}
                   />
-               </div>
+               </StyledDivofInput>
 
                <StyledDivOfButtons>
                   <Button
@@ -84,7 +84,6 @@ const AddNewTest = () => {
 
 const StyledSpan = styled.p`
    margin: 0;
-   padding: 0;
    font-family: 'DINNextRoundedLTW01-Regular';
    font-style: normal;
    font-weight: 600;
@@ -92,9 +91,11 @@ const StyledSpan = styled.p`
    line-height: 18px;
    color: #4b4759;
 `
+const StyledDivofInput = styled.div`
+   margin: 6px 0px 30px;
+`
 
 const StyledDivOfButtons = styled.div`
-   width: 100%;
    display: flex;
    justify-content: flex-end;
 `
