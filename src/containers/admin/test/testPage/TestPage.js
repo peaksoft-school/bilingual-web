@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-// import { getTestRequest } from '../../../../api/testService'
 import ContentCard from '../../../../components/UI/adminContentCard/index'
 import Button from '../../../../components/UI/button/index'
 import TestItems from './TestItems'
@@ -9,7 +8,7 @@ import TestItems from './TestItems'
 const TestPage = () => {
    const navigate = useNavigate()
 
-   const [tests, setTests] = useState([])
+   const [tests, setTests] = React.useState([])
 
    const onClickToAddNewTest = () => {
       navigate('/addNewTest')
@@ -17,20 +16,15 @@ const TestPage = () => {
 
    return (
       <ContentCard>
-         <div>
+         <StyledDivofButton>
             <Button
                onClick={onClickToAddNewTest}
                color="primary"
                variant="contained"
-               sx={{
-                  p: '12px 24px 12px 16px',
-                  float: 'right',
-                  mb: '22px',
-               }}
             >
                + ADD NEW TEST
             </Button>
-         </div>
+         </StyledDivofButton>
          <StyledUl>
             {tests.map((test) => {
                return (
@@ -46,6 +40,11 @@ const TestPage = () => {
 }
 
 export default TestPage
+
+const StyledDivofButton = styled.div`
+   display: flex;
+   justify-content: flex-end;
+`
 
 const StyledUl = styled.ul`
    margin: 0;

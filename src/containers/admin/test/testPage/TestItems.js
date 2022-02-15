@@ -25,18 +25,22 @@ const TestItems = () => {
             onChange={onChangeHandlerSwitcher}
             checked={accessToTest}
          />
-         <StyledEdit
-            type="checkbox"
-            onClick={onClickToEdit}
-            src={Edit}
-            alt="edit"
-         />
-         <StyledTresh src={Trash} alt="trash" />
+         <StyledButton type="button" onClick={onClickToEdit}>
+            <StyledEdit src={Edit} alt="edit" />
+         </StyledButton>
+         <StyledButton type="button">
+            <StyledTresh src={Trash} alt="trash" />
+         </StyledButton>
       </StyledIconsDiv>
    )
 }
 
 export default TestItems
+const StyledButton = styled.button`
+   border: none;
+   background: inherit;
+   cursor: pointer;
+`
 
 const StyledIconsDiv = styled.div`
    width: 112px;
