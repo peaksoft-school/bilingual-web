@@ -8,7 +8,7 @@ import Button from '../../../UI/button/index'
 const AddNewTest = () => {
    const navigate = useNavigate()
 
-   const [isActiveButton, setIsActiveButton] = useState(false)
+   const [showAddQuestionsButton, setShowAddQuestionsButton] = useState(false)
    const [title, setTitle] = useState('')
    const [shortDescriptions, setShortDescriptions] = useState('')
 
@@ -29,7 +29,7 @@ const AddNewTest = () => {
    }
    const submitHandler = (event) => {
       event.preventDefault()
-      setIsActiveButton(true)
+      setShowAddQuestionsButton(true)
    }
    return (
       <MainContainer>
@@ -51,7 +51,7 @@ const AddNewTest = () => {
                   <Button type="submit" color="secondary" variant="contained">
                      SAVE
                   </Button>
-                  {isActiveButton && (
+                  {showAddQuestionsButton && (
                      <Button
                         onClick={onClickToAddMoreQuestionsPage}
                         variant="contained"
