@@ -6,7 +6,6 @@ import { authActions } from './store'
 import { getFromLocalStorage } from './utils/helpers/localstorege/localStorege'
 import { theme } from './assets/styles/themeStyle/theme'
 import { BILINGUAL_TOKEN, BILINGUAL_USER } from './utils/constants/general'
-import AddNewTest from './containers/admin/test/AddNewTestPage'
 
 function App() {
    const dispatch = useDispatch()
@@ -31,7 +30,7 @@ function App() {
 
    return (
       <ThemeProvider theme={theme}>
-         <AddNewTest />
+         <Routes />
       </ThemeProvider>
    )
 }
