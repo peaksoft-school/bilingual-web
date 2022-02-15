@@ -1,10 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../store/auth'
+import { BILINGUAL_TOKEN, ROUTES } from '../../utils/constants/general'
 import LogOutModal from './LogOutModal'
 import Logo from '../../assets/icons/logo.svg'
 
 const Header = () => {
+   const dispatch = useDispatch()
    const navigate = useNavigate()
 
    const [openModal, setOpenModal] = React.useState(false)
@@ -14,7 +18,8 @@ const Header = () => {
 
    const confirmationHandler = () => {
       modalHandler()
-      navigate('/login')
+      dispatch(logout(BILINGUAL_TOKEN))
+      navigate(ROUTES.LOGIN)
    }
 
    return (
