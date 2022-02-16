@@ -19,6 +19,7 @@ function Input(props) {
          placeholder={placeholder}
          fullWidth={fullWidth}
          classes={classes}
+         sx={{ width: '100%' }}
          {...other}
       >
          {children}
