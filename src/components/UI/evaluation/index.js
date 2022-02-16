@@ -54,4 +54,5 @@ export const Btnfooter = styled.div`
 export const IconWrapper = styled.div`
    margin-top: 7px;
    margin-right: 8px;
+   color: blue;
 `
