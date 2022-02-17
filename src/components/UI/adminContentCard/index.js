@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import Header from '../../../layout/adminHeader'
+import MainContainer from '../../../layout/MainContainer'
 
 const StyledCardDiv = styled.div`
    margin-left: auto;
@@ -16,12 +18,16 @@ const StyledContentCard = styled.div`
    display: block;
 `
 
-const ContentCard = ({ children }) => {
+const Layout = ({ children }) => {
    return (
-      <StyledCardDiv>
-         <StyledContentCard>{children}</StyledContentCard>
-      </StyledCardDiv>
+      <>
+         <Header />
+         <MainContainer>
+            <StyledCardDiv>
+               <StyledContentCard>{children}</StyledContentCard>
+            </StyledCardDiv>
+         </MainContainer>
+      </>
    )
 }
-
-export default ContentCard
+export default Layout

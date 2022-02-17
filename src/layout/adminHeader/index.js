@@ -1,9 +1,27 @@
 import React from 'react'
 import styled from 'styled-components'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../store/auth'
+import { ROUTES } from '../../utils/constants/general'
+import LogOutModal from './LogOutModal'
 import Logo from '../../assets/icons/logo.svg'
 
 const Header = () => {
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+
+   const [openModal, setOpenModal] = React.useState(false)
+   const modalHandler = () => {
+      setOpenModal((prev) => !prev)
+   }
+
+   const confirmationHandler = () => {
+      modalHandler()
+      dispatch(logout())
+      navigate(ROUTES.LOGIN)
+   }
+
    return (
       <StyledHeader>
          <StyledMainDiv>
@@ -15,9 +33,16 @@ const Header = () => {
                <StyledNavLink to="/submittedResults">
                   submitted results
                </StyledNavLink>
-               <StyledNavLinkLogOut to="/login">log out</StyledNavLinkLogOut>
+               <StyledNavLinkLogOut onClick={modalHandler}>
+                  log out
+               </StyledNavLinkLogOut>
             </StyledButtonDiv>
          </StyledMainDiv>
+         <LogOutModal
+            open={openModal}
+            onClose={modalHandler}
+            onConfirm={confirmationHandler}
+         />
       </StyledHeader>
    )
 }
@@ -73,7 +98,7 @@ const StyledNavLink = styled(NavLink)`
    }
 `
 
-const StyledNavLinkLogOut = styled(NavLink)`
+const StyledNavLinkLogOut = styled.button`
    width: 104px;
    height: 42px;
    background: none;
