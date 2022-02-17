@@ -54,7 +54,7 @@ export const StyledHead = styled(TableCell)`
    }
 `
 export const StyledPaper = styled(Paper)`
-&.MuiPaper-root{
+    &.MuiPaper-root{
    border-radius: 20px;
    box-shadow: 0px 4px 39px rgba(196, 196, 196, 0.6);
    width: 100%;
@@ -66,6 +66,7 @@ export const StyledPaper = styled(Paper)`
    border-spacing: 0 5em;
 }
 `
+
 export const StyledTable = styled(Table)`
    &.MuiTable-root {
       border-collapse: separate;

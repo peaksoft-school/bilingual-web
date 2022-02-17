@@ -20,6 +20,7 @@ const StyledMenuIte = styled(MenuItem)`
    padding-top: 14px;
    text-align: center;
    border-radius: 8px;
+
    &.MuiMenuItem-root:active {
       background-color: #3a10e5;
       border-radius: 8px;
