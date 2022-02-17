@@ -2,11 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { Stack } from '@mui/material'
-import MainContainer from '../../../../layout/MainContainer'
-import ContentCard from '../../../../components/UI/adminContentCard/index'
-import AppSelect from '../../../../components/UI/select/index'
 import Input from '../../../../components/UI/input/index'
-import Header from '../../../../layout/adminHeader'
 import Button from '../../../../components/UI/button/index'
 
 const StyledP = styled('p')`
@@ -17,23 +13,6 @@ const StyledP = styled('p')`
    font-size: 16px;
    line-height: 18px;
    color: #4b4759;
-`
-
-const StyledDiv = styled('div')`
-   width: 100%;
-   display: flex;
-   box-sizing: border-box;
-`
-
-const InputTitle = styled(Input)`
-   width: 700px;
-   margin-right: 18px;
-`
-
-const InputDuration = styled(Input)`
-   margin: 0;
-   padding: 0;
-   width: 181px;
 `
 
 const InputNumber = styled(Input)`
@@ -79,11 +58,13 @@ const DivButtonSave = styled('div')`
 
 const PrintHear = () => {
    const [question, setQuestion] = useState({
-      title: '',
+      id: '',
       duration: '',
-      type: '',
-      numberOffReplays: '',
+      title: '',
       correctAnswer: '',
+      fileName: '',
+      attempt: '',
+      test_id: '',
    })
 
    const onQuestionChangeHandler = (e) => {
@@ -104,88 +85,47 @@ const PrintHear = () => {
    }
 
    return (
-      <>
-         <Header />
-         <MainContainer>
-            <ContentCard>
-               <form onSubmit={sumbitHandler}>
-                  <StyledDiv>
-                     <div>
-                        <StyledP>Title</StyledP>
-                        <InputTitle
-                           name="title"
-                           value={question.title}
-                           onChange={onQuestionChangeHandler}
-                        />
-                     </div>
-                     <div>
-                        <StyledP>Duration (in minutes)</StyledP>
-                        <InputDuration
-                           name="duration"
-                           value={question.duration}
-                           onChange={onQuestionChangeHandler}
-                        />
-                     </div>
-                  </StyledDiv>
-                  <StyledP>Type</StyledP>
-                  <AppSelect
-                     options={[
-                        'Select real English words',
-                        'Listen and select word',
-                        'Type what you hear',
-                     ]}
-                  />
-                  <div>
-                     <div>
-                        <StyledP>Number off Replays</StyledP>
-                        <DivUpploadButton>
-                           <InputNumber
-                              name="numberOffReplays"
-                              value={question.numberOffReplays}
-                              onChange={onQuestionChangeHandler}
-                           />
-                           <StyledStack
-                              direction="row"
-                              alignItems="center"
-                              spacing={2}
-                           >
-                              <label htmlFor="contained-button-file">
-                                 <InputStack
-                                    accept="image/*"
-                                    id="contained-button-file"
-                                    multiple
-                                    type="file"
-                                 />
-                                 <Button variant="outlined" component="span">
-                                    Upload
-                                 </Button>
-                              </label>
-                           </StyledStack>
-                           <NumberSpan>
-                              File_name_of_the_audio_file.mp3
-                           </NumberSpan>
-                        </DivUpploadButton>
-                     </div>
-                     <StyledP>Correct answer</StyledP>
-                     <InputCorrectAnswer
-                        multiline
-                        name="correctAnswer"
-                        value={question.correctAnswer}
-                        onChange={onQuestionChangeHandler}
+      <form onSubmit={sumbitHandler}>
+         <div>
+            <StyledP>Number off Replays</StyledP>
+            <DivUpploadButton>
+               <InputNumber
+                  name="attempt"
+                  value={question.attempt}
+                  onChange={onQuestionChangeHandler}
+               />
+               <StyledStack direction="row" alignItems="center" spacing={2}>
+                  <label htmlFor="contained-button-file">
+                     <InputStack
+                        accept="image/*"
+                        id="contained-button-file"
+                        multiple
+                        type="file"
                      />
-                     <DivButtonSave>
-                        <Button onClick={onGoBackHandler} variant="outlined">
-                           GO BACK
-                        </Button>
-                        <Button variant="contained" color="success">
-                           SAVE
-                        </Button>
-                     </DivButtonSave>
-                  </div>
-               </form>
-            </ContentCard>
-         </MainContainer>
-      </>
+                     <Button variant="outlined" component="span">
+                        Upload
+                     </Button>
+                  </label>
+               </StyledStack>
+               <NumberSpan>File_name_of_the_audio_file.mp3</NumberSpan>
+            </DivUpploadButton>
+         </div>
+         <StyledP>Correct answer</StyledP>
+         <InputCorrectAnswer
+            multiline
+            name="correctAnswer"
+            value={question.correctAnswer}
+            onChange={onQuestionChangeHandler}
+         />
+         <DivButtonSave>
+            <Button onClick={onGoBackHandler} variant="outlined">
+               GO BACK
+            </Button>
+            <Button variant="contained" color="success">
+               SAVE
+            </Button>
+         </DivButtonSave>
+      </form>
    )
 }
 export default PrintHear
