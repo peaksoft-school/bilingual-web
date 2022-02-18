@@ -1,10 +1,9 @@
 import styled from 'styled-components'
 import { Button } from '@mui/material'
-import ContentCard from '../../../../components/UI/adminContentCard/index'
+import { useState } from 'react'
 import Input from '../../../../components/UI/input'
-import AppSelect from '../../../../components/UI/select/index'
 
-const StyledP = styled.p`
+const StyledP = styled('p')`
    padding: 0;
    font-family: 'DINNextRoundedLTW01-Regular';
    font-style: normal;
@@ -13,10 +12,13 @@ const StyledP = styled.p`
    line-height: 18px;
    color: #4b4759;
 `
-const StyledDiv = styled.div`
-   width: 100%;
+
+const DivImage = styled('div')`
+   width: 500px;
    display: flex;
-   box-sizing: border-box;
+   align-items: center;
+   justify-content: space-between;
+   margin-top: 30px;
 `
 
 const InputImage = styled(Input)`
@@ -26,38 +28,41 @@ const ButtonImage = styled(Button)`
    width: 182px;
    height: 178px;
    background-color: none;
-   color: black;
-   border: 1px solid black;
+   color: #4c4859;
+   border: 1px solid #d4d0d0;
+`
+
+const InputFooter = styled(Input)`
+   width: 900px;
+   height: 70px;
+`
+
+const DivFooter = styled('div')`
+   display: flex;
+   width: 250px;
+   justify-content: flex-end;
+   justify-content: space-around;
+   position: relative;
+   left: 670px;
+   top: 32px;
 `
 
 const DescribeImage = () => {
+   const [image, setImage] = useState()
+
+   const onChangeHandler = (e) => {
+      setImage(e.target.files[0])
+   }
    return (
-      <ContentCard>
-         <StyledDiv>
-            <div>
-               <StyledP>Title</StyledP>
-               <Input sx={{ width: '700px', mr: '18px' }} />
-            </div>
-            <div>
-               <StyledP>Duration (in minutes)</StyledP>
-               <Input />
-            </div>
-         </StyledDiv>
-         <StyledP>Type</StyledP>
-         <AppSelect
-            options={[
-               'Select real English words',
-               'Listen and select word',
-               'Type what you hear',
-            ]}
-         />
-         <div>
+      <>
+         <DivImage>
             <label htmlFor="contained-button-file">
                <InputImage
                   accept="image/*"
                   id="contained-button-file"
                   multiple
                   type="file"
+                  onChange={onChangeHandler}
                />
                <ButtonImage
                   variant="outlined"
@@ -67,8 +72,17 @@ const DescribeImage = () => {
                   Uppload image
                </ButtonImage>
             </label>
-         </div>
-      </ContentCard>
+            <p>{image ? image.name : ''}</p>
+         </DivImage>
+         <StyledP>Correct answer</StyledP>
+         <InputFooter multiline name="correctAnswer" />
+         <DivFooter>
+            <Button variant="outlined">GO BACK</Button>
+            <Button variant="contained" color="success">
+               SAVE
+            </Button>
+         </DivFooter>
+      </>
    )
 }
 
