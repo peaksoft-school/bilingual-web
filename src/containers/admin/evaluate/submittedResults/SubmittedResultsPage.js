@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Header from '../../../../layout/adminHeader'
 import MainContainer from '../../../../layout/MainContainer'
-import { SubmittedResultsTable } from '../../evoluate/submittedResults/SubmittedResultsTable'
+import { SubmittedResultsTable } from './SubmittedResultsTable'
 
 function createData(number, userName, time, testNumber, evoluate, icon) {
    return { number, userName, time, testNumber, evoluate, icon }

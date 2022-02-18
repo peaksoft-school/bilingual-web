@@ -6,6 +6,7 @@ import { authActions } from './store'
 import { getFromLocalStorage } from './utils/helpers/localstorege/localStorege'
 import { theme } from './assets/styles/themeStyle/theme'
 import { BILINGUAL_TOKEN, BILINGUAL_USER } from './utils/constants/general'
+import AddQuestionTypePage from './containers/admin/test/selectRealEnglishWords/questionType'
 
 function App() {
    const dispatch = useDispatch()
@@ -30,7 +31,8 @@ function App() {
 
    return (
       <ThemeProvider theme={theme}>
-         <Routes />
+         {/* <Routes /> */}
+         <AddQuestionTypePage />
       </ThemeProvider>
    )
 }
