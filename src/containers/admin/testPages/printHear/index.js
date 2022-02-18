@@ -114,9 +114,7 @@ const PrintHear = () => {
                      </Button>
                   </label>
                </StyledStack>
-               <NumberSpan>
-                  {image ? image.name : 'File_name_of_the_audio_file.mp3'}
-               </NumberSpan>
+               <NumberSpan>{image ? image.name : ''}</NumberSpan>
             </DivUpploadButton>
          </div>
          <StyledP>Correct answer</StyledP>

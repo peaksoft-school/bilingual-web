@@ -59,19 +59,6 @@ export const StyledHead = styled(TableCell)`
    }
 `
 export const StyledPaper = styled(Paper)`
-<<<<<<< HEAD
-    &.MuiPaper-root{
-   border-radius: 20px;
-   box-shadow: 0px 4px 39px rgba(196, 196, 196, 0.6);
-   width: 100%;
-   height: 100%,
-   margin: auto;
-   margin-left: auto;
-   margin-top: 66px;
-   border-collapse: separate;
-   border-spacing: 0 5em;
-}
-=======
    &.MuiPaper-root {
       border-radius: 20px;
       box-shadow: 0px 4px 39px rgba(196, 196, 196, 0.6);
@@ -80,7 +67,6 @@ export const StyledPaper = styled(Paper)`
       padding: 50px 115px;
       margin-top: 66px;
    }
->>>>>>> 81e5c9f165713c0458f9935e9083f116041a8814
 `
 
 export const StyledTable = styled(Table)`
