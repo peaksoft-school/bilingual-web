@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Button } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Input from '../../../../components/UI/input'
 
 const StyledP = styled('p')`
@@ -47,12 +47,27 @@ const DivFooter = styled('div')`
    top: 32px;
 `
 
+const ImageUpload = styled('img')`
+   width: 182px;
+   height: 178px;
+`
+
 const DescribeImage = () => {
-   const [image, setImage] = useState()
+   const [image, setImage] = useState([])
+   const [imageURLs, setImageURLs] = useState([])
+   const [fileUpload, setFileUpload] = useState(null)
+
+   useEffect(() => {
+      if (image.length < 1) return
+      const newImageURLs = []
+      image.forEach((image) => newImageURLs.push(URL.createObjectURL(image)))
+      setImageURLs(newImageURLs)
+   }, [image])
 
    const onChangeHandler = (e) => {
-      setImage(e.target.files[0])
+      setImage([...e.target.files])
    }
+
    return (
       <>
          <DivImage>
@@ -64,12 +79,15 @@ const DescribeImage = () => {
                   type="file"
                   onChange={onChangeHandler}
                />
+
                <ButtonImage
                   variant="outlined"
                   color="secondary"
                   component="span"
                >
-                  Uppload image
+                  {imageURLs.map((item) => (
+                     <ImageUpload key={item} src={item} />
+                  ))}
                </ButtonImage>
             </label>
             <p>{image ? image.name : ''}</p>
