@@ -33,7 +33,7 @@ const DivUpploadButton = styled('div')`
    display: flex;
    justify-content: space-between;
    align-items: center;
-   width: 661px;
+   width: 791px;
    height: 60px;
 `
 
@@ -84,6 +84,12 @@ const PrintHear = () => {
       e.preventDefault()
    }
 
+   const [image, setImage] = useState()
+
+   const onChangeImageHandler = (e) => {
+      setImage(e.target.files[0])
+   }
+
    return (
       <form onSubmit={sumbitHandler}>
          <div>
@@ -97,17 +103,20 @@ const PrintHear = () => {
                <StyledStack direction="row" alignItems="center" spacing={2}>
                   <label htmlFor="contained-button-file">
                      <InputStack
-                        accept="image/*"
+                        accept="audio/mp3"
                         id="contained-button-file"
                         multiple
                         type="file"
+                        onChange={onChangeImageHandler}
                      />
                      <Button variant="outlined" component="span">
                         Upload
                      </Button>
                   </label>
                </StyledStack>
-               <NumberSpan>File_name_of_the_audio_file.mp3</NumberSpan>
+               <NumberSpan>
+                  {image ? image.name : 'File_name_of_the_audio_file.mp3'}
+               </NumberSpan>
             </DivUpploadButton>
          </div>
          <StyledP>Correct answer</StyledP>

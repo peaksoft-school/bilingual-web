@@ -22,10 +22,14 @@ export const StyledTableCell = styled(TableCell)`
    &.MuiTableCell-body {
       border-radius: 8px;
       color: '#4C4859';
+      font-weight: normal;
       font-size: 16px;
       font-family: 'DINNextRoundedLTW01-Regular';
       font-style: normal;
-      padding: 50px 115px;
+      /* padding: 50px 115px; */
+   }
+   &.MuiTableCell-root {
+      /* padding: 16px 20px; */
    }
 `
 export const DeleteIcon = styled(DeleteIconn)`
@@ -39,6 +43,7 @@ export const DeleteIcon = styled(DeleteIconn)`
 export const Div = styled.div`
    display: flex;
    justify-content: column;
+   width: 100%;
 `
 export const StyledHead = styled(TableCell)`
    &.MuiTableCell-head {
@@ -54,6 +59,7 @@ export const StyledHead = styled(TableCell)`
    }
 `
 export const StyledPaper = styled(Paper)`
+<<<<<<< HEAD
     &.MuiPaper-root{
    border-radius: 20px;
    box-shadow: 0px 4px 39px rgba(196, 196, 196, 0.6);
@@ -65,12 +71,23 @@ export const StyledPaper = styled(Paper)`
    border-collapse: separate;
    border-spacing: 0 5em;
 }
+=======
+   &.MuiPaper-root {
+      border-radius: 20px;
+      box-shadow: 0px 4px 39px rgba(196, 196, 196, 0.6);
+      border-collapse: separate;
+      border-spacing: 0 5em;
+      padding: 50px 115px;
+      margin-top: 66px;
+   }
+>>>>>>> 81e5c9f165713c0458f9935e9083f116041a8814
 `
 
 export const StyledTable = styled(Table)`
    &.MuiTable-root {
       border-collapse: separate;
       border-spacing: 10px;
-      padding: 50px 115px;
+      margin: 26px 0;
+      /* padding: 50px 115px 50px 115px; */
    }
 `
