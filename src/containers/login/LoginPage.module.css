@@ -52,3 +52,8 @@ form .visibility {
    width: 18px;
    height: 16px;
 }
+.btn {
+   border: none;
+   cursor: pointer;
+   background-color: inherit;
+}
