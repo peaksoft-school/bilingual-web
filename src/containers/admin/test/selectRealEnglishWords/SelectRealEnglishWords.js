@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { v4 as uuidv4 } from 'uuid'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../../components/UI/button/index'
 import Trash from '../../../../assets/icons/trash.svg'
@@ -11,31 +12,49 @@ import { postQuestionRequest } from '../../../../api/testService'
 const SelectRealEnglishWord = () => {
    const dispatch = useDispatch()
 
+   const { title, duration, type } = useSelector((state) => state.questions)
    const [isOpenModal, setIsOpenModal] = React.useState(false)
    const [options, setOptions] = useState([])
-   const { title, duration, type } = useSelector((state) => state.questions)
-   // const title = useSelector((state) => state.questions.title)
-   // const duration = useSelector((state) => state.questions.duration)
-   // const type = useSelector((state) => state.questions.type)
+
+   const checkedHandler = (id) => {
+      const selectedValue = options.find((el) => el.id === id)
+      const optionsWithSelected = options.map((el) => {
+         if (el.id === selectedValue.id) {
+            return {
+               ...selectedValue,
+               isChecked: !selectedValue.isChecked,
+            }
+         }
+         return {
+            ...el,
+         }
+      })
+
+      setOptions(optionsWithSelected)
+   }
+
+   const deleteWord = (id) => {
+      const newWord = options.filter((item) => item.id !== id)
+      setOptions(newWord)
+   }
 
    const openModalHandler = () => {
       setIsOpenModal((prev) => !prev)
    }
 
-   const addOptionsHandler = () => {
+   const addOptionsHandler = (text) => {
+      const { enteredValue, checkbox } = text
       setOptions((prevOptions) => {
          const updateOptions = [...prevOptions]
          updateOptions.push({
-            word: '',
+            word: enteredValue,
             isTrue: true,
-            // id: Math.random().toString(),
+            isChecked: checkbox,
+            id: uuidv4(),
          })
          return updateOptions
       })
    }
-   console.log(options)
-
-   // { word: "string", isTrue: true }
 
    const selectFormHandler = (e) => {
       e.preventDefault()
@@ -48,7 +67,6 @@ const SelectRealEnglishWord = () => {
       dispatch(testActions.resetQuestion())
       setOptions([])
       postQuestionRequest(3, type, data)
-      console.log(data)
    }
 
    return (
@@ -74,8 +92,15 @@ const SelectRealEnglishWord = () => {
                      <Box>
                         <Item>{option.word}</Item>
                         <StyledDivIcons>
-                           <ReCheckbox />
-                           <StyledTrash src={Trash} alt="trash" />
+                           <ReCheckbox
+                              checked={option.isChecked}
+                              onClick={() => checkedHandler(option.id)}
+                           />
+                           <StyledTrash
+                              src={Trash}
+                              alt="trash"
+                              onClick={() => deleteWord(option.id)}
+                           />
                         </StyledDivIcons>
                      </Box>
                   )

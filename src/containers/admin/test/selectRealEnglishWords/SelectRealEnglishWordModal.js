@@ -8,7 +8,7 @@ import ModalWrapper, {
 
 const SelectRealEnglishWordModal = ({ onClose, open, onAddOptions }) => {
    const [enteredValue, setEnteredValue] = useState('')
-
+   const [checkbox, setCheckBox] = useState(false)
    const goalInputChangeHandler = (event) => {
       setEnteredValue(event.target.value)
    }
@@ -16,8 +16,12 @@ const SelectRealEnglishWordModal = ({ onClose, open, onAddOptions }) => {
    const formSubmitHandler = (event) => {
       event.preventDefault()
       event.stopPropagation()
-      onAddOptions(enteredValue)
-      console.log(enteredValue)
+      const answer = {
+         enteredValue,
+         checkbox,
+      }
+      onAddOptions(answer)
+      setCheckBox(false)
    }
 
    return (
@@ -34,7 +38,11 @@ const SelectRealEnglishWordModal = ({ onClose, open, onAddOptions }) => {
 
             <div>
                <StyledSpanInModal>Is true option?</StyledSpanInModal>
-               <ReCheckbox />
+               <ReCheckbox
+                  onClick={() => {
+                     setCheckBox((checkbox) => !checkbox)
+                  }}
+               />
             </div>
             <ModalFooter>
                <StyledDivOfModalFooter>
