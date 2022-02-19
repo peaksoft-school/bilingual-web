@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { Stack } from '@mui/material'
@@ -75,8 +75,6 @@ const ButtonSave = styled(Button)`
    }
 `
 
-let a
-
 const PrintHear = () => {
    const [question, setQuestion] = useState({
       correctAnswer: '',
@@ -86,9 +84,9 @@ const PrintHear = () => {
    })
 
    const [buttonName, setButtonName] = useState('Play')
-   const [audio, setAudio] = useState(null)
-   const [uploadedAudioObject, setUploadedAudioObject] = useState(null)
+   // const [uploadedAudioObject, setUploadedAudioObject] = useState(null)
    const [startStop, setStartStop] = useState(true)
+   const [audio, setAudio] = useState({ file: {} })
 
    const onQuestionChangeHandler = (e) => {
       setQuestion((prev) => ({
@@ -107,33 +105,21 @@ const PrintHear = () => {
       setStartStop((prev) => !prev)
    }
 
-   useEffect(() => {
-      if (a) {
-         a.pause()
-         a = null
-         setButtonName('Play')
-      }
-      if (audio) {
-         a = new Audio(audio)
-         a.onended = () => {
-            setButtonName('Play')
-         }
-      }
-   }, [audio])
-
    const handleClick = () => {
       if (buttonName === 'Play') {
-         a.play()
+         audio.play.play()
          setButtonName('Pause')
       } else {
-         a.pause()
+         audio.play.pause()
          setButtonName('Play')
       }
    }
    const onChangeImageHandler = (e) => {
-      setUploadedAudioObject(e.target.files[0])
       if (e.target.files[0]) {
-         setAudio(URL.createObjectURL(e.target.files[0]))
+         setAudio({
+            file: e.target.files[0],
+            play: new Audio(URL.createObjectURL(e.target.files[0])),
+         })
       }
    }
 
@@ -183,9 +169,7 @@ const PrintHear = () => {
                      )}
                   </ButtonStartStop>
                </StyledStack>
-               <NumberSpan>
-                  {uploadedAudioObject ? uploadedAudioObject.name : ''}
-               </NumberSpan>
+               <NumberSpan>{audio.file.name ? audio.file.name : ''}</NumberSpan>
             </DivUppload>
          </div>
          <StyledP>Correct answer</StyledP>
