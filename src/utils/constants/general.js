@@ -6,8 +6,9 @@ export const ROLES = {
 export const ROUTES = {
    LOGIN: '/login',
    SIGNUP: '/sign-up',
-   ADMIN: '/admin/tests',
    USER: '/user/tests',
+   ADMIN_TEST: '/admin/test',
+   SUBMITED_RESULTS: '/admin/submited-results',
 }
 
 export const BILINGUAL_TOKEN = 'BILINGUAL_TOKEN'
