@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Button } from '@mui/material'
-import { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Input from '../../../../components/UI/input'
 
 const StyledP = styled('p')`
@@ -14,7 +14,7 @@ const StyledP = styled('p')`
 `
 
 const DivImage = styled('div')`
-   width: 500px;
+   width: 300px;
    display: flex;
    align-items: center;
    justify-content: space-between;
@@ -50,22 +50,18 @@ const DivFooter = styled('div')`
 const ImageUpload = styled('img')`
    width: 182px;
    height: 178px;
+   border-radius: 5%;
 `
 
 const DescribeImage = () => {
-   const [image, setImage] = useState([])
-   const [imageURLs, setImageURLs] = useState([])
-   const [fileUpload, setFileUpload] = useState(null)
-
-   useEffect(() => {
-      if (image.length < 1) return
-      const newImageURLs = []
-      image.forEach((image) => newImageURLs.push(URL.createObjectURL(image)))
-      setImageURLs(newImageURLs)
-   }, [image])
+   const [image, setImage] = useState({})
 
    const onChangeHandler = (e) => {
-      setImage([...e.target.files])
+      if (!e.target.files[0]) return
+      setImage({
+         file: e.target.files[0],
+         preview: URL.createObjectURL(e.target.files[0]),
+      })
    }
 
    return (
@@ -79,18 +75,19 @@ const DescribeImage = () => {
                   type="file"
                   onChange={onChangeHandler}
                />
-
                <ButtonImage
                   variant="outlined"
                   color="secondary"
                   component="span"
                >
-                  {imageURLs.map((item) => (
-                     <ImageUpload key={item} src={item} />
-                  ))}
+                  {image.preview ? (
+                     <ImageUpload src={image.preview} />
+                  ) : (
+                     <p>Uppload image </p>
+                  )}
                </ButtonImage>
             </label>
-            <p>{image ? image.name : ''}</p>
+            {image ? image.file?.name : ''}
          </DivImage>
          <StyledP>Correct answer</StyledP>
          <InputFooter multiline name="correctAnswer" />
