@@ -12,5 +12,5 @@ export const putTestQuestionRequest = (props) => {
 }
 
 export const postQuestionRequest = (id, type, data) => {
-   return axiosInstance.post(`tests/question/${id}?type=${type}`, data)
+   return axiosInstance.post(`api/tests/question/${id}?type=${type}`, data)
 }

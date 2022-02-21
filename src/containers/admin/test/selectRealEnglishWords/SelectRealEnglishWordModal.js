@@ -9,9 +9,11 @@ import ModalWrapper, {
 const SelectRealEnglishWordModal = ({ onClose, open, onAddOptions }) => {
    const [enteredValue, setEnteredValue] = useState('')
    const [checkbox, setCheckBox] = useState(false)
+
    const goalInputChangeHandler = (event) => {
       setEnteredValue(event.target.value)
    }
+   const enabled = enteredValue.length > 0
 
    const formSubmitHandler = (event) => {
       event.preventDefault()
@@ -22,6 +24,7 @@ const SelectRealEnglishWordModal = ({ onClose, open, onAddOptions }) => {
       }
       onAddOptions(answer)
       setCheckBox(false)
+      setEnteredValue('')
    }
 
    return (
@@ -32,6 +35,7 @@ const SelectRealEnglishWordModal = ({ onClose, open, onAddOptions }) => {
             </div>
 
             <StyledInput
+               value={enteredValue}
                onChange={goalInputChangeHandler}
                style={{ width: '517px', margin: '16px 60px 34px 60px' }}
             />
@@ -50,6 +54,7 @@ const SelectRealEnglishWordModal = ({ onClose, open, onAddOptions }) => {
                      color="primary"
                      variant="outlined"
                      sx={{ mr: '16px', background: 'white' }}
+                     onClick={onClose}
                   >
                      GO BACK
                   </Button>
@@ -58,6 +63,7 @@ const SelectRealEnglishWordModal = ({ onClose, open, onAddOptions }) => {
                      onClick={onClose}
                      color="secondary"
                      variant="contained"
+                     disabled={!enabled}
                   >
                      SAVE
                   </Button>

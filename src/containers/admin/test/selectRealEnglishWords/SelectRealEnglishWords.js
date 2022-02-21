@@ -14,11 +14,11 @@ const SelectRealEnglishWord = () => {
 
    const { title, duration, type } = useSelector((state) => state.questions)
    const [isOpenModal, setIsOpenModal] = React.useState(false)
-   const [options, setOptions] = useState([])
+   const [words, setWords] = useState([])
 
    const checkedHandler = (id) => {
-      const selectedValue = options.find((el) => el.id === id)
-      const optionsWithSelected = options.map((el) => {
+      const selectedValue = words.find((el) => el.id === id)
+      const optionsWithSelected = words.map((el) => {
          if (el.id === selectedValue.id) {
             return {
                ...selectedValue,
@@ -30,12 +30,12 @@ const SelectRealEnglishWord = () => {
          }
       })
 
-      setOptions(optionsWithSelected)
+      setWords(optionsWithSelected)
    }
 
    const deleteWord = (id) => {
-      const newWord = options.filter((item) => item.id !== id)
-      setOptions(newWord)
+      const newWord = words.filter((item) => item.id !== id)
+      setWords(newWord)
    }
 
    const openModalHandler = () => {
@@ -44,7 +44,8 @@ const SelectRealEnglishWord = () => {
 
    const addOptionsHandler = (text) => {
       const { enteredValue, checkbox } = text
-      setOptions((prevOptions) => {
+      console.log(checkbox)
+      setWords((prevOptions) => {
          const updateOptions = [...prevOptions]
          updateOptions.push({
             word: enteredValue,
@@ -59,13 +60,13 @@ const SelectRealEnglishWord = () => {
    const selectFormHandler = (e) => {
       e.preventDefault()
       const data = {
-         options,
+         words,
          title,
          duration,
          active: true,
       }
       dispatch(testActions.resetQuestion())
-      setOptions([])
+      setWords([])
       postQuestionRequest(3, type, data)
    }
 
@@ -87,7 +88,8 @@ const SelectRealEnglishWord = () => {
             />
 
             <StyledContainer>
-               {options.map((option) => {
+               {words.map((option) => {
+                  console.log(option)
                   return (
                      <Box>
                         <Item>{option.word}</Item>
