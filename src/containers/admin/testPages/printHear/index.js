@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { Stack } from '@mui/material'
@@ -6,6 +6,7 @@ import NotStartedOutlinedIcon from '@mui/icons-material/NotStartedOutlined'
 import PauseCircleFilledOutlinedIcon from '@mui/icons-material/PauseCircleFilledOutlined'
 import Input from '../../../../components/UI/input/index'
 import Button from '../../../../components/UI/button/index'
+import { postQuestionRequest } from '../../../../api/testService'
 
 const StyledP = styled('p')`
    padding: 0;
@@ -79,14 +80,14 @@ const PrintHear = () => {
    const [question, setQuestion] = useState({
       correctAnswer: '',
       fileName: '',
-      attempt: '',
-      test_id: '',
+      attemptNumber: '',
    })
 
    const [buttonName, setButtonName] = useState('Play')
-   // const [uploadedAudioObject, setUploadedAudioObject] = useState(null)
    const [startStop, setStartStop] = useState(true)
    const [audio, setAudio] = useState({ file: {} })
+
+   const { correctAnswer, attemptNumber } = question
 
    const onQuestionChangeHandler = (e) => {
       setQuestion((prev) => ({
@@ -94,6 +95,13 @@ const PrintHear = () => {
          [e.target.name]: e.target.value,
       }))
    }
+
+   const sendFileToApi = useCallback(() => {
+      if (!audio.file.name) return
+      const formData = new FormData()
+      formData.append('file', audio.file)
+      postQuestionRequest(formData)
+   }, [audio])
 
    const navigate = useNavigate()
 
@@ -127,10 +135,22 @@ const PrintHear = () => {
       handleClick()
       toggleStartStopHandler()
    }
+   console.log(audio.file)
 
    const sumbitHandler = (e) => {
       e.preventDefault()
+      const attempt = +attemptNumber
+      const data = {
+         correctAnswer,
+         attempt,
+      }
+      sendFileToApi()
+      console.log(data)
    }
+
+   useEffect(() => {
+      sendFileToApi()
+   }, [audio.file.name])
 
    return (
       <form onSubmit={sumbitHandler}>
@@ -138,8 +158,8 @@ const PrintHear = () => {
             <StyledP>Number off Replays</StyledP>
             <DivUppload>
                <InputNumber
-                  name="attempt"
-                  value={question.attempt}
+                  name="attemptNumber"
+                  value={question.attemptNumber}
                   onChange={onQuestionChangeHandler}
                />
                <StyledStack direction="row" alignItems="center" spacing={2}>
@@ -183,7 +203,7 @@ const PrintHear = () => {
             <Button onClick={onGoBackHandler} variant="outlined">
                GO BACK
             </Button>
-            <ButtonSave variant="contained" color="success">
+            <ButtonSave type="sumbit" variant="contained" color="success">
                SAVE
             </ButtonSave>
          </DivFooterSave>
