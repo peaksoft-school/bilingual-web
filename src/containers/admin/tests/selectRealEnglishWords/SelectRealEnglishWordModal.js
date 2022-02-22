@@ -25,6 +25,7 @@ const SelectRealEnglishWordModal = ({ onClose, open, onAddOptions }) => {
       onAddOptions(answer)
       setCheckBox(false)
       setEnteredValue('')
+      onClose()
    }
 
    return (
@@ -58,7 +59,6 @@ const SelectRealEnglishWordModal = ({ onClose, open, onAddOptions }) => {
                   </Button>
                   <Button
                      type="submit"
-                     onClick={onClose}
                      color="secondary"
                      variant="contained"
                      disabled={!enabled}

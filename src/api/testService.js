@@ -6,11 +6,10 @@ export const sendNewTestRequest = (newTest) => {
 export const getTestRequest = () => {
    return axiosInstance.get('/tests')
 }
-export const putTestQuestionRequest = (props) => {
-   const { url } = props
-   return axiosInstance.put(url)
+export const editQuestionRequest = (data) => {
+   return axiosInstance.put(`api/put`, data)
 }
 
-export const postQuestionRequest = (id, type, data) => {
+export const addQuestionRequest = (id, type, data) => {
    return axiosInstance.post(`api/tests/question/${id}?type=${type}`, data)
 }

@@ -4,12 +4,11 @@ import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../../components/UI/button/index'
-import Trash from '../../../../assets/icons/trash.svg'
 import SelectRealEnglishWordModal from './SelectRealEnglishWordModal'
-import ReCheckbox from '../../../../components/UI/checkbox'
 import { testActions } from '../../../../store'
-import { postQuestionRequest } from '../../../../api/testService'
+import { addQuestionRequest } from '../../../../api/testService'
 import { ROUTES } from '../../../../utils/constants/general'
+import WordItem from './WordItem'
 
 const SelectRealEnglishWord = () => {
    const dispatch = useDispatch()
@@ -69,7 +68,7 @@ const SelectRealEnglishWord = () => {
       dispatch(testActions.resetQuestion())
       navigate(ROUTES.SELECT_REAL_ENGLISH_WORDS)
       setWords([])
-      postQuestionRequest(3, type, data)
+      addQuestionRequest(3, type, data)
    }
 
    return (
@@ -88,27 +87,11 @@ const SelectRealEnglishWord = () => {
                onClose={openModalHandler}
                open={isOpenModal}
             />
-
-            <StyledContainer>
-               {words.map((option) => {
-                  return (
-                     <Box>
-                        <Item>{option.word}</Item>
-                        <StyledDivIcons>
-                           <ReCheckbox
-                              checked={option.isChecked}
-                              onClick={() => checkedHandler(option.id)}
-                           />
-                           <StyledTrash
-                              src={Trash}
-                              alt="trash"
-                              onClick={() => deleteWord(option.id)}
-                           />
-                        </StyledDivIcons>
-                     </Box>
-                  )
-               })}
-            </StyledContainer>
+            <WordItem
+               words={words}
+               deleteWord={deleteWord}
+               checkedHandler={checkedHandler}
+            />
             <StyledDivOfModalFooter>
                <Button color="primary" variant="outlined" sx={{ mr: '16px' }}>
                   GO BACK
@@ -124,44 +107,6 @@ const SelectRealEnglishWord = () => {
 
 export default SelectRealEnglishWord
 
-const StyledContainer = styled.ul`
-   width: 100%;
-   padding: 0px;
-   display: flex;
-   flex-wrap: wrap;
-   box-sizing: border-box;
-`
-
-const Box = styled.li`
-   width: 280px;
-   height: 46px;
-   margin-top: 18px;
-   margin-right: 18px;
-   padding: 14px 16px;
-   background: #ffffff;
-   border: 1.53px solid #d4d0d0;
-   box-sizing: border-box;
-   border-radius: 8px;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-`
-
-const Item = styled.span`
-   padding: 5px;
-   text-align: center;
-   color: 'green';
-`
-const StyledDivIcons = styled.div`
-   width: 66px;
-   display: flex;
-   justify-content: space-between;
-`
-const StyledTrash = styled.img`
-   width: 23px;
-   height: 22px;
-   margin-top: 9px;
-`
 const StyledDivOfModalFooter = styled.div`
    width: 100%;
    display: flex;
