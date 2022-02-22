@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { postQuestionRequest } from '../../../../../api/testService'
+import { addQuestionRequest } from '../../../../../api/testService'
+
 import Button from '../../../../../components/UI/button/index'
 
 const RecordSayingStatement = () => {
@@ -17,7 +18,7 @@ const RecordSayingStatement = () => {
 
    const submitHandler = (event) => {
       event.preventDefault()
-      postQuestionRequest(recordText)
+      addQuestionRequest(recordText)
       console.log(recordText)
    }
 

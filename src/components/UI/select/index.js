@@ -41,7 +41,13 @@ const StyledMenuIte = styled(MenuItem)`
    }
 `
 
-export default function AppSelect({ options, onChange, value, ...props }) {
+export default function AppSelect({
+   options,
+   onChange,
+   value,
+   questionTypeChangeHandler,
+   ...props
+}) {
    const [open, setOpen] = React.useState(false)
 
    const handleClose = () => {
@@ -54,7 +60,7 @@ export default function AppSelect({ options, onChange, value, ...props }) {
 
    return (
       <div>
-         <FormControl>
+         <FormControl fullWidth>
             <StyledSelect
                labelId="dopen-select-label"
                id="open-select"
@@ -67,8 +73,12 @@ export default function AppSelect({ options, onChange, value, ...props }) {
                {...props}
             >
                {options.map((item) => (
-                  <StyledMenuIte key={item} value={item}>
-                     {item}
+                  <StyledMenuIte
+                     key={item.id}
+                     value={item.id}
+                     onClick={() => questionTypeChangeHandler(item.id)}
+                  >
+                     {item.label}
                   </StyledMenuIte>
                ))}
             </StyledSelect>
