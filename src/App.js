@@ -1,12 +1,11 @@
 import { CircularProgress, ThemeProvider } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-// import Routes from './routes/Routes'
 import { authActions } from './store'
+// import Routes from './routes/Routes'
 import { getFromLocalStorage } from './utils/helpers/localstorege/localStorege'
 import { theme } from './assets/styles/themeStyle/theme'
 import { BILINGUAL_TOKEN, BILINGUAL_USER } from './utils/constants/general'
-import AddQuestionTypePage from './containers/admin/test/selectRealEnglishWords/questionType'
 
 function App() {
    const dispatch = useDispatch()
@@ -31,8 +30,7 @@ function App() {
 
    return (
       <ThemeProvider theme={theme}>
-         {/* <Routes /> */}
-         <AddQuestionTypePage />
+         <Routes />
       </ThemeProvider>
    )
 }

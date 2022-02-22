@@ -15,7 +15,6 @@ const AddQuestionTypePage = () => {
    const dispatch = useDispatch()
    const title = useSelector((state) => state.questions.title)
    const duration = useSelector((state) => state.questions.duration)
-   // const type = useSelector((state) => state.questions.type)
 
    const titleChageHandler = (e) => {
       dispatch(testActions.setTitle(e.target.value))
@@ -24,7 +23,6 @@ const AddQuestionTypePage = () => {
       dispatch(testActions.setDuration(e.target.value))
    }
    const typeChageHandler = (e) => {
-      console.log(e.target.value, 'YOYO')
       dispatch(testActions.setType(e.target.value))
    }
 

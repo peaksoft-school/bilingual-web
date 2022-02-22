@@ -25,6 +25,4 @@ const questionSlice = createSlice({
    },
 })
 
-// export const { setTitle, setType, setDuration, resetQuestion } =
-//    questionSlice.actions
 export default questionSlice

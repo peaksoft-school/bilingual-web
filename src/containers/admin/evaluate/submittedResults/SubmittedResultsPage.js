@@ -1,6 +1,5 @@
 import * as React from 'react'
-import Header from '../../../../layout/adminHeader'
-import MainContainer from '../../../../layout/MainContainer'
+import Layout from '../../../../components/UI/adminContentCard'
 import { SubmittedResultsTable } from './SubmittedResultsTable'
 
 function createData(number, userName, time, testNumber, evoluate, icon) {
@@ -16,11 +15,8 @@ const rows = [
 
 export default function SubmittedResultsPage() {
    return (
-      <>
-         <Header />
-         <MainContainer>
-            <SubmittedResultsTable rows={rows} />
-         </MainContainer>
-      </>
+      <Layout>
+         <SubmittedResultsTable rows={rows} />
+      </Layout>
    )
 }

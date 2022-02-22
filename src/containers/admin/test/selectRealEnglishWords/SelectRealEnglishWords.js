@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../../components/UI/button/index'
@@ -8,11 +9,12 @@ import SelectRealEnglishWordModal from './SelectRealEnglishWordModal'
 import ReCheckbox from '../../../../components/UI/checkbox'
 import { testActions } from '../../../../store'
 import { postQuestionRequest } from '../../../../api/testService'
+import { ROUTES } from '../../../../utils/constants/general'
 
 const SelectRealEnglishWord = () => {
    const dispatch = useDispatch()
-
    const { title, duration, type } = useSelector((state) => state.questions)
+   const navigate = useNavigate()
    const [isOpenModal, setIsOpenModal] = React.useState(false)
    const [words, setWords] = useState([])
 
@@ -44,16 +46,15 @@ const SelectRealEnglishWord = () => {
 
    const addOptionsHandler = (text) => {
       const { enteredValue, checkbox } = text
-      console.log(checkbox)
-      setWords((prevOptions) => {
-         const updateOptions = [...prevOptions]
-         updateOptions.push({
+      setWords((prevWords) => {
+         const updateWords = [...prevWords]
+         updateWords.push({
             word: enteredValue,
             isTrue: true,
             isChecked: checkbox,
             id: uuidv4(),
          })
-         return updateOptions
+         return updateWords
       })
    }
 
@@ -66,6 +67,7 @@ const SelectRealEnglishWord = () => {
          active: true,
       }
       dispatch(testActions.resetQuestion())
+      navigate(ROUTES.SELECT_REAL_ENGLISH_WORDS)
       setWords([])
       postQuestionRequest(3, type, data)
    }
@@ -89,7 +91,6 @@ const SelectRealEnglishWord = () => {
 
             <StyledContainer>
                {words.map((option) => {
-                  console.log(option)
                   return (
                      <Box>
                         <Item>{option.word}</Item>

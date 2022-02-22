@@ -30,16 +30,14 @@ const SelectRealEnglishWordModal = ({ onClose, open, onAddOptions }) => {
    return (
       <ModalWrapper onClose={onClose} open={open}>
          <form onSubmit={formSubmitHandler}>
-            <div style={{ margin: '42px 60px 16px' }}>
+            <Div>
                <StyledSpan>Title</StyledSpan>
-            </div>
+            </Div>
 
             <StyledInput
                value={enteredValue}
                onChange={goalInputChangeHandler}
-               style={{ width: '517px', margin: '16px 60px 34px 60px' }}
             />
-
             <div>
                <StyledSpanInModal>Is true option?</StyledSpanInModal>
                <ReCheckbox
@@ -115,4 +113,9 @@ const StyledInput = styled.input`
    font-size: 16px;
    line-height: 18px;
    color: #4c4859;
+   width: 517px;
+   margin: 16px 60px 34px 60px;
+`
+const Div = styled.div`
+   margin: 42px 60px 16px;
 `
