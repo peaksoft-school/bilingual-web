@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { Stack } from '@mui/material'
@@ -6,7 +6,10 @@ import NotStartedOutlinedIcon from '@mui/icons-material/NotStartedOutlined'
 import PauseCircleFilledOutlinedIcon from '@mui/icons-material/PauseCircleFilledOutlined'
 import Input from '../../../../components/UI/input/index'
 import Button from '../../../../components/UI/button/index'
-import { postQuestionRequest } from '../../../../api/testService'
+import {
+   postQuestionRequest,
+   postQuestionRequest2,
+} from '../../../../api/testService'
 
 const StyledP = styled('p')`
    padding: 0;
@@ -96,12 +99,13 @@ const PrintHear = () => {
       }))
    }
 
-   const sendFileToApi = useCallback(() => {
-      if (!audio.file.name) return
+   const sendFileToApi = () => {
       const formData = new FormData()
       formData.append('file', audio.file)
-      postQuestionRequest(formData)
-   }, [audio])
+
+      const response = postQuestionRequest(formData)
+      return response
+   }
 
    const navigate = useNavigate()
 
@@ -135,22 +139,27 @@ const PrintHear = () => {
       handleClick()
       toggleStartStopHandler()
    }
-   console.log(audio.file)
+   // console.log(audio.file)
 
-   const sumbitHandler = (e) => {
+   const sumbitHandler = async (e) => {
       e.preventDefault()
       const attempt = +attemptNumber
       const data = {
          correctAnswer,
          attempt,
       }
-      sendFileToApi()
+      const response = await sendFileToApi()
+      const secondRes = await postQuestionRequest2(2, data)
+      console.log(secondRes)
+      console.log(response)
+      // response.data api/tests/questions/:testId
+
       console.log(data)
    }
 
-   useEffect(() => {
-      sendFileToApi()
-   }, [audio.file.name])
+   // useEffect(() => {
+   //    sendFileToApi()
+   // }, [audio.file.name])
 
    return (
       <form onSubmit={sumbitHandler}>

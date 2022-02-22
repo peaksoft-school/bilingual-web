@@ -14,3 +14,7 @@ export const putTestQuestionRequest = (props) => {
 export const postQuestionRequest = (data) => {
    return axiosInstance.post(`files`, data)
 }
+
+export const postQuestionRequest2 = (id, data) => {
+   return axiosInstance.post(`api/tests/question/${id}`, data)
+}
