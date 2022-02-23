@@ -109,8 +109,9 @@ export default function SignUp() {
                      }
                      InputProps={{
                         endAdornment: (
-                           <Button
-                              sx={{ border: 'none' }}
+                           <button
+                              className={classes.btn}
+                              type="button"
                               onClick={togglePasswordHandler}
                            >
                               {visibility ? (
@@ -118,7 +119,7 @@ export default function SignUp() {
                               ) : (
                                  <VisibilityOffIcon />
                               )}
-                           </Button>
+                           </button>
                         ),
                      }}
                   />
