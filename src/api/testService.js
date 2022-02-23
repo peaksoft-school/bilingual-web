@@ -3,7 +3,7 @@ import { axiosInstance } from './axiosInstance'
 export const sendNewTestRequest = (newTest) => {
    return axiosInstance.post(`/`, newTest)
 }
-export const getTestRequest = () => {
+export const getTestsRequest = () => {
    return axiosInstance.get('/tests')
 }
 export const editQuestionRequest = (data) => {

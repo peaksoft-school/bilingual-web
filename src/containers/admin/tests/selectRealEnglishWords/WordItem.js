@@ -5,37 +5,24 @@ import Trash from '../../../../assets/icons/trash.svg'
 
 function WordItem({ words, deleteWord, checkedHandler }) {
    return (
-      <StyledContainer>
-         {words.map((option) => {
-            return (
-               <Box>
-                  <Item>{option.word}</Item>
-                  <StyledDivIcons>
-                     <ReCheckbox
-                        checked={option.isChecked}
-                        onClick={() => checkedHandler(option.id)}
-                     />
-                     <StyledTrash
-                        src={Trash}
-                        alt="trash"
-                        onClick={() => deleteWord(option.id)}
-                     />
-                  </StyledDivIcons>
-               </Box>
-            )
-         })}
-      </StyledContainer>
+      <Box>
+         <Item>{words.word}</Item>
+         <StyledDivIcons>
+            <ReCheckbox
+               checked={words.isChecked}
+               onClick={() => checkedHandler(words.id)}
+            />
+            <StyledTrash
+               src={Trash}
+               alt="trash"
+               onClick={() => deleteWord(words.id)}
+            />
+         </StyledDivIcons>
+      </Box>
    )
 }
 
 export default WordItem
-const StyledContainer = styled.ul`
-   width: 100%;
-   padding: 0px;
-   display: flex;
-   flex-wrap: wrap;
-   box-sizing: border-box;
-`
 
 const Box = styled.li`
    width: 280px;
