@@ -10,11 +10,13 @@ import {
    QUESTION_TYPES,
 } from '../../../../utils/constants/QuestionTypesAndOptions'
 import { testActions } from '../../../../store'
+import RecordSayingStatement from '../questions/RecordSayingStatement/RecordSayingStatement'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()
    const title = useSelector((state) => state.questions.title)
    const duration = useSelector((state) => state.questions.duration)
+   const type = useSelector((state) => state.questions.type)
 
    const titleChageHandler = (e) => {
       dispatch(testActions.setTitle(e.target.value))
@@ -50,12 +52,16 @@ const AddQuestionTypePage = () => {
          </StyledDiv>
          <StyledP>Type</StyledP>
          <AppSelect
+            value={type}
             onChange={typeChageHandler}
             questionTypeChangeHandler={questionTypeChangeHandler}
             options={QUESTION_OPTIONS}
          />
          {typeOfQuestion === QUESTION_TYPES.SELECT_THE_REAL_ENGLISH_WORD && (
             <SelectRealEnglishWord />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.RECORD_SAYING_STATEMENT && (
+            <RecordSayingStatement />
          )}
          {/* {typeOfQuestion ===
             QUESTION_TYPES.LISTEN_AND_SELECT_REAL_ENGLISH_WORD && (

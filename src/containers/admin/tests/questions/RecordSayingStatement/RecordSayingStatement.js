@@ -1,25 +1,34 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { addQuestionRequest } from '../../../../../api/testService'
 
 import Button from '../../../../../components/UI/button/index'
+import { testActions } from '../../../../../store'
 
 const RecordSayingStatement = () => {
+   const dispatch = useDispatch()
    const navigate = useNavigate()
-   const [recordText, setRecordText] = useState({ text: '' })
+   const { title, duration, type } = useSelector((state) => state.questions)
 
-   const statement = (event) => {
-      setRecordText((prev) => ({
-         ...prev,
-         [event.target.name]: event.target.value,
-      }))
+   const [statement, setStatement] = useState('')
+
+   const statementRecord = (event) => {
+      setStatement(event.target.value)
    }
 
-   const submitHandler = (event) => {
+   const recordSayingHandler = (event) => {
       event.preventDefault()
-      addQuestionRequest(recordText)
-      console.log(recordText)
+      const redordData = {
+         title,
+         duration,
+         statement,
+      }
+
+      setStatement('')
+      dispatch(testActions.resetQuestion())
+      addQuestionRequest(8, type, redordData)
    }
 
    const onGoBackHandler = () => {
@@ -29,11 +38,7 @@ const RecordSayingStatement = () => {
    return (
       <Div style={{ marginTop: '30px' }}>
          <StyledSpan>Statement</StyledSpan>
-         <StyledInput
-            name="text"
-            value={recordText.text}
-            onChange={statement}
-         />
+         <StyledInput value={statement} onChange={statementRecord} />
          <StyledDivOfModalFooter>
             <Button
                onClick={onGoBackHandler}
@@ -44,7 +49,7 @@ const RecordSayingStatement = () => {
                GO BACK
             </Button>
             <Button
-               onClick={submitHandler}
+               onClick={recordSayingHandler}
                type="submit"
                color="secondary"
                variant="contained"
