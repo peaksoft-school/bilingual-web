@@ -64,6 +64,14 @@ const DescribeImage = () => {
       setcCorrectAnswer(e.target.value)
    }
 
+   const sendFileToApi = () => {
+      const formData = new FormData()
+      formData.append('file', image.file)
+      const response = postQuestionRequest(formData)
+      console.log(response, '2')
+      return response
+   }
+
    const onChangeHandler = (e) => {
       if (!e.target.files[0]) return
       setImage({
@@ -74,6 +82,7 @@ const DescribeImage = () => {
 
    const sumbitDescribeImageHandler = (e) => {
       e.preventDefault()
+      const response = await sendFileToApi()
       const describeImageData = {
          type,
          title,
