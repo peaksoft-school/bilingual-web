@@ -134,6 +134,7 @@ const TypeWhatYouHear = () => {
 
    const [isModal, setIsModal] = useState(false)
    const [message, setMessage] = useState('')
+   const [successfullMesage, setSuccessfullMesage] = useState('')
 
    const onCloseModalHandler = () => {
       setIsModal((prevState) => !prevState)
@@ -158,6 +159,7 @@ const TypeWhatYouHear = () => {
          const res = await addQuestionRequest(data)
          setDatas(res.status)
          setMessage('Question is saved')
+         setSuccessfullMesage('Success')
          setIsModal(true)
          dispatch(testActions.resetQuestion())
          navigate('/*')
@@ -165,6 +167,7 @@ const TypeWhatYouHear = () => {
       } catch (error) {
          setIsModal(true)
          setMessage('Unable to save question')
+         setSuccessfullMesage('Error')
          setError(error.message)
       }
    }
@@ -177,6 +180,7 @@ const TypeWhatYouHear = () => {
             error={error}
             success={datas}
             message={message}
+            successfull={successfullMesage}
          />
          <div>
             <StyledP>Number off Replays</StyledP>
