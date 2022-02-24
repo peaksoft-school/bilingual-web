@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Stack } from '@mui/material'
-import NotStartedOutlinedIcon from '@mui/icons-material/NotStartedOutlined'
-import PauseCircleFilledOutlinedIcon from '@mui/icons-material/PauseCircleFilledOutlined'
+import start from '../../../../assets/icons/start.svg'
+import stop from '../../../../assets/icons/stop.svg'
 import Input from '../../../../components/UI/input/index'
 import Button from '../../../../components/UI/button/index'
 import {
    postQuestionRequest,
-   postQuestionRequest2,
+   addQuestionRequest,
 } from '../../../../api/testService'
+import { testActions } from '../../../../store'
 
 const StyledP = styled('p')`
    padding: 0;
@@ -47,15 +49,8 @@ const NumberSpan = styled('span')`
    margin-top: 10px;
    width: 360px;
 `
-
-const ButtonStartStop = styled(Button)`
-   width: 30px;
-   height: 45px;
-   position: relative;
-   top: 1px;
-   &.MuiButton-root {
-      border: none;
-   }
+const ImgStart = styled('img')`
+   cursor: pointer;
 `
 
 const InputCorrectAnswer = styled(Input)`
@@ -85,11 +80,11 @@ const PrintHear = () => {
       fileName: '',
       attemptNumber: '',
    })
-
-   const [buttonName, setButtonName] = useState('Play')
+   const { title, duration, type } = useSelector((state) => state.questions)
    const [startStop, setStartStop] = useState(true)
    const [audio, setAudio] = useState({ file: {} })
-
+   const transformedType = type.replace(/[\s.,%]/g, '')
+   const dispatch = useDispatch()
    const { correctAnswer, attemptNumber } = question
 
    const onQuestionChangeHandler = (e) => {
@@ -99,10 +94,14 @@ const PrintHear = () => {
       }))
    }
 
+   const clearState = () => {
+      setAudio({ file: {} })
+      setQuestion({ correctAnswer: '', attemptNumber: '' })
+   }
+
    const sendFileToApi = () => {
       const formData = new FormData()
       formData.append('file', audio.file)
-
       const response = postQuestionRequest(formData)
       return response
    }
@@ -113,20 +112,17 @@ const PrintHear = () => {
       navigate(-1)
    }
 
-   const toggleStartStopHandler = () => {
-      setStartStop((prev) => !prev)
+   const stopAudio = () => {
+      setStartStop(true)
+      audio.play.pause()
    }
 
-   const handleClick = () => {
-      if (buttonName === 'Play') {
-         audio.play.play()
-         setButtonName('Pause')
-      } else {
-         audio.play.pause()
-         setButtonName('Play')
-      }
+   const playAudio = () => {
+      setStartStop(false)
+      audio.play.play()
    }
-   const onChangeImageHandler = (e) => {
+
+   const onChangeAudioHandler = (e) => {
       if (e.target.files[0]) {
          setAudio({
             file: e.target.files[0],
@@ -135,34 +131,29 @@ const PrintHear = () => {
       }
    }
 
-   const ClickStartStopHandler = () => {
-      handleClick()
-      toggleStartStopHandler()
-   }
-   // console.log(audio.file)
-
-   const sumbitHandler = async (e) => {
+   const submitPrintHearHandler = async (e) => {
       e.preventDefault()
       const attempt = +attemptNumber
-      const data = {
-         correctAnswer,
-         attempt,
-      }
       const response = await sendFileToApi()
-      const secondRes = await postQuestionRequest2(2, data)
-      console.log(secondRes)
-      console.log(response)
-      // response.data api/tests/questions/:testId
-
-      console.log(data)
+      const data = {
+         testId: 1,
+         type: transformedType,
+         title,
+         duration,
+         attempt,
+         correctAnswer,
+         file: response.data,
+      }
+      addQuestionRequest(data)
+         .then((result) => alert('success', JSON.stringify(result.datas)))
+         .catch((err) => alert(err))
+      dispatch(testActions.resetQuestion())
+      navigate('/*')
+      clearState()
    }
 
-   // useEffect(() => {
-   //    sendFileToApi()
-   // }, [audio.file.name])
-
    return (
-      <form onSubmit={sumbitHandler}>
+      <form onSubmit={submitPrintHearHandler}>
          <div>
             <StyledP>Number off Replays</StyledP>
             <DivUppload>
@@ -178,25 +169,17 @@ const PrintHear = () => {
                         id="contained-button-file"
                         multiple
                         type="file"
-                        onChange={onChangeImageHandler}
+                        onChange={onChangeAudioHandler}
                      />
                      <Button variant="outlined" component="span">
                         Upload
                      </Button>
                   </label>
-                  <ButtonStartStop variant="outlined">
-                     {startStop ? (
-                        <NotStartedOutlinedIcon
-                           color="primary"
-                           onClick={ClickStartStopHandler}
-                        />
-                     ) : (
-                        <PauseCircleFilledOutlinedIcon
-                           color="primary"
-                           onClick={ClickStartStopHandler}
-                        />
-                     )}
-                  </ButtonStartStop>
+                  {startStop ? (
+                     <ImgStart src={start} onClick={playAudio} alt="start" />
+                  ) : (
+                     <ImgStart src={stop} onClick={stopAudio} alt="stop" />
+                  )}
                </StyledStack>
                <NumberSpan>{audio.file.name ? audio.file.name : ''}</NumberSpan>
             </DivUppload>

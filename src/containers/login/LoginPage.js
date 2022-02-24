@@ -16,7 +16,7 @@ import { ROLES, ROUTES } from '../../utils/constants/general'
 export default function LoginPage() {
    const dispatch = useDispatch()
    const isAuthorized = useSelector((state) => state.auth.isAuthorized)
-   const role = useSelector((state) => state.auth.user.role)
+   const role = useSelector((state) => state.auth.user?.role)
    const [visibility, setVisibility] = useState(false)
 
    const togglePasswordHandler = () => {
@@ -50,7 +50,7 @@ export default function LoginPage() {
 
    if (isAuthorized) {
       if (role === ROLES.ROLE_ADMIN) {
-         return <Navigate to={ROUTES.ADMIN} />
+         return <Navigate to={ROUTES.ADMIN_TEST} />
       }
       return <Navigate to={ROUTES.USER} />
    }
@@ -98,8 +98,9 @@ export default function LoginPage() {
                      }
                      InputProps={{
                         endAdornment: (
-                           <Button
-                              sx={{ border: 'none' }}
+                           <button
+                              type="button"
+                              className={classes.btn}
                               onClick={togglePasswordHandler}
                            >
                               {visibility ? (
@@ -107,7 +108,7 @@ export default function LoginPage() {
                               ) : (
                                  <VisibilityOffIcon />
                               )}
-                           </Button>
+                           </button>
                         ),
                      }}
                   />

@@ -5,7 +5,6 @@ import {
    StyledTableCell,
    DeleteIcon,
    Div,
-   StyledPaper,
    StyledHead,
    StyledTable,
 } from '../../../../components/UI/table/Table'
@@ -13,7 +12,7 @@ import ReCheckbox from '../../../../components/UI/checkbox'
 
 export const SubmittedResultsTable = ({ rows }) => {
    return (
-      <TableContainer component={StyledPaper}>
+      <TableContainer>
          <StyledTable>
             <TableHead>
                <TableRow>

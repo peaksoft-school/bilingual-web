@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import MainContainer from '../../../layout/MainContainer'
-import ContentCard from '../../../components/UI/adminContentCard'
-import Input from '../../../components/UI/input/index'
-import Button from '../../../components/UI/button/index'
-import { sendNewTestRequest } from '../../../api/testService'
+import MainContainer from '../../../../../layout/MainContainer'
+import ContentCard from '../../../../../components/UI/adminContentCard'
+import Input from '../../../../../components/UI/input/index'
+import Button from '../../../../../components/UI/button/index'
+import { sendNewTestRequest } from '../../../../../api/testService'
 
 const AddNewTest = () => {
    const navigate = useNavigate()
