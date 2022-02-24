@@ -30,9 +30,7 @@ const RecordSayingStatement = () => {
 
       setStatement('')
       addQuestionRequest(recordData)
-         .then((result) =>
-            alert('нормально иштеди', JSON.stringify(result.datas))
-         )
+         .then((result) => alert('success', JSON.stringify(result.datas)))
          .catch((err) => alert(err))
       dispatch(testActions.resetQuestion())
    }
