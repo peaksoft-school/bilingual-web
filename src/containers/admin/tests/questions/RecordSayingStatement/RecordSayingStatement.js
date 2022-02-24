@@ -29,8 +29,12 @@ const RecordSayingStatement = () => {
       }
 
       setStatement('')
-      dispatch(testActions.resetQuestion())
       addQuestionRequest(recordData)
+         .then((result) =>
+            alert('нормально иштеди', JSON.stringify(result.datas))
+         )
+         .catch((err) => alert(err))
+      dispatch(testActions.resetQuestion())
    }
 
    const onGoBackHandler = () => {
