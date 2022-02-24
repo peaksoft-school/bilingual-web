@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Button } from '@mui/material'
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import Input from '../../../../components/UI/input'
 
 const StyledP = styled('p')`
@@ -55,6 +56,13 @@ const ImageUpload = styled('img')`
 
 const DescribeImage = () => {
    const [image, setImage] = useState({})
+   const { title, duration, type } = useSelector((state) => state.questions)
+
+   const [correctAnswer, setcCorrectAnswer] = useState('')
+
+   const correctAnswerChangeHandler = (e) => {
+      setcCorrectAnswer(e.target.value)
+   }
 
    const onChangeHandler = (e) => {
       if (!e.target.files[0]) return
@@ -64,8 +72,20 @@ const DescribeImage = () => {
       })
    }
 
+   const sumbitDescribeImageHandler = (e) => {
+      e.preventDefault()
+      const describeImageData = {
+         type,
+         title,
+         image,
+         duration,
+         correctAnswer,
+      }
+      console.log(describeImageData)
+   }
+
    return (
-      <>
+      <form onSubmit={sumbitDescribeImageHandler}>
          <DivImage>
             <label htmlFor="contained-button-file">
                <InputImage
@@ -90,14 +110,18 @@ const DescribeImage = () => {
             {image ? image.file?.name : ''}
          </DivImage>
          <StyledP>Correct answer</StyledP>
-         <InputFooter multiline name="correctAnswer" />
+         <InputFooter
+            onChange={correctAnswerChangeHandler}
+            multiline
+            name="correctAnswer"
+         />
          <DivFooter>
             <Button variant="outlined">GO BACK</Button>
-            <Button variant="contained" color="success">
+            <Button type="submit" variant="contained" color="success">
                SAVE
             </Button>
          </DivFooter>
-      </>
+      </form>
    )
 }
 
