@@ -1,9 +1,14 @@
 import styled from 'styled-components'
 import { Button } from '@mui/material'
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Input from '../../../../components/UI/input'
-import postQuestionRequest from '../../../../api/testService'
+import {
+   addQuestionRequest,
+   postQuestionRequest,
+} from '../../../../api/testService'
+import { testActions } from '../../../../store'
+import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
 
 const StyledP = styled('p')`
    padding: 0;
@@ -58,8 +63,9 @@ const ImageUpload = styled('img')`
 const DescribeImage = () => {
    const [image, setImage] = useState({})
    const { title, duration, type } = useSelector((state) => state.questions)
-
+   const transformedType = type.replace(/[\s.,%]/g, '')
    const [correctAnswer, setcCorrectAnswer] = useState('')
+   const dispatch = useDispatch()
 
    const correctAnswerChangeHandler = (e) => {
       setcCorrectAnswer(e.target.value)
@@ -69,7 +75,6 @@ const DescribeImage = () => {
       const formData = new FormData()
       formData.append('file', image.file)
       const response = postQuestionRequest(formData)
-      console.log(response, '2')
       return response
    }
 
@@ -81,21 +86,54 @@ const DescribeImage = () => {
       })
    }
 
-   const sumbitDescribeImageHandler = (e) => {
+   const [datas, setDatas] = useState('')
+   const [message, setMessage] = useState('')
+   const [isModal, setIsModal] = useState(false)
+   const [error, setError] = useState(null)
+
+   const onCloseModalHandler = () => {
+      setIsModal((prevState) => !prevState)
+   }
+
+   const clearStateDescribeImageState = () => {
+      setcCorrectAnswer('')
+      setImage({})
+   }
+
+   const sumbitDescribeImageHandler = async (e) => {
       e.preventDefault()
       const response = await sendFileToApi()
       const describeImageData = {
-         type,
+         testId: 1,
+         type: transformedType,
          title,
-         image,
          duration,
+         file: response.data,
          correctAnswer,
       }
-      console.log(describeImageData)
+      try {
+         const response2 = await addQuestionRequest(describeImageData)
+         setDatas(response2.status)
+         setMessage('Question is saved')
+         setIsModal(true)
+         dispatch(testActions.resetQuestion())
+         clearStateDescribeImageState()
+      } catch (error) {
+         setIsModal(true)
+         setMessage('Unable to save question')
+         setError(error.message)
+      }
    }
 
    return (
       <form onSubmit={sumbitDescribeImageHandler}>
+         <NotificationIconModal
+            open={isModal}
+            onConfirm={onCloseModalHandler}
+            error={error}
+            success={datas}
+            message={message}
+         />
          <DivImage>
             <label htmlFor="contained-button-file">
                <InputImage
@@ -123,6 +161,7 @@ const DescribeImage = () => {
          <InputFooter
             onChange={correctAnswerChangeHandler}
             multiline
+            value={correctAnswer}
             name="correctAnswer"
          />
          <DivFooter>

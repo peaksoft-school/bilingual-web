@@ -9,8 +9,9 @@ import {
    QUESTION_OPTIONS,
    QUESTION_TYPES,
 } from '../../../../utils/constants/QuestionTypesAndOptions'
-import DescribeImage from '../../teatPage/describeImage'
+import DescribeImage from '../../questionsPage/describeImage/DescribeImage'
 import { testActions } from '../../../../store'
+import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()
@@ -61,6 +62,9 @@ const AddQuestionTypePage = () => {
             <SelectRealEnglishWord />
          )}
          {typeOfQuestion === QUESTION_TYPES.DESCRIBE_IMAGE && <DescribeImage />}
+         {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
+            <TypeWhatYouHear />
+         )}
       </ContentCard>
    )
 }

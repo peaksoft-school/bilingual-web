@@ -1,11 +1,8 @@
 import axios from 'axios'
-// import { BILINGUAL_TOKEN } from '../utils/constants/general'
-// import { getFromLocalStorage } from '../utils/helpers/localstorege/localStorege'
 import { BILINGUAL_TOKEN } from '../utils/constants/general'
 import { getFromLocalStorage } from '../utils/helpers/localstorege/localStorege'
 
 const token = getFromLocalStorage(BILINGUAL_TOKEN)
-
 const headers = {
    Authorization: `Bearer ${token}`,
 }
