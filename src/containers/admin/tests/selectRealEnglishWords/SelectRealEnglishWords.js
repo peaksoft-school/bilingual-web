@@ -65,6 +65,7 @@ const SelectRealEnglishWord = () => {
          duration,
          active: true,
       }
+      console.log(data)
       dispatch(testActions.resetQuestion())
       navigate(ROUTES.SELECT_REAL_ENGLISH_WORDS)
       setWords([])

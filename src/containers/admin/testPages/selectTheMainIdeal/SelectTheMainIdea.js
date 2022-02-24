@@ -1,20 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useSelector } from 'react-redux'
 import Input from '../../../../components/UI/input/index'
-import ReCheckbox from '../../../../components/UI/checkbox/index'
 import Button from '../../../../components/UI/button/index'
-import Trash from '../../../../assets/icons/trash.svg'
 import SelectTheMainIdeaModal from './SelectTheMainIdeaModal'
-import Layout from '../../../../components/UI/adminContentCard/index'
+import OptionItem from './Options'
+import { addQuestionRequest } from '../../../../api/testService'
 
 const SelectTheMainIdea = () => {
    const [isOpenModal, setIsOpenModal] = React.useState(false)
+   const { title, duration, type } = useSelector((state) => state.questions)
 
-   const [words, setWordS] = React.useState([])
+   const [options, setoptions] = React.useState([])
 
    const ckenckedHandler = (id) => {
-      const selectValue = words.find((el) => el.id === id)
-      const optionsWithSelected = words.map((el) => {
+      const selectValue = options.find((el) => el.id === id)
+      const optionsWithSelected = options.map((el) => {
          if (el.id === selectValue.id) {
             return {
                ...selectValue,
@@ -26,12 +27,12 @@ const SelectTheMainIdea = () => {
          }
       })
 
-      setWordS(optionsWithSelected)
+      setoptions(optionsWithSelected)
    }
 
    const deletText = (id) => {
-      const newText = words.filter((item) => item.id !== id)
-      setWordS(newText)
+      const newText = options.filter((item) => item.id !== id)
+      setoptions(newText)
    }
 
    const openModalHandler = () => {
@@ -39,22 +40,34 @@ const SelectTheMainIdea = () => {
    }
 
    const addOptionsHandler = (enteredText) => {
-      const { enteredValue, checkbox } = enteredText
-      setWordS((prevOptions) => {
+      const { enteredValue } = enteredText
+      setoptions((prevOptions) => {
          const updateOptions = [...prevOptions]
          updateOptions.push({
             word: enteredValue,
-            isChecked: checkbox,
             isTrue: true,
+            fileName: '',
             id: Math.random().toString(),
          })
          return updateOptions
       })
    }
 
+   const selectMainIdeaFormHandler = (e) => {
+      e.preventDefault()
+      const selectIdeaData = {
+         options,
+         testId: 1,
+         type,
+         title,
+         duration,
+      }
+      addQuestionRequest(selectIdeaData)
+   }
+
    return (
-      <div>
-         <Layout>
+      <form onSubmit={selectMainIdeaFormHandler}>
+         <div>
             <StyledP>Passage</StyledP>
             <Input multiline sx={{ width: '100%' }} />
             <Button
@@ -72,22 +85,14 @@ const SelectTheMainIdea = () => {
             />
 
             <StyledContainer>
-               {words.map((option) => {
+               {options.map((option) => {
                   return (
-                     <Box key={option.id}>
-                        <span style={{ width: '770px' }}>{option.word}</span>
-                        <StyledDivIcons>
-                           <ReCheckbox
-                              checked={option.isChecked}
-                              onChange={() => ckenckedHandler(option.id)}
-                           />
-                           <StyledTrash
-                              onClick={() => deletText(option.id)}
-                              src={Trash}
-                              alt="trash"
-                           />
-                        </StyledDivIcons>
-                     </Box>
+                     <OptionItem
+                        key={option.id}
+                        option={option}
+                        deletText={deletText}
+                        ckenckedHandler={ckenckedHandler}
+                     />
                   )
                })}
             </StyledContainer>
@@ -99,8 +104,8 @@ const SelectTheMainIdea = () => {
                   SAVE
                </Button>
             </StyledDivOfFooter>
-         </Layout>
-      </div>
+         </div>
+      </form>
    )
 }
 
@@ -113,34 +118,6 @@ const StyledContainer = styled.ul`
    counter-reset: my-counter;
 `
 
-const Box = styled.li`
-   width: 100%;
-   min-height: 46px;
-   margin-top: 18px;
-   padding: 14px 16px;
-   background: #ffffff;
-   border: 1.53px solid #d4d0d0;
-   box-sizing: border-box;
-   border-radius: 8px;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   &::before {
-      content: counter(my-counter);
-      counter-increment: my-counter;
-      width: 25px;
-   }
-`
-const StyledDivIcons = styled.div`
-   width: 70px;
-   display: flex;
-   justify-content: space-between;
-`
-const StyledTrash = styled.img`
-   width: 23px;
-   height: 22px;
-   margin-top: 9px;
-`
 const StyledDivOfFooter = styled.div`
    width: 100%;
    display: flex;

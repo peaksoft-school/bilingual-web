@@ -11,6 +11,7 @@ import {
 } from '../../../../utils/constants/QuestionTypesAndOptions'
 import { testActions } from '../../../../store'
 import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
+import SelectTheMainIdea from '../../testPages/selectTheMainIdeal/SelectTheMainIdea'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()
@@ -62,6 +63,9 @@ const AddQuestionTypePage = () => {
          )}
          {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
             <TypeWhatYouHear />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.SELECT_THE_MAIN_IDEA && (
+            <SelectTheMainIdea />
          )}
       </ContentCard>
    )
