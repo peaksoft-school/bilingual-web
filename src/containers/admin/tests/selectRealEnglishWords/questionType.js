@@ -10,11 +10,13 @@ import {
    QUESTION_TYPES,
 } from '../../../../utils/constants/QuestionTypesAndOptions'
 import { testActions } from '../../../../store'
+import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()
    const title = useSelector((state) => state.questions.title)
    const duration = useSelector((state) => state.questions.duration)
+   const type = useSelector((state) => state.questions.type)
 
    const titleChageHandler = (e) => {
       dispatch(testActions.setTitle(e.target.value))
@@ -50,6 +52,7 @@ const AddQuestionTypePage = () => {
          </StyledDiv>
          <StyledP>Type</StyledP>
          <AppSelect
+            value={type}
             onChange={typeChageHandler}
             questionTypeChangeHandler={questionTypeChangeHandler}
             options={QUESTION_OPTIONS}
@@ -57,14 +60,9 @@ const AddQuestionTypePage = () => {
          {typeOfQuestion === QUESTION_TYPES.SELECT_THE_REAL_ENGLISH_WORD && (
             <SelectRealEnglishWord />
          )}
-         {/* {typeOfQuestion ===
-            QUESTION_TYPES.LISTEN_AND_SELECT_REAL_ENGLISH_WORD && (
-            <ListenAndSelectRealEnglishWord />
-         )} */}
-         {/* {typeOfQuestion ===
-            QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
-            < /> */}
-         {/* )} */}
+         {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
+            <TypeWhatYouHear />
+         )}
       </ContentCard>
    )
 }
