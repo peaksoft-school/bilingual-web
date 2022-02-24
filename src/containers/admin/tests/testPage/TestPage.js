@@ -12,6 +12,7 @@ const TestPage = () => {
 
    const onClickToAddNewTest = () => {
       navigate('/addNewTest')
+      setTests()
    }
 
    return (
