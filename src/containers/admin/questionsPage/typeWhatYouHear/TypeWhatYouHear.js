@@ -12,9 +12,7 @@ import {
    addQuestionRequest,
 } from '../../../../api/testService'
 import { testActions } from '../../../../store'
-// import TypeWhatYouHearModal from './TypeWhatYouHearModal'
-// import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
-import TypeWhatYouHearModal from './TypeWhatYouHearModal'
+import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
 
 const StyledP = styled('p')`
    padding: 0;
@@ -135,12 +133,14 @@ const TypeWhatYouHear = () => {
    }
 
    const [isModal, setIsModal] = useState(false)
+   const [message, setMessage] = useState('')
 
    const onCloseModalHandler = () => {
       setIsModal((prevState) => !prevState)
    }
    const [error, setError] = useState(null)
    const [datas, setDatas] = useState('')
+
    const submitPrintHearHandler = async (e) => {
       e.preventDefault()
       const attempt = +attemptNumber
@@ -157,24 +157,26 @@ const TypeWhatYouHear = () => {
       try {
          const res = await addQuestionRequest(data)
          setDatas(res.status)
+         setMessage('Question is saved')
          setIsModal(true)
+         dispatch(testActions.resetQuestion())
+         navigate('/*')
+         clearState()
       } catch (error) {
          setIsModal(true)
+         setMessage('Unable to save question')
          setError(error.message)
       }
-
-      dispatch(testActions.resetQuestion())
-      navigate('/*')
-      clearState()
    }
 
    return (
       <form onSubmit={submitPrintHearHandler}>
-         <TypeWhatYouHearModal
+         <NotificationIconModal
             open={isModal}
             onConfirm={onCloseModalHandler}
             error={error}
             success={datas}
+            message={message}
          />
          <div>
             <StyledP>Number off Replays</StyledP>

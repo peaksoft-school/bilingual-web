@@ -5,13 +5,13 @@ import { BoldText, Text, WrapperContent } from './ConfirmModal'
 import { ReactComponent as ErrorIcon } from '../../../assets/icons/delete.svg'
 import ModalWrapper, { ModalFooter } from './ModalWrapper'
 
-function NotificationIconModal({ success, error, onConfirm, open }) {
+function NotificationIconModal({ success, error, onConfirm, open, message }) {
    let content
    if (success)
       content = (
          <>
             <SuccessIcon />
-            <BoldText>Question is saved</BoldText>
+            <BoldText>{message}</BoldText>
             <Text>Successfully saved</Text>
          </>
       )
@@ -20,7 +20,7 @@ function NotificationIconModal({ success, error, onConfirm, open }) {
       content = (
          <>
             <ErrorIcon />
-            <BoldText>Unable to save question</BoldText>
+            <BoldText>{message}</BoldText>
             <Text>Successfully deleted</Text>
          </>
       )
