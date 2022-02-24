@@ -21,6 +21,8 @@ const RecordSayingStatement = () => {
    const recordSayingHandler = (event) => {
       event.preventDefault()
       const redordData = {
+         testId: 1,
+         type,
          title,
          duration,
          statement,
@@ -28,7 +30,7 @@ const RecordSayingStatement = () => {
 
       setStatement('')
       dispatch(testActions.resetQuestion())
-      addQuestionRequest(8, type, redordData)
+      addQuestionRequest(redordData)
    }
 
    const onGoBackHandler = () => {
