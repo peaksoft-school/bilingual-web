@@ -10,7 +10,7 @@ import {
    QUESTION_TYPES,
 } from '../../../../utils/constants/QuestionTypesAndOptions'
 import { testActions } from '../../../../store'
-import PrintHear from '../../testPages/printHear'
+import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()
@@ -60,15 +60,9 @@ const AddQuestionTypePage = () => {
          {typeOfQuestion === QUESTION_TYPES.SELECT_THE_REAL_ENGLISH_WORD && (
             <SelectRealEnglishWord />
          )}
-         {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && <PrintHear />}
-         {/* {typeOfQuestion ===
-            QUESTION_TYPES.LISTEN_AND_SELECT_REAL_ENGLISH_WORD && (
-            <ListenAndSelectRealEnglishWord />
-         )} */}
-         {/* {typeOfQuestion ===
-            QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
-            < /> */}
-         {/* )} */}
+         {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
+            <TypeWhatYouHear />
+         )}
       </ContentCard>
    )
 }

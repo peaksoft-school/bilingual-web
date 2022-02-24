@@ -12,6 +12,9 @@ import {
    addQuestionRequest,
 } from '../../../../api/testService'
 import { testActions } from '../../../../store'
+// import TypeWhatYouHearModal from './TypeWhatYouHearModal'
+// import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
+import TypeWhatYouHearModal from './TypeWhatYouHearModal'
 
 const StyledP = styled('p')`
    padding: 0;
@@ -74,7 +77,7 @@ const ButtonSave = styled(Button)`
    }
 `
 
-const PrintHear = () => {
+const TypeWhatYouHear = () => {
    const [question, setQuestion] = useState({
       correctAnswer: '',
       fileName: '',
@@ -131,6 +134,13 @@ const PrintHear = () => {
       }
    }
 
+   const [isModal, setIsModal] = useState(false)
+
+   const onCloseModalHandler = () => {
+      setIsModal((prevState) => !prevState)
+   }
+   const [error, setError] = useState(null)
+   const [datas, setDatas] = useState('')
    const submitPrintHearHandler = async (e) => {
       e.preventDefault()
       const attempt = +attemptNumber
@@ -144,9 +154,15 @@ const PrintHear = () => {
          correctAnswer,
          file: response.data,
       }
-      addQuestionRequest(data)
-         .then((result) => alert('success', JSON.stringify(result.datas)))
-         .catch((err) => alert(err))
+      try {
+         const res = await addQuestionRequest(data)
+         setDatas(res.status)
+         setIsModal(true)
+      } catch (error) {
+         setIsModal(true)
+         setError(error.message)
+      }
+
       dispatch(testActions.resetQuestion())
       navigate('/*')
       clearState()
@@ -154,6 +170,12 @@ const PrintHear = () => {
 
    return (
       <form onSubmit={submitPrintHearHandler}>
+         <TypeWhatYouHearModal
+            open={isModal}
+            onConfirm={onCloseModalHandler}
+            error={error}
+            success={datas}
+         />
          <div>
             <StyledP>Number off Replays</StyledP>
             <DivUppload>
@@ -202,4 +224,4 @@ const PrintHear = () => {
       </form>
    )
 }
-export default PrintHear
+export default TypeWhatYouHear
