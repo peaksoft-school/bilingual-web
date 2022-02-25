@@ -102,18 +102,18 @@ const DescribeImage = () => {
 
    const sumbitDescribeImageHandler = async (e) => {
       e.preventDefault()
-      const response = await sendFileToApi()
-      const describeImageData = {
-         testId: 1,
-         type: transformedType,
-         title,
-         duration,
-         file: response.data,
-         correctAnswer,
-      }
       try {
-         const response2 = await addQuestionRequest(describeImageData)
-         setDatas(response2.status)
+         const responseImage = await sendFileToApi()
+         const describeImageData = {
+            testId: 0,
+            type: transformedType,
+            title,
+            duration,
+            file: responseImage.data,
+            correctAnswer,
+         }
+         const responseResult = await addQuestionRequest(describeImageData)
+         setDatas(responseResult.status)
          setMessage('Question is saved')
          setIsModal(true)
          dispatch(testActions.resetQuestion())
