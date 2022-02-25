@@ -11,6 +11,7 @@ import {
 } from '../../../../utils/constants/QuestionTypesAndOptions'
 import { testActions } from '../../../../store'
 import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNWords'
+import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()
@@ -71,6 +72,9 @@ const AddQuestionTypePage = () => {
             QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
             < /> */}
          {/* )} */}
+         {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
+            <TypeWhatYouHear />
+         )}
       </ContentCard>
    )
 }
