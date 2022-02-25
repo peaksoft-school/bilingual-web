@@ -17,14 +17,6 @@ export default function AllRoutes() {
       }
    }, [isAuthorized])
 
-   // create test id=12342134
-
-   // tests [1233]
-
-   // [{id: 12423}]
-
-   // axios.put('baseURL' + id, {changesTet})
-
    return (
       <Routes>
          <Route path="/" element={<Navigate replace to={ROUTES.LOGIN} />} />
