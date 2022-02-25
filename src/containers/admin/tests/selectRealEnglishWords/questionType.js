@@ -9,6 +9,7 @@ import {
    QUESTION_OPTIONS,
    QUESTION_TYPES,
 } from '../../../../utils/constants/QuestionTypesAndOptions'
+import DescribeImage from '../../questionsPage/describeImage/DescribeImage'
 import { testActions } from '../../../../store'
 import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNWords'
 import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
@@ -62,6 +63,7 @@ const AddQuestionTypePage = () => {
          {typeOfQuestion === QUESTION_TYPES.SELECT_THE_REAL_ENGLISH_WORD && (
             <SelectRealEnglishWord />
          )}
+         {typeOfQuestion === QUESTION_TYPES.DESCRIBE_IMAGE && <DescribeImage />}
          {typeOfQuestion === QUESTION_TYPES.RESPOND_IN_AT_LEAST_N_WORDS && (
             <RespondInAtLeastNWords />
          )}
