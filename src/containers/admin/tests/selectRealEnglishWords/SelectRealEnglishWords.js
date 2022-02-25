@@ -87,11 +87,17 @@ const SelectRealEnglishWord = () => {
                onClose={openModalHandler}
                open={isOpenModal}
             />
-            <WordItem
-               words={words}
-               deleteWord={deleteWord}
-               checkedHandler={checkedHandler}
-            />
+            <StyledContainer>
+               {words.map((option) => {
+                  return (
+                     <WordItem
+                        words={option}
+                        deleteWord={deleteWord}
+                        checkedHandler={checkedHandler}
+                     />
+                  )
+               })}
+            </StyledContainer>
             <StyledDivOfModalFooter>
                <Button color="primary" variant="outlined" sx={{ mr: '16px' }}>
                   GO BACK
@@ -107,6 +113,13 @@ const SelectRealEnglishWord = () => {
 
 export default SelectRealEnglishWord
 
+const StyledContainer = styled.ul`
+   width: 100%;
+   padding: 0px;
+   display: flex;
+   flex-wrap: wrap;
+   box-sizing: border-box;
+`
 const StyledDivOfModalFooter = styled.div`
    width: 100%;
    display: flex;
