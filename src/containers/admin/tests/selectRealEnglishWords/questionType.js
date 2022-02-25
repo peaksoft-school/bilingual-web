@@ -10,6 +10,7 @@ import {
    QUESTION_TYPES,
 } from '../../../../utils/constants/QuestionTypesAndOptions'
 import { testActions } from '../../../../store'
+import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNWords'
 import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
 import HighLightTheAnswer from '../../questionsPage/highlightTheAnswer/HighLightTheAnswer'
 
@@ -61,6 +62,17 @@ const AddQuestionTypePage = () => {
          {typeOfQuestion === QUESTION_TYPES.SELECT_THE_REAL_ENGLISH_WORD && (
             <SelectRealEnglishWord />
          )}
+         {typeOfQuestion === QUESTION_TYPES.RESPOND_IN_AT_LEAST_N_WORDS && (
+            <RespondInAtLeastNWords />
+         )}
+         {/* {typeOfQuestion ===
+            QUESTION_TYPES.LISTEN_AND_SELECT_REAL_ENGLISH_WORD && (
+            <ListenAndSelectRealEnglishWord />
+         )} */}
+         {/* {typeOfQuestion ===
+            QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
+            < /> */}
+         {/* )} */}
          {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
             <TypeWhatYouHear />
          )}
