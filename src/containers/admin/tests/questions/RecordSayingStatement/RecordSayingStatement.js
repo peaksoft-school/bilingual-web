@@ -5,7 +5,9 @@ import styled from 'styled-components'
 import { addQuestionRequest } from '../../../../../api/testService'
 
 import Button from '../../../../../components/UI/button/index'
+import NotificationIconModal from '../../../../../components/UI/modal/NotificationIconModal'
 import { testActions } from '../../../../../store'
+import { ROUTES } from '../../../../../utils/constants/general'
 
 const RecordSayingStatement = () => {
    const dispatch = useDispatch()
@@ -13,13 +15,22 @@ const RecordSayingStatement = () => {
    const { title, duration, type } = useSelector((state) => state.questions)
 
    const [statement, setStatement] = useState('')
+   const [isModal, setIsModal] = useState(false)
+   const [message, setMessage] = useState('')
+   const [error, setError] = useState(null)
+   const [datas, setDatas] = useState('')
+
+   const onCloseModalHandler = () => {
+      setIsModal((prevState) => !prevState)
+   }
 
    const statementRecord = (event) => {
       setStatement(event.target.value)
    }
 
-   const recordSayingHandler = (event) => {
+   const recordSayingHandler = async (event) => {
       event.preventDefault()
+
       const recordData = {
          testId: 1,
          type,
@@ -28,11 +39,19 @@ const RecordSayingStatement = () => {
          statement,
       }
 
-      setStatement('')
-      addQuestionRequest(recordData)
-         .then((result) => alert('success', JSON.stringify(result.datas)))
-         .catch((err) => alert(err))
-      dispatch(testActions.resetQuestion())
+      try {
+         const response = await addQuestionRequest(recordData)
+         setDatas(response.status)
+         setMessage('Question is saved')
+         setIsModal(true)
+         dispatch(testActions.resetQuestion())
+         navigate(ROUTES)
+         setStatement('')
+      } catch (error) {
+         setIsModal(true)
+         setMessage('Unable to save question')
+         setError(error.message)
+      }
    }
 
    const onGoBackHandler = () => {
@@ -41,6 +60,13 @@ const RecordSayingStatement = () => {
 
    return (
       <Div style={{ marginTop: '30px' }}>
+         <NotificationIconModal
+            open={isModal}
+            onConfirm={onCloseModalHandler}
+            error={error}
+            success={datas}
+            message={message}
+         />
          <StyledSpan>Statement</StyledSpan>
          <StyledInput value={statement} onChange={statementRecord} />
          <StyledDivOfModalFooter>
