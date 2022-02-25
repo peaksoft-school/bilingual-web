@@ -12,6 +12,7 @@ import {
 import { testActions } from '../../../../store'
 import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNWords'
 import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
+import HighLightTheAnswer from '../../questionsPage/highlightTheAnswer/HighLightTheAnswer'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()
@@ -74,6 +75,9 @@ const AddQuestionTypePage = () => {
          {/* )} */}
          {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
             <TypeWhatYouHear />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.HIGLIGHT_THE_ANSWER && (
+            <HighLightTheAnswer />
          )}
       </ContentCard>
    )
