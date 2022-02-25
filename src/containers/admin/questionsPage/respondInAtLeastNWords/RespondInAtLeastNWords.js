@@ -6,47 +6,81 @@ import Input from '../../../../components/UI/input/index'
 import Button from '../../../../components/UI/button/index'
 import { testActions } from '../../../../store'
 import { addQuestionRequest } from '../../../../api/testService'
+import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
+import { ROUTES } from '../../../../utils/constants/general'
 
 const RespondInAtLeastNWords = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { title, duration, type } = useSelector((state) => state.questions)
 
-   const [statement, setStatement] = useState('')
+   const [questionStatement, setQuestionStatement] = useState('')
    const [numberOfWords, setNumberOfWords] = useState('')
+   const [isModal, setIsModal] = useState(false)
+   const [message, setMessage] = useState('')
+   const [error, setError] = useState(null)
+   const [datas, setDatas] = useState('')
 
    const statementRespond = (event) => {
-      setStatement(event.target.value)
+      setQuestionStatement(event.target.value)
    }
    const respondOfNumbers = (event) => {
       setNumberOfWords(event.target.value)
    }
 
-   const respondLeastWordsHandler = (event) => {
-      event.preventDefault()
-      const respondData = {
-         title,
-         duration,
-         statement,
-         numberOfWords,
-      }
+   const onCloseModalHandler = () => {
+      setIsModal((prevState) => !prevState)
+   }
 
-      setStatement('')
-      setNumberOfWords('')
-      dispatch(testActions.resetQuestion())
-      addQuestionRequest(8, type, respondData)
+   const respondLeastWordsHandler = async (event) => {
+      event.preventDefault()
+      try {
+         const countOfWords = +numberOfWords
+         const respondData = {
+            testId: 1,
+            type,
+            title,
+            duration,
+            questionStatement,
+            countOfWords,
+         }
+         const response = await addQuestionRequest(respondData)
+         setDatas(response.status)
+         setMessage('Question is saved')
+         setIsModal(true)
+         dispatch(testActions.resetQuestion())
+         setQuestionStatement('')
+         setNumberOfWords('')
+         navigate(ROUTES)
+      } catch (error) {
+         setIsModal(true)
+         setMessage('Unable to save question')
+         setError(error.message)
+      }
    }
 
    const onGoBackHandler = () => {
       navigate(-1)
    }
+
    return (
-      <div style={{ marginTop: '30px' }}>
+      <Div>
+         <NotificationIconModal
+            open={isModal}
+            onConfirm={onCloseModalHandler}
+            error={error}
+            success={datas}
+            message={message}
+         />
          <StyledP>Question statement</StyledP>
-         <Input valu={statement} onChange={statementRespond} />
+         <Input
+            multiline
+            value={questionStatement}
+            onChange={statementRespond}
+         />
          <StyledP>Number of minimum words</StyledP>
          <Input
-            valu={numberOfWords}
+            value={numberOfWords}
             onChange={respondOfNumbers}
             style={{ width: '83px' }}
          />
@@ -68,11 +102,15 @@ const RespondInAtLeastNWords = () => {
                SAVE
             </Button>
          </StyledDivOfModalFooter>
-      </div>
+      </Div>
    )
 }
 
 export default RespondInAtLeastNWords
+
+const Div = styled.div`
+   margin-top: 30px;
+`
 
 const StyledP = styled.p`
    padding: 0;
