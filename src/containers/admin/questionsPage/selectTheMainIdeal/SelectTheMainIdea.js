@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
+import { v4 as uuidv4 } from 'uuid'
 import Input from '../../../../components/UI/input/index'
 import Button from '../../../../components/UI/button/index'
 import SelectTheMainIdeaModal from './SelectTheMainIdeaModal'
@@ -22,13 +23,10 @@ const SelectTheMainIdea = () => {
       const optionsWithSelected = words.map((el) => {
          if (el.id === selectValue.id) {
             return {
-               ...selectValue,
                isTrue: !selectValue.isTrue,
             }
          }
-         return {
-            ...el,
-         }
+         return el
       })
 
       setWords(optionsWithSelected)
@@ -54,7 +52,7 @@ const SelectTheMainIdea = () => {
          updateOptions.push({
             word: enteredValue,
             isTrue: isChecked,
-            id: Math.random().toString(),
+            id: uuidv4(),
          })
          return updateOptions
       })
@@ -79,14 +77,14 @@ const SelectTheMainIdea = () => {
       try {
          const selectIdeaData = {
             words,
-            testId: 0,
+            testId: 1,
             type: transformedType,
             title,
             duration,
             passage,
          }
-         const responseResult = addQuestionRequest(selectIdeaData)
-         setFormValue((await responseResult).status)
+         const responseResult = await addQuestionRequest(selectIdeaData)
+         setFormValue(responseResult.status)
          setMessage('Question is saved')
          setIsModal(true)
          dispatch(testActions.resetQuestion())
