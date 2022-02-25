@@ -9,9 +9,12 @@ import {
    QUESTION_OPTIONS,
    QUESTION_TYPES,
 } from '../../../../utils/constants/QuestionTypesAndOptions'
+import DescribeImage from '../../questionsPage/describeImage/DescribeImage'
 import { testActions } from '../../../../store'
-import RecordSayingStatement from '../questions/RecordSayingStatement/RecordSayingStatement'
+import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNWords'
 import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
+import HighLightTheAnswer from '../../questionsPage/highlightTheAnswer/HighLightTheAnswer'
+import RecordSayingStatement from '../../questionsPage/RecordSayingStatement/RecordSayingStatement'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()
@@ -61,8 +64,9 @@ const AddQuestionTypePage = () => {
          {typeOfQuestion === QUESTION_TYPES.SELECT_THE_REAL_ENGLISH_WORD && (
             <SelectRealEnglishWord />
          )}
-         {typeOfQuestion === QUESTION_TYPES.RECORD_SAYING_STATEMENT && (
-            <RecordSayingStatement />
+         {typeOfQuestion === QUESTION_TYPES.DESCRIBE_IMAGE && <DescribeImage />}
+         {typeOfQuestion === QUESTION_TYPES.RESPOND_IN_AT_LEAST_N_WORDS && (
+            <RespondInAtLeastNWords />
          )}
          {/* {typeOfQuestion ===
             QUESTION_TYPES.LISTEN_AND_SELECT_REAL_ENGLISH_WORD && (
@@ -74,6 +78,12 @@ const AddQuestionTypePage = () => {
          {/* )} */}
          {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
             <TypeWhatYouHear />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.HIGLIGHT_THE_ANSWER && (
+            <HighLightTheAnswer />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.RECORD_SAYING_STATEMENT && (
+            <RecordSayingStatement />
          )}
       </ContentCard>
    )
