@@ -44,7 +44,7 @@ const HighLightTheAnswer = () => {
       setPassage(props)
    }
 
-   const QuestionsPassegeChangeHandler = (e) => {
+   const questionsPassegeChangeHandler = (e) => {
       setQuestionStatement(e.target.value)
    }
 
@@ -61,7 +61,7 @@ const HighLightTheAnswer = () => {
       sethighlighted(selectedText.toString())
    }
 
-   const [datas, setDatas] = useState('')
+   const [formValue, setFormValue] = useState('')
    const [message, setMesage] = useState('')
    const [isModal, setIsModal] = useState(false)
    const [error, setError] = useState(null)
@@ -75,21 +75,21 @@ const HighLightTheAnswer = () => {
       setQuestionStatement('')
    }
 
-   const HighlightSumbitHAndler = async (e) => {
+   const highlightSumbitHAndler = async (e) => {
       e.preventDefault()
-      const CorrectAnswer = highlighted
-      const data = {
-         testId: 1,
-         type: transformedType,
-         title,
-         duration,
-         passage,
-         questionStatement,
-         CorrectAnswer,
-      }
       try {
+         const CorrectAnswer = highlighted
+         const data = {
+            testId: 1,
+            type: transformedType,
+            title,
+            duration,
+            passage,
+            questionStatement,
+            CorrectAnswer,
+         }
          const response = await addQuestionRequest(data)
-         setDatas(response.status)
+         setFormValue(response.status)
          setMesage('Question is saved')
          setIsModal(true)
          dispatch(testActions.resetQuestion())
@@ -102,19 +102,19 @@ const HighLightTheAnswer = () => {
    }
 
    return (
-      <form onSubmit={HighlightSumbitHAndler}>
+      <form onSubmit={highlightSumbitHAndler}>
          <NotificationIconModal
             open={isModal}
             onConfirm={onCloseModalHidLigtHandler}
             error={error}
-            success={datas}
+            success={formValue}
             message={message}
          />
          <div style={{ margin: '30px 0px 32px', width: '100%' }}>
             <StyledP>Questions to the Passage</StyledP>
             <Input
                value={questionStatement}
-               onChange={QuestionsPassegeChangeHandler}
+               onChange={questionsPassegeChangeHandler}
                sx={{ width: '100%' }}
             />
             <StyledP>Passage</StyledP>
