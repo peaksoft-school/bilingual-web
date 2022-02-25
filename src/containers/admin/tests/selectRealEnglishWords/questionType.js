@@ -14,6 +14,7 @@ import { testActions } from '../../../../store'
 import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNWords'
 import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
 import HighLightTheAnswer from '../../questionsPage/highlightTheAnswer/HighLightTheAnswer'
+import RecordSayingStatement from '../../questionsPage/RecordSayingStatement/RecordSayingStatement'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()
@@ -80,6 +81,9 @@ const AddQuestionTypePage = () => {
          )}
          {typeOfQuestion === QUESTION_TYPES.HIGLIGHT_THE_ANSWER && (
             <HighLightTheAnswer />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.RECORD_SAYING_STATEMENT && (
+            <RecordSayingStatement />
          )}
       </ContentCard>
    )
