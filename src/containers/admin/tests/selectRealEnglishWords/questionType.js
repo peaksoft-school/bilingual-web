@@ -11,6 +11,7 @@ import {
 } from '../../../../utils/constants/QuestionTypesAndOptions'
 import DescribeImage from '../../questionsPage/describeImage/DescribeImage'
 import { testActions } from '../../../../store'
+import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNWords'
 import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
 
 const AddQuestionTypePage = () => {
@@ -62,6 +63,17 @@ const AddQuestionTypePage = () => {
             <SelectRealEnglishWord />
          )}
          {typeOfQuestion === QUESTION_TYPES.DESCRIBE_IMAGE && <DescribeImage />}
+         {typeOfQuestion === QUESTION_TYPES.RESPOND_IN_AT_LEAST_N_WORDS && (
+            <RespondInAtLeastNWords />
+         )}
+         {/* {typeOfQuestion ===
+            QUESTION_TYPES.LISTEN_AND_SELECT_REAL_ENGLISH_WORD && (
+            <ListenAndSelectRealEnglishWord />
+         )} */}
+         {/* {typeOfQuestion ===
+            QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
+            < /> */}
+         {/* )} */}
          {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
             <TypeWhatYouHear />
          )}
