@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { addQuestionRequest } from '../../../../../api/testService'
+import { addQuestionRequest } from '../../../../api/testService'
 
-import Button from '../../../../../components/UI/button/index'
-import NotificationIconModal from '../../../../../components/UI/modal/NotificationIconModal'
-import { testActions } from '../../../../../store'
-import { ROUTES } from '../../../../../utils/constants/general'
+import Button from '../../../../components/UI/button/index'
+import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
+import { testActions } from '../../../../store'
+import { ROUTES } from '../../../../utils/constants/general'
 
 const RecordSayingStatement = () => {
    const dispatch = useDispatch()
@@ -30,23 +30,21 @@ const RecordSayingStatement = () => {
 
    const recordSayingHandler = async (event) => {
       event.preventDefault()
-
-      const recordData = {
-         testId: 1,
-         type,
-         title,
-         duration,
-         statement,
-      }
-
       try {
+         const recordData = {
+            testId: 1,
+            type,
+            title,
+            duration,
+            statement,
+         }
          const response = await addQuestionRequest(recordData)
          setDatas(response.status)
          setMessage('Question is saved')
          setIsModal(true)
          dispatch(testActions.resetQuestion())
-         navigate(ROUTES)
          setStatement('')
+         navigate(ROUTES)
       } catch (error) {
          setIsModal(true)
          setMessage('Unable to save question')
