@@ -9,7 +9,7 @@ import ModalWrapper, {
 
 const SelectTheMainIdeaModal = ({ onClose, open, onAddOptions }) => {
    const [enteredValue, setEnteredValue] = useState('')
-   const [checkbox, setCheckbox] = useState(false)
+   const [isChecked, setIsChecked] = useState(false)
 
    const goalInputChangeHandler = (event) => {
       setEnteredValue(event.target.value)
@@ -21,10 +21,10 @@ const SelectTheMainIdeaModal = ({ onClose, open, onAddOptions }) => {
       event.stopPropagation()
       const ansewer = {
          enteredValue,
-         checkbox,
+         isChecked,
       }
       onAddOptions(ansewer)
-      setCheckbox(false)
+      setIsChecked(false)
       setEnteredValue('')
       onClose()
    }
@@ -32,35 +32,33 @@ const SelectTheMainIdeaModal = ({ onClose, open, onAddOptions }) => {
    return (
       <ModalWrapper onClose={onClose} open={open}>
          <form onSubmit={formSubmitHandler}>
-            <div style={{ margin: '42px 60px 16px' }}>
+            <DivTitle>
                <StyledP>Title</StyledP>
-            </div>
+            </DivTitle>
 
-            <Input
+            <InputenteredValue
                multiline
                value={enteredValue}
                onChange={goalInputChangeHandler}
-               style={{ width: '517px', margin: '16px 60px 34px 60px' }}
             />
 
             <div>
                <StyledSpanInModal>Is true option?</StyledSpanInModal>
                <ReCheckbox
                   onClick={() => {
-                     setCheckbox((checkbox) => !checkbox)
+                     setIsChecked((isChecked) => !isChecked)
                   }}
                />
             </div>
             <ModalFooter>
                <StyledDivOfFooter>
-                  <Button
+                  <ButtonGoBack
                      onClick={onClose}
                      color="primary"
                      variant="outlined"
-                     sx={{ mr: '16px', background: 'white' }}
                   >
                      GO BACK
-                  </Button>
+                  </ButtonGoBack>
                   <Button
                      type="sumbit"
                      color="secondary"
@@ -77,7 +75,17 @@ const SelectTheMainIdeaModal = ({ onClose, open, onAddOptions }) => {
 }
 
 export default SelectTheMainIdeaModal
-const StyledSpanInModal = styled.span`
+
+const DivTitle = styled('div')`
+   margin: 42px 60px 16px;
+`
+
+const InputenteredValue = styled(Input)`
+   width: 517px;
+   margin: 16px 60px 34px 60px;
+`
+
+const StyledSpanInModal = styled('span')`
    font-family: 'DINNextRoundedLTW01-Regular';
    font-style: normal;
    font-weight: normal;
@@ -86,13 +94,15 @@ const StyledSpanInModal = styled.span`
    color: #4c4859;
    margin-left: 60px;
 `
-const StyledDivOfFooter = styled.div`
+
+const StyledDivOfFooter = styled('div')`
    width: 100%;
    margin-right: 60px;
    display: flex;
    justify-content: flex-end;
 `
-const StyledP = styled.p`
+
+const StyledP = styled('p')`
    padding: 0;
    font-family: 'DINNextRoundedLTW01-Regular';
    font-style: normal;
@@ -100,4 +110,9 @@ const StyledP = styled.p`
    font-size: 16px;
    line-height: 18px;
    color: #4b4759;
+`
+
+const ButtonGoBack = styled(Button)`
+   margin-right: 16px;
+   background: white;
 `

@@ -1,25 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Input from '../../../../components/UI/input/index'
 import Button from '../../../../components/UI/button/index'
 import SelectTheMainIdeaModal from './SelectTheMainIdeaModal'
 import OptionItem from './Options'
 import { addQuestionRequest } from '../../../../api/testService'
+import { testActions } from '../../../../store'
+import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
 
 const SelectTheMainIdea = () => {
    const [isOpenModal, setIsOpenModal] = React.useState(false)
    const { title, duration, type } = useSelector((state) => state.questions)
+   const transformedType = type.replace(/[\s.,%]/g, '')
+   const [words, setWords] = React.useState([])
+   const [passage, setPassage] = useState('')
+   const dispatch = useDispatch()
 
-   const [options, setoptions] = React.useState([])
-
-   const ckenckedHandler = (id) => {
-      const selectValue = options.find((el) => el.id === id)
-      const optionsWithSelected = options.map((el) => {
+   const checkedandler = (id) => {
+      const selectValue = words.find((el) => el.id === id)
+      const optionsWithSelected = words.map((el) => {
          if (el.id === selectValue.id) {
             return {
                ...selectValue,
-               isChecked: !selectValue.isChecked,
+               isTrue: !selectValue.isTrue,
             }
          }
          return {
@@ -27,12 +31,16 @@ const SelectTheMainIdea = () => {
          }
       })
 
-      setoptions(optionsWithSelected)
+      setWords(optionsWithSelected)
+   }
+
+   const onChangePassage = (e) => {
+      setPassage(e.target.value)
    }
 
    const deletText = (id) => {
-      const newText = options.filter((item) => item.id !== id)
-      setoptions(newText)
+      const newText = words.filter((item) => item.id !== id)
+      setWords(newText)
    }
 
    const openModalHandler = () => {
@@ -40,66 +48,100 @@ const SelectTheMainIdea = () => {
    }
 
    const addOptionsHandler = (enteredText) => {
-      const { enteredValue } = enteredText
-      setoptions((prevOptions) => {
+      const { enteredValue, isChecked } = enteredText
+      setWords((prevOptions) => {
          const updateOptions = [...prevOptions]
          updateOptions.push({
             word: enteredValue,
-            isTrue: true,
-            fileName: '',
+            isTrue: isChecked,
             id: Math.random().toString(),
          })
          return updateOptions
       })
    }
 
-   const selectMainIdeaFormHandler = (e) => {
+   const [formValue, setFormValue] = useState('')
+   const [message, setMessage] = useState('')
+   const [isModal, setIsModal] = useState(false)
+   const [error, setError] = useState(null)
+
+   const onCloseModal = () => {
+      setIsModal((prev) => !prev)
+   }
+
+   const clearSelectMAinIdeaState = () => {
+      setPassage('')
+      setWords([])
+   }
+
+   const selectMainIdeaFormHandler = async (e) => {
       e.preventDefault()
-      const selectIdeaData = {
-         options,
-         testId: 1,
-         type,
-         title,
-         duration,
+      try {
+         const selectIdeaData = {
+            words,
+            testId: 0,
+            type: transformedType,
+            title,
+            duration,
+            passage,
+         }
+         const responseResult = addQuestionRequest(selectIdeaData)
+         setFormValue((await responseResult).status)
+         setMessage('Question is saved')
+         setIsModal(true)
+         dispatch(testActions.resetQuestion())
+         clearSelectMAinIdeaState()
+      } catch (error) {
+         setIsModal(true)
+         setMessage('Unable to save question')
+         setError(error.message)
       }
-      addQuestionRequest(selectIdeaData)
    }
 
    return (
       <form onSubmit={selectMainIdeaFormHandler}>
+         <NotificationIconModal
+            open={isModal}
+            onConfirm={onCloseModal}
+            error={error}
+            success={formValue}
+            message={message}
+         />
          <div>
             <StyledP>Passage</StyledP>
-            <Input multiline sx={{ width: '100%' }} />
-            <Button
+            <InputPassage
+               value={passage}
+               onChange={onChangePassage}
+               multiline
+            />
+            <ButtonADDOptions
                onClick={openModalHandler}
                color="primary"
                variant="contained"
-               sx={{ m: '32px 0 22px', float: 'right' }}
             >
                + ADD OPTIONS
-            </Button>
+            </ButtonADDOptions>
             <SelectTheMainIdeaModal
                onAddOptions={addOptionsHandler}
                onClose={openModalHandler}
                open={isOpenModal}
             />
-
             <StyledContainer>
-               {options.map((option) => {
+               {words.map((option) => {
                   return (
                      <OptionItem
                         key={option.id}
                         option={option}
                         deletText={deletText}
-                        ckenckedHandler={ckenckedHandler}
+                        checkedandler={checkedandler}
                      />
                   )
                })}
             </StyledContainer>
             <StyledDivOfFooter>
-               <Button color="primary" variant="outlined" sx={{ mr: '16px' }}>
+               <ButtonGoBack color="primary" variant="outlined">
                   GO BACK
-               </Button>
+               </ButtonGoBack>
                <Button type="submit" color="secondary" variant="contained">
                   SAVE
                </Button>
@@ -111,18 +153,28 @@ const SelectTheMainIdea = () => {
 
 export default SelectTheMainIdea
 
-const StyledContainer = styled.ul`
+const InputPassage = styled(Input)`
+   width: 100;
+`
+
+const ButtonADDOptions = styled(Button)`
+   margin: 32px 0 22px;
+   float: right;
+`
+
+const StyledContainer = styled('ul')`
    width: 100%;
    padding: 0px;
    box-sizing: border-box;
    counter-reset: my-counter;
 `
 
-const StyledDivOfFooter = styled.div`
+const StyledDivOfFooter = styled('div')`
    width: 100%;
    display: flex;
    justify-content: flex-end;
 `
+
 const StyledP = styled.p`
    padding: 0;
    font-family: 'DINNextRoundedLTW01-Regular';
@@ -131,4 +183,8 @@ const StyledP = styled.p`
    font-size: 16px;
    line-height: 18px;
    color: #4b4759;
+`
+
+const ButtonGoBack = styled(Button)`
+   margin-right: 16px;
 `

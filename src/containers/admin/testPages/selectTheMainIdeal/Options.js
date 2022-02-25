@@ -3,15 +3,14 @@ import styled from 'styled-components'
 import ReCheckbox from '../../../../components/UI/checkbox'
 import Trash from '../../../../assets/icons/trash.svg'
 
-function OptionItem({ option, deletText, ckenckedHandler }) {
-   console.log(option)
+function OptionItem({ option, deletText, checkedandler }) {
    return (
       <Box>
-         <span style={{ width: '770px' }}>{option.word}</span>
+         <Span>{option.word}</Span>
          <StyledDivIcons>
             <ReCheckbox
-               checked={option.isChecked}
-               onChange={() => ckenckedHandler(option.id)}
+               checked={option.isTrue}
+               onChange={() => checkedandler(option.id)}
             />
             <StyledTrash
                key={option}
@@ -26,7 +25,11 @@ function OptionItem({ option, deletText, ckenckedHandler }) {
 
 export default OptionItem
 
-const Box = styled.li`
+const Span = styled('span')`
+   width: 770px;
+`
+
+const Box = styled('li')`
    width: 100%;
    min-height: 46px;
    margin-top: 18px;
@@ -45,12 +48,12 @@ const Box = styled.li`
    }
 `
 
-const StyledDivIcons = styled.div`
+const StyledDivIcons = styled('div')`
    width: 66px;
    display: flex;
    justify-content: space-between;
 `
-const StyledTrash = styled.img`
+const StyledTrash = styled('img')`
    width: 23px;
    height: 22px;
    margin-top: 9px;
