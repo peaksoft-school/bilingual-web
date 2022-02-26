@@ -11,8 +11,8 @@ import {
 } from '../../../../utils/constants/QuestionTypesAndOptions'
 import DescribeImage from '../../questionsPage/describeImage/DescribeImage'
 import { testActions } from '../../../../store'
-import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNWords'
 import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
+import RespondInAtLeastNWords from '../../questionsPage/respondInAtLeastNWords/RespondInAtLeastNWords'
 import HighLightTheAnswer from '../../questionsPage/highlightTheAnswer/HighLightTheAnswer'
 import RecordSayingStatement from '../../questionsPage/RecordSayingStatement/RecordSayingStatement'
 
