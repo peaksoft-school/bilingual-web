@@ -18,3 +18,7 @@ export const editQuestionRequest = (data) => {
 export const addQuestionRequest = (data) => {
    return axiosInstance.post(`api/admin/tests/question`, data)
 }
+
+export const uploadFileRequest = (fileData) => {
+   return axiosInstance.post(`api/files`, fileData)
+}
