@@ -2,30 +2,50 @@ import React from 'react'
 import styled from 'styled-components'
 import ReCheckbox from '../../../../components/UI/checkbox'
 import Trash from '../../../../assets/icons/trash.svg'
+import SoundIcon from '../../../../assets/icons/sound.svg'
 
-function WordItem({ words, deleteWord, checkedHandler }) {
+function ListenItem({ option, deleteWord, checkedHandler }) {
+   const [buttonName, setButtonName] = React.useState('Play')
+
+   const handleClick = () => {
+      if (buttonName === 'Play') {
+         option.fileName.play.play()
+         setButtonName('Pause')
+      } else {
+         option.fileName.play.pause()
+         setButtonName('Play')
+      }
+   }
    return (
       <Box>
-         <Item>{words.word}</Item>
+         <StyledIcon
+            key={option.id}
+            onClick={handleClick}
+            src={SoundIcon}
+            alt="volume"
+         >
+            {option.audio}
+         </StyledIcon>
+         <Item>{option.word}</Item>
          <StyledDivIcons>
             <ReCheckbox
-               checked={words.isChecked}
-               onClick={() => checkedHandler(words.id)}
+               checked={option.isTrue}
+               onClick={() => checkedHandler(option.id)}
             />
             <StyledTrash
                src={Trash}
                alt="trash"
-               onClick={() => deleteWord(words.id)}
+               onClick={() => deleteWord(option.id)}
             />
          </StyledDivIcons>
       </Box>
    )
 }
 
-export default WordItem
+export default ListenItem
 
 const Box = styled.li`
-   width: 280px;
+   min-width: 241px;
    height: 46px;
    margin-top: 18px;
    margin-right: 18px;
@@ -64,4 +84,9 @@ const StyledTrash = styled.img`
    width: 23px;
    height: 22px;
    margin-top: 9px;
+`
+const StyledIcon = styled.img`
+   width: 23px;
+   height: 22px;
+   /* margin-top: 19px; */
 `

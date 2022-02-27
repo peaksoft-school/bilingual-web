@@ -10,11 +10,11 @@ import {
    QUESTION_TYPES,
 } from '../../../../utils/constants/QuestionTypesAndOptions'
 import { testActions } from '../../../../store'
+import ListenAndSelectEnglishWords from '../listenAndSelectEnglishWords/ListenAndSelectEnglishWords'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()
-   const title = useSelector((state) => state.questions.title)
-   const duration = useSelector((state) => state.questions.duration)
+   const { title, duration, type } = useSelector((state) => state.questions)
 
    const titleChageHandler = (e) => {
       dispatch(testActions.setTitle(e.target.value))
@@ -53,14 +53,15 @@ const AddQuestionTypePage = () => {
             onChange={typeChageHandler}
             questionTypeChangeHandler={questionTypeChangeHandler}
             options={QUESTION_OPTIONS}
+            value={type}
          />
          {typeOfQuestion === QUESTION_TYPES.SELECT_THE_REAL_ENGLISH_WORD && (
             <SelectRealEnglishWord />
          )}
-         {/* {typeOfQuestion ===
+         {typeOfQuestion ===
             QUESTION_TYPES.LISTEN_AND_SELECT_REAL_ENGLISH_WORD && (
-            <ListenAndSelectRealEnglishWord />
-         )} */}
+            <ListenAndSelectEnglishWords />
+         )}
          {/* {typeOfQuestion ===
             QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
             < /> */}

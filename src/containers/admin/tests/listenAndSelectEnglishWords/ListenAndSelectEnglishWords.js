@@ -1,71 +1,117 @@
+/* eslint-disable no-await-in-loop */
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../../components/UI/button/index'
-import SelectRealEnglishWordModal from './SelectRealEnglishWordModal'
 import { testActions } from '../../../../store'
-import { addQuestionRequest } from '../../../../api/testService'
+import {
+   addQuestionRequest,
+   uploadFileRequest,
+} from '../../../../api/testService'
 import { ROUTES } from '../../../../utils/constants/general'
-import WordItem from './WordItem'
+import ListenItem from './ListenItem'
+import ListenAndSelectEnglishWordsModal from './ListenAndSelectEnglishWordModal'
 
-const SelectRealEnglishWord = () => {
+const ListenAndSelectEnglishWords = () => {
    const dispatch = useDispatch()
    const { title, duration, type } = useSelector((state) => state.questions)
    const navigate = useNavigate()
    const [isOpenModal, setIsOpenModal] = React.useState(false)
-   const [words, setWords] = useState([])
+   const [options, setOptions] = useState([])
+   const transformedType = type.replace(/[\s.,%]/g, '')
 
    const checkedHandler = (id) => {
-      const optionsWithSelected = words.map((el) => {
+      const optionsWithSelected = options.map((el) => {
          if (el.id === id) {
             return {
                ...el,
-               isChecked: !el.isChecked,
+               isTrue: !el.isTrue,
             }
          }
          return el
       })
 
-      setWords(optionsWithSelected)
+      setOptions(optionsWithSelected)
    }
-
    const deleteWord = (id) => {
-      const newWord = words.filter((item) => item.id !== id)
-      setWords(newWord)
+      const newWord = options.filter((item) => item.id !== id)
+      setOptions(newWord)
    }
 
    const openModalHandler = () => {
       setIsOpenModal((prev) => !prev)
    }
 
-   const addOptionsHandler = (text) => {
-      const { enteredValue, checkbox } = text
-      setWords((prevWords) => {
+   const uploadFile = async (file) => {
+      try {
+         const formData = new FormData()
+         formData.append('file', file)
+         const { data } = await uploadFileRequest(formData)
+         return data
+      } catch (error) {
+         return null
+      }
+   }
+
+   const sendFilesToApi = async () => {
+      let copyOfOptions = [...options]
+
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < options.length; i++) {
+         // 1
+         const currentOption = options[i] //
+         const audio = currentOption.fileName.file
+         const fileNameCameFrombackend = await uploadFile(audio)
+
+         if (fileNameCameFrombackend) {
+            copyOfOptions = copyOfOptions.map((item) => {
+               if (item.id === currentOption.id) {
+                  return {
+                     ...item,
+                     fileName: fileNameCameFrombackend,
+                  }
+               }
+
+               return item
+            })
+         }
+      }
+
+      return copyOfOptions
+   }
+
+   const addOptionsHandler = (optionData) => {
+      const { enteredValue, checkbox, audio } = optionData
+
+      setOptions((prevWords) => {
          const updateWords = [...prevWords]
          updateWords.push({
             word: enteredValue,
-            isTrue: true,
-            isChecked: checkbox,
+            isTrue: checkbox,
+            fileName: audio,
             id: uuidv4(),
          })
          return updateWords
       })
    }
 
-   const selectFormHandler = (e) => {
+   const selectFormHandler = async (e) => {
       e.preventDefault()
+
+      const updatedOptions = await sendFilesToApi()
       const data = {
-         words,
+         testId: 1,
+         type: transformedType,
          title,
          duration,
-         active: true,
+         options: updatedOptions,
       }
       dispatch(testActions.resetQuestion())
       navigate(ROUTES.SELECT_REAL_ENGLISH_WORDS)
-      setWords([])
-      addQuestionRequest(3, type, data)
+      setOptions([])
+      addQuestionRequest(data)
    }
 
    return (
@@ -79,16 +125,16 @@ const SelectRealEnglishWord = () => {
             >
                + ADD OPTIONS
             </Button>
-            <SelectRealEnglishWordModal
+            <ListenAndSelectEnglishWordsModal
                onAddOptions={addOptionsHandler}
                onClose={openModalHandler}
                open={isOpenModal}
             />
             <StyledContainer>
-               {words.map((option) => {
+               {options.map((option) => {
                   return (
-                     <WordItem
-                        words={option}
+                     <ListenItem
+                        option={option}
                         deleteWord={deleteWord}
                         checkedHandler={checkedHandler}
                      />
@@ -108,7 +154,7 @@ const SelectRealEnglishWord = () => {
    )
 }
 
-export default SelectRealEnglishWord
+export default ListenAndSelectEnglishWords
 
 const StyledContainer = styled.ul`
    width: 100%;
@@ -116,6 +162,7 @@ const StyledContainer = styled.ul`
    display: flex;
    flex-wrap: wrap;
    box-sizing: border-box;
+   counter-reset: my-counter;
 `
 const StyledDivOfModalFooter = styled.div`
    width: 100%;
