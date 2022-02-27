@@ -9,12 +9,19 @@ import {
    QUESTION_OPTIONS,
    QUESTION_TYPES,
 } from '../../../../utils/constants/QuestionTypesAndOptions'
+import DescribeImage from '../../questionsPage/describeImage/DescribeImage'
 import { testActions } from '../../../../store'
+import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
+import RespondInAtLeastNWords from '../../questionsPage/respondInAtLeastNWords/RespondInAtLeastNWords'
+import HighLightTheAnswer from '../../questionsPage/highlightTheAnswer/HighLightTheAnswer'
+import RecordSayingStatement from '../../questionsPage/RecordSayingStatement/RecordSayingStatement'
 import ListenAndSelectEnglishWords from '../listenAndSelectEnglishWords/ListenAndSelectEnglishWords'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()
-   const { title, duration, type } = useSelector((state) => state.questions)
+   const title = useSelector((state) => state.questions.title)
+   const duration = useSelector((state) => state.questions.duration)
+   const type = useSelector((state) => state.questions.type)
 
    const titleChageHandler = (e) => {
       dispatch(testActions.setTitle(e.target.value))
@@ -50,22 +57,32 @@ const AddQuestionTypePage = () => {
          </StyledDiv>
          <StyledP>Type</StyledP>
          <AppSelect
+            value={type}
             onChange={typeChageHandler}
             questionTypeChangeHandler={questionTypeChangeHandler}
             options={QUESTION_OPTIONS}
-            value={type}
          />
          {typeOfQuestion === QUESTION_TYPES.SELECT_THE_REAL_ENGLISH_WORD && (
             <SelectRealEnglishWord />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.DESCRIBE_IMAGE && <DescribeImage />}
+         {typeOfQuestion === QUESTION_TYPES.RESPOND_IN_AT_LEAST_N_WORDS && (
+            <RespondInAtLeastNWords />
          )}
          {typeOfQuestion ===
             QUESTION_TYPES.LISTEN_AND_SELECT_REAL_ENGLISH_WORD && (
             <ListenAndSelectEnglishWords />
          )}
-         {/* {typeOfQuestion ===
-            QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
-            < /> */}
-         {/* )} */}
+
+         {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
+            <TypeWhatYouHear />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.HIGLIGHT_THE_ANSWER && (
+            <HighLightTheAnswer />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.RECORD_SAYING_STATEMENT && (
+            <RecordSayingStatement />
+         )}
       </ContentCard>
    )
 }
