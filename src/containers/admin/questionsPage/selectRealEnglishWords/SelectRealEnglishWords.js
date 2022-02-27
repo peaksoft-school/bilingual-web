@@ -71,14 +71,13 @@ const SelectRealEnglishWord = () => {
    return (
       <div>
          <form onSubmit={selectFormHandler}>
-            <Button
+            <StledButton
                onClick={openModalHandler}
                color="primary"
                variant="contained"
-               sx={{ m: '32px 0 4px', float: 'right' }}
             >
                + ADD OPTIONS
-            </Button>
+            </StledButton>
             <SelectRealEnglishWordModal
                onAddOptions={addOptionsHandler}
                onClose={openModalHandler}
@@ -96,9 +95,9 @@ const SelectRealEnglishWord = () => {
                })}
             </StyledContainer>
             <StyledDivOfModalFooter>
-               <Button color="primary" variant="outlined" sx={{ mr: '16px' }}>
+               <StyledBtn color="primary" variant="outlined">
                   GO BACK
-               </Button>
+               </StyledBtn>
                <Button type="submit" color="secondary" variant="contained">
                   SAVE
                </Button>
@@ -121,4 +120,11 @@ const StyledDivOfModalFooter = styled.div`
    width: 100%;
    display: flex;
    justify-content: flex-end;
+`
+const StledButton = styled(Button)`
+   margin: 32px 0 4px;
+   float: right;
+`
+const StyledBtn = styled(Button)`
+   margin-right: 16px;
 `

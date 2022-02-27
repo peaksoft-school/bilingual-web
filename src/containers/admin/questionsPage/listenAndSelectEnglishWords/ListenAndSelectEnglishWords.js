@@ -13,13 +13,22 @@ import {
 import { ROUTES } from '../../../../utils/constants/general'
 import ListenItem from './ListenItem'
 import ListenAndSelectEnglishWordsModal from './ListenAndSelectEnglishWordModal'
+import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
 
 const ListenAndSelectEnglishWords = () => {
    const dispatch = useDispatch()
    const { title, duration, type } = useSelector((state) => state.questions)
    const navigate = useNavigate()
-   const [isOpenModal, setIsOpenModal] = React.useState(false)
    const [options, setOptions] = useState([])
+   const [isOpenModal, setIsOpenModal] = React.useState(false)
+   const [isModal, setIsModal] = useState(false)
+   const [message, setMessage] = useState('')
+   const [error, setError] = useState(null)
+   const [datas, setDatas] = useState('')
+
+   const onCloseModalHandler = () => {
+      setIsModal((prevState) => !prevState)
+   }
    const transformedType = type.replace(/[\s.,%]/g, '')
 
    const checkedHandler = (id) => {
@@ -60,7 +69,6 @@ const ListenAndSelectEnglishWords = () => {
 
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < options.length; i++) {
-         // 1
          const currentOption = options[i] //
          const audio = currentOption.fileName.file
          const fileNameCameFrombackend = await uploadFile(audio)
@@ -99,32 +107,46 @@ const ListenAndSelectEnglishWords = () => {
 
    const selectFormHandler = async (e) => {
       e.preventDefault()
-
-      const updatedOptions = await sendFilesToApi()
-      const data = {
-         testId: 1,
-         type: transformedType,
-         title,
-         duration,
-         options: updatedOptions,
+      try {
+         const updatedOptions = await sendFilesToApi()
+         const data = {
+            testId: 1,
+            type: transformedType,
+            title,
+            duration,
+            options: updatedOptions,
+         }
+         const response = await addQuestionRequest(data)
+         setDatas(response.status)
+         setMessage('Question is saved')
+         setIsModal(true)
+         setOptions([])
+         dispatch(testActions.resetQuestion())
+         navigate(ROUTES.SELECT_REAL_ENGLISH_WORDS)
+      } catch (error) {
+         setIsModal(true)
+         setMessage('Unable to save question')
+         setError(error.message)
       }
-      dispatch(testActions.resetQuestion())
-      navigate(ROUTES.SELECT_REAL_ENGLISH_WORDS)
-      setOptions([])
-      addQuestionRequest(data)
    }
 
    return (
       <div>
+         <NotificationIconModal
+            open={isModal}
+            onConfirm={onCloseModalHandler}
+            error={error}
+            success={datas}
+            message={message}
+         />
          <form onSubmit={selectFormHandler}>
-            <Button
+            <StledButton
                onClick={openModalHandler}
                color="primary"
                variant="contained"
-               sx={{ m: '32px 0 4px', float: 'right' }}
             >
                + ADD OPTIONS
-            </Button>
+            </StledButton>
             <ListenAndSelectEnglishWordsModal
                onAddOptions={addOptionsHandler}
                onClose={openModalHandler}
@@ -134,6 +156,7 @@ const ListenAndSelectEnglishWords = () => {
                {options.map((option) => {
                   return (
                      <ListenItem
+                        key={option.id}
                         option={option}
                         deleteWord={deleteWord}
                         checkedHandler={checkedHandler}
@@ -142,9 +165,9 @@ const ListenAndSelectEnglishWords = () => {
                })}
             </StyledContainer>
             <StyledDivOfModalFooter>
-               <Button color="primary" variant="outlined" sx={{ mr: '16px' }}>
+               <StyledBtn color="primary" variant="outlined">
                   GO BACK
-               </Button>
+               </StyledBtn>
                <Button type="submit" color="secondary" variant="contained">
                   SAVE
                </Button>
@@ -168,4 +191,11 @@ const StyledDivOfModalFooter = styled.div`
    width: 100%;
    display: flex;
    justify-content: flex-end;
+`
+const StyledBtn = styled(Button)`
+   margin-right: 16px;
+`
+const StledButton = styled(Button)`
+   margin: 32px 0 4px;
+   float: right;
 `

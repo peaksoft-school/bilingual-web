@@ -7,17 +7,14 @@ import ModalWrapper, {
 } from '../../../../components/UI/modal/ModalWrapper'
 import Input from '../../../../components/UI/input'
 
-const ListenAndSelectEnglishWordsModal = ({ onClose, open, onAddOptions }) => {
+const SelectRealEnglishWordModal = ({ onClose, open, onAddOptions }) => {
    const [enteredValue, setEnteredValue] = useState('')
    const [checkbox, setCheckBox] = useState(false)
-   const [audio, setAudio] = useState(null)
+
    const goalInputChangeHandler = (event) => {
       setEnteredValue(event.target.value)
    }
-
-   const isFormValid = () => {
-      return enteredValue.length && audio
-   }
+   const enabled = enteredValue.length > 0
 
    const formSubmitHandler = (event) => {
       event.preventDefault()
@@ -25,25 +22,11 @@ const ListenAndSelectEnglishWordsModal = ({ onClose, open, onAddOptions }) => {
       const answer = {
          enteredValue,
          checkbox,
-         audio,
       }
       onAddOptions(answer)
       setCheckBox(false)
       setEnteredValue('')
       onClose()
-      clearState()
-   }
-   const audioHandler = (e) => {
-      if (e.target.files[0]) {
-         setAudio({
-            file: e.target.files[0],
-            play: new Audio(URL.createObjectURL(e.target.files[0])),
-         })
-      }
-   }
-
-   const clearState = () => {
-      setAudio(null)
    }
 
    return (
@@ -53,24 +36,10 @@ const ListenAndSelectEnglishWordsModal = ({ onClose, open, onAddOptions }) => {
                <StyledSpan>Title</StyledSpan>
             </Div>
 
-            <Input
+            <InputStyled
                value={enteredValue}
                onChange={goalInputChangeHandler}
-               style={{ width: '517px', padding: '0px 60px' }}
             />
-            <Style>
-               <label htmlFor="contained-button-file">
-                  <InputUpload
-                     accept="audio/mp3 audio/mpeg"
-                     id="contained-button-file"
-                     multiple
-                     type="file"
-                     onChange={audioHandler}
-                  />
-                  <Button component="span">Uppload audio file</Button>
-               </label>
-               <Span>{(audio && audio.file.name) || ''}</Span>
-            </Style>
             <div>
                <StyledSpanInModal>Is true option?</StyledSpanInModal>
                <ReCheckbox
@@ -81,19 +50,18 @@ const ListenAndSelectEnglishWordsModal = ({ onClose, open, onAddOptions }) => {
             </div>
             <ModalFooter>
                <StyledDivOfModalFooter>
-                  <Button
+                  <StyledBtn
                      color="primary"
                      variant="outlined"
-                     sx={{ mr: '16px', background: 'white' }}
                      onClick={onClose}
                   >
                      GO BACK
-                  </Button>
+                  </StyledBtn>
                   <Button
                      type="submit"
                      color="secondary"
                      variant="contained"
-                     disabled={!isFormValid()}
+                     disabled={!enabled}
                   >
                      SAVE
                   </Button>
@@ -104,7 +72,7 @@ const ListenAndSelectEnglishWordsModal = ({ onClose, open, onAddOptions }) => {
    )
 }
 
-export default ListenAndSelectEnglishWordsModal
+export default SelectRealEnglishWordModal
 const StyledSpanInModal = styled.span`
    font-family: 'DINNextRoundedLTW01-Regular';
    font-style: normal;
@@ -133,14 +101,12 @@ const StyledSpan = styled.span`
 const Div = styled.div`
    margin: 42px 60px 16px;
 `
-const InputUpload = styled(Input)`
-   display: none;
-   padding-top: 30px;
+const StyledBtn = styled(Button)`
+   margin-right: 16px;
+   background-color: white;
+   border-radius: 8px;
 `
-const Style = styled.div`
-   padding: 25px 0px 43px 60px;
-`
-
-const Span = styled.span`
-   padding-left: 20px;
+const InputStyled = styled(Input)`
+   width: 517px;
+   padding: 0px 60px;
 `

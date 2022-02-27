@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import ReCheckbox from '../../../../components/UI/checkbox'
-import Trash from '../../../../assets/icons/trash.svg'
+import { ReactComponent as Trash } from '../../../../assets/icons/trash.svg'
 import SoundIcon from '../../../../assets/icons/sound.svg'
 
 function ListenItem({ option, deleteWord, checkedHandler }) {
@@ -32,11 +32,7 @@ function ListenItem({ option, deleteWord, checkedHandler }) {
                checked={option.isTrue}
                onClick={() => checkedHandler(option.id)}
             />
-            <StyledTrash
-               src={Trash}
-               alt="trash"
-               onClick={() => deleteWord(option.id)}
-            />
+            <StyledTrash onClick={() => deleteWord(option.id)} />
          </StyledDivIcons>
       </Box>
    )
@@ -79,14 +75,20 @@ const StyledDivIcons = styled.div`
    width: 66px;
    display: flex;
    justify-content: space-between;
+   cursor: pointer;
 `
-const StyledTrash = styled.img`
+const StyledTrash = styled(Trash)`
    width: 23px;
    height: 22px;
    margin-top: 9px;
+   cursor: pointer;
+   color: #9a9a9a;
+   :hover {
+      color: red;
+   }
 `
 const StyledIcon = styled.img`
    width: 23px;
    height: 22px;
-   /* margin-top: 19px; */
+   cursor: pointer;
 `

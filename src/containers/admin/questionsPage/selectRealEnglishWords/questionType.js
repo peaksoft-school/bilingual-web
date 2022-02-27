@@ -9,13 +9,14 @@ import {
    QUESTION_OPTIONS,
    QUESTION_TYPES,
 } from '../../../../utils/constants/QuestionTypesAndOptions'
-import DescribeImage from '../../questionsPage/describeImage/DescribeImage'
+
 import { testActions } from '../../../../store'
-import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
-import RespondInAtLeastNWords from '../../questionsPage/respondInAtLeastNWords/RespondInAtLeastNWords'
-import HighLightTheAnswer from '../../questionsPage/highlightTheAnswer/HighLightTheAnswer'
-import RecordSayingStatement from '../../questionsPage/RecordSayingStatement/RecordSayingStatement'
 import ListenAndSelectEnglishWords from '../listenAndSelectEnglishWords/ListenAndSelectEnglishWords'
+import TypeWhatYouHear from '../typeWhatYouHear/TypeWhatYouHear'
+import DescribeImage from '../describeImage/DescribeImage'
+import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNWords'
+import HighLightTheAnswer from '../highlightTheAnswer/HighLightTheAnswer'
+import RecordSayingStatement from '../RecordSayingStatement/RecordSayingStatement'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()

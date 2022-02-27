@@ -4,7 +4,7 @@ import { getFromLocalStorage } from '../utils/helpers/localstorege/localStorege'
 
 const token = getFromLocalStorage(BILINGUAL_TOKEN)
 const headers = {
-   Authorization: `Bearer ${'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2NDU4NjYyMTIsImV4cCI6MTY1NDUwNjIxMn0.vcjLyxzBU0O38GajKL4rkGzXsXVDa3BVVOGQ0HGbBAk01al7Sl1g1He7fSyVV9LKzZON7bRFDDArT-nvQJiYSA'}`,
+   Authorization: `Bearer ${token}`,
 }
 
 export const axiosInstance = axios.create({
