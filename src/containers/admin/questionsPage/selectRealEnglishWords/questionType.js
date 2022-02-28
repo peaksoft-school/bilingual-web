@@ -16,6 +16,7 @@ import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNW
 import TypeWhatYouHear from '../typeWhatYouHear/TypeWhatYouHear'
 import HighLightTheAnswer from '../highlightTheAnswer/HighLightTheAnswer'
 import SelectBestTitle from '../selectBestTitle/SelectBestTitle'
+import SelectTheMainIdea from '../selectTheMainIdeal/SelectTheMainIdea'
 import RecordSayingStatement from '../RecordSayingStatement/RecordSayingStatement'
 
 const AddQuestionTypePage = () => {
@@ -77,6 +78,9 @@ const AddQuestionTypePage = () => {
 
          {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
             <TypeWhatYouHear />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.SELECT_THE_MAIN_IDEA && (
+            <SelectTheMainIdea />
          )}
          {typeOfQuestion === QUESTION_TYPES.HIGLIGHT_THE_ANSWER && (
             <HighLightTheAnswer />
