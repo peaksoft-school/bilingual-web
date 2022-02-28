@@ -9,14 +9,14 @@ import {
    QUESTION_OPTIONS,
    QUESTION_TYPES,
 } from '../../../../utils/constants/QuestionTypesAndOptions'
-
 import { testActions } from '../../../../store'
 import ListenAndSelectEnglishWords from '../listenAndSelectEnglishWords/ListenAndSelectEnglishWords'
-import TypeWhatYouHear from '../typeWhatYouHear/TypeWhatYouHear'
-import SelectTheMainIdea from '../selectTheMainIdeal/SelectTheMainIdea'
-import HighLightTheAnswer from '../highlightTheAnswer/HighLightTheAnswer'
 import DescribeImage from '../describeImage/DescribeImage'
 import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNWords'
+import TypeWhatYouHear from '../typeWhatYouHear/TypeWhatYouHear'
+import HighLightTheAnswer from '../highlightTheAnswer/HighLightTheAnswer'
+import SelectBestTitle from '../selectBestTitle/SelectBestTitle'
+import SelectTheMainIdea from '../selectTheMainIdeal/SelectTheMainIdea'
 import RecordSayingStatement from '../RecordSayingStatement/RecordSayingStatement'
 
 const AddQuestionTypePage = () => {
@@ -84,6 +84,9 @@ const AddQuestionTypePage = () => {
          )}
          {typeOfQuestion === QUESTION_TYPES.HIGLIGHT_THE_ANSWER && (
             <HighLightTheAnswer />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.SELSECT_BEST_TITLE && (
+            <SelectBestTitle />
          )}
          {typeOfQuestion === QUESTION_TYPES.RECORD_SAYING_STATEMENT && (
             <RecordSayingStatement />
