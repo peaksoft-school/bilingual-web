@@ -1,17 +1,37 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import {
+   deleteTestRequest,
+   getAllTestRequest,
+} from '../../../../api/testService'
 import ContentCard from '../../../../components/UI/adminContentCard/index'
 import Button from '../../../../components/UI/button/index'
 import TestItems from './TestItems'
 
 const TestPage = () => {
-   const navigate = useNavigate()
-
    const [tests, setTests] = React.useState([])
+   const getTestTitle = async () => {
+      try {
+         const response = await getAllTestRequest()
+         setTests(response.data)
+      } catch (error) {
+         console.log(error)
+      }
+   }
 
+   React.useEffect(() => {
+      getTestTitle()
+   }, [])
+
+   const navigate = useNavigate()
    const onClickToAddNewTest = () => {
       navigate('/addNewTest')
+   }
+
+   const onClickToDelete = async (id) => {
+      await deleteTestRequest(id)
+      await getTestTitle()
    }
 
    return (
@@ -30,7 +50,10 @@ const TestPage = () => {
                return (
                   <StyledLists key={test.id}>
                      <StyledSpan>{test.title}</StyledSpan>
-                     <TestItems />
+                     <TestItems
+                        id={test.id}
+                        onClickToDelete={onClickToDelete}
+                     />
                   </StyledLists>
                )
             })}

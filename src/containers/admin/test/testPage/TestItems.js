@@ -1,15 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import SwitchButton from '../../../../components/UI/switchButton/index'
-import Edit from '../../../../assets/icons/edit.svg'
-import Trash from '../../../../assets/icons/trash.svg'
+import { ReactComponent as Edit } from '../../../../assets/icons/edit.svg'
+import { ReactComponent as Trash } from '../../../../assets/icons/trash.svg'
+import ConfirmModal from '../../../../components/UI/modal/ConfirmModal'
 
-const TestItems = () => {
+const TestItems = ({ onClickToDelete, id }) => {
    const navigate = useNavigate()
 
    const [accessToTest, setAccessToTest] = React.useState(false)
-
    const onChangeHandlerSwitcher = () => {
       setAccessToTest((prev) => !prev)
    }
@@ -18,6 +18,14 @@ const TestItems = () => {
       navigate('/addQuestionsPage')
    }
 
+   const [confirmDeleteModal, setConfirmDeleteModal] = React.useState(false)
+   const modalHandler = () => {
+      setConfirmDeleteModal((prev) => !prev)
+   }
+   const deleteHandler = () => {
+      onClickToDelete(id)
+      modalHandler()
+   }
    return (
       <StyledIconsDiv>
          <SwitchButton
@@ -25,12 +33,20 @@ const TestItems = () => {
             onChange={onChangeHandlerSwitcher}
             checked={accessToTest}
          />
-         <StyledButton type="button" onClick={onClickToEdit}>
-            <StyledEdit src={Edit} alt="edit" />
+         <Link to={`addQuestionsPage/${id}`} key={id}>
+            <StyledButton type="button" onClick={onClickToEdit}>
+               <StyledEdit />
+            </StyledButton>
+         </Link>
+
+         <StyledButton type="button" onClick={modalHandler}>
+            <StyledTresh />
          </StyledButton>
-         <StyledButton type="button">
-            <StyledTresh src={Trash} alt="trash" />
-         </StyledButton>
+         <ConfirmModal
+            open={confirmDeleteModal}
+            onClose={modalHandler}
+            onDelete={deleteHandler}
+         />
       </StyledIconsDiv>
    )
 }
@@ -47,11 +63,19 @@ const StyledIconsDiv = styled.div`
    display: flex;
    justify-content: space-between;
 `
-const StyledTresh = styled.img`
+const StyledTresh = styled(Trash)`
    width: 22px;
    height: 22px;
+   color: #9a9a9a;
+   :hover {
+      color: #f61414;
+   }
 `
-const StyledEdit = styled.img`
+const StyledEdit = styled(Edit)`
    width: 22px;
    height: 22px;
+   color: #9a9a9a;
+   :hover {
+      color: #0f85f1;
+   }
 `
