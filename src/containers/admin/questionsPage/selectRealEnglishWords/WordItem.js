@@ -37,12 +37,23 @@ const Box = styled.li`
    display: flex;
    justify-content: space-between;
    align-items: center;
+   &::before {
+      content: counter(my-counter);
+      counter-increment: my-counter;
+      color: black;
+      width: 20px;
+   }
 `
 
 const Item = styled.span`
-   padding: 5px;
-   text-align: center;
-   color: 'green';
+   font-family: 'DINNextRoundedLTW01-Regular';
+   font-style: normal;
+   font-weight: 700;
+   font-size: 18px;
+   line-height: 16px;
+   color: #4c4859;
+   margin-right: 10px;
+   margin-left: 17px;
 `
 const StyledDivIcons = styled.div`
    width: 66px;

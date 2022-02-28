@@ -9,12 +9,14 @@ import {
    QUESTION_OPTIONS,
    QUESTION_TYPES,
 } from '../../../../utils/constants/QuestionTypesAndOptions'
-import DescribeImage from '../../questionsPage/describeImage/DescribeImage'
 import { testActions } from '../../../../store'
+import ListenAndSelectEnglishWords from '../listenAndSelectEnglishWords/ListenAndSelectEnglishWords'
+import DescribeImage from '../describeImage/DescribeImage'
 import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNWords'
-import TypeWhatYouHear from '../../questionsPage/typeWhatYouHear/TypeWhatYouHear'
-import HighLightTheAnswer from '../../questionsPage/highlightTheAnswer/HighLightTheAnswer'
-import SelectBestTitle from '../../questionsPage/selectBestTitle/SelectBestTitle'
+import TypeWhatYouHear from '../typeWhatYouHear/TypeWhatYouHear'
+import HighLightTheAnswer from '../highlightTheAnswer/HighLightTheAnswer'
+import SelectBestTitle from '../selectBestTitle/SelectBestTitle'
+import RecordSayingStatement from '../RecordSayingStatement/RecordSayingStatement'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()
@@ -68,14 +70,11 @@ const AddQuestionTypePage = () => {
          {typeOfQuestion === QUESTION_TYPES.RESPOND_IN_AT_LEAST_N_WORDS && (
             <RespondInAtLeastNWords />
          )}
-         {/* {typeOfQuestion ===
+         {typeOfQuestion ===
             QUESTION_TYPES.LISTEN_AND_SELECT_REAL_ENGLISH_WORD && (
-            <ListenAndSelectRealEnglishWord />
-         )} */}
-         {/* {typeOfQuestion ===
-            QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
-            < /> */}
-         {/* )} */}
+            <ListenAndSelectEnglishWords />
+         )}
+
          {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
             <TypeWhatYouHear />
          )}
@@ -84,6 +83,9 @@ const AddQuestionTypePage = () => {
          )}
          {typeOfQuestion === QUESTION_TYPES.SELSECT_BEST_TITLE && (
             <SelectBestTitle />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.RECORD_SAYING_STATEMENT && (
+            <RecordSayingStatement />
          )}
       </ContentCard>
    )
