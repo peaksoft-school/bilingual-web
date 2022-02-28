@@ -13,9 +13,10 @@ import {
 import { testActions } from '../../../../store'
 import ListenAndSelectEnglishWords from '../listenAndSelectEnglishWords/ListenAndSelectEnglishWords'
 import TypeWhatYouHear from '../typeWhatYouHear/TypeWhatYouHear'
+import SelectTheMainIdea from '../selectTheMainIdeal/SelectTheMainIdea'
+import HighLightTheAnswer from '../highlightTheAnswer/HighLightTheAnswer'
 import DescribeImage from '../describeImage/DescribeImage'
 import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNWords'
-import HighLightTheAnswer from '../highlightTheAnswer/HighLightTheAnswer'
 import RecordSayingStatement from '../RecordSayingStatement/RecordSayingStatement'
 
 const AddQuestionTypePage = () => {
@@ -77,6 +78,9 @@ const AddQuestionTypePage = () => {
 
          {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
             <TypeWhatYouHear />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.SELECT_THE_MAIN_IDEA && (
+            <SelectTheMainIdea />
          )}
          {typeOfQuestion === QUESTION_TYPES.HIGLIGHT_THE_ANSWER && (
             <HighLightTheAnswer />
