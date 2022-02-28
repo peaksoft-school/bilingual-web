@@ -19,11 +19,11 @@ const SelectTheMainIdea = () => {
    const dispatch = useDispatch()
 
    const checkedandler = (id) => {
-      const selectValue = words.find((el) => el.id === id)
       const optionsWithSelected = words.map((el) => {
-         if (el.id === selectValue.id) {
+         if (el.id === id) {
             return {
-               isTrue: !selectValue.isTrue,
+               ...el,
+               isTrue: !el.isTrue,
             }
          }
          return el
