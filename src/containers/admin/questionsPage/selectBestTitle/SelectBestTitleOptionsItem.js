@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import ReCheckbox from '../../../../components/UI/checkbox'
 import Trash from '../../../../assets/icons/trash.svg'
 
-function SelectBestTitleOptionsItem({ option, deletText, checkedandler }) {
+function SelectBestTitleOptionsItem({ option, deletText, checkedHandler }) {
    return (
       <Box>
          <Span>{option.word}</Span>
          <StyledDivIcons>
             <ReCheckbox
                checked={option.isTrue}
-               onChange={() => checkedandler(option.id)}
+               onChange={() => checkedHandler(option.id)}
             />
             <StyledTrash
                key={option}
