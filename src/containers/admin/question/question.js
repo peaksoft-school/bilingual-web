@@ -1,23 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
-import ContentCard from '../../../../components/UI/adminContentCard/index'
-import AppSelect from '../../../../components/UI/select'
-import Input from '../../../../components/UI/input/index'
-import SelectRealEnglishWord from './SelectRealEnglishWords'
+import ContentCard from '../../../components/UI/adminContentCard/index'
+import AppSelect from '../../../components/UI/select'
+import Input from '../../../components/UI/input/index'
+import SelectRealEnglishWord from './selectRealEnglishWords/SelectRealEnglishWords'
 import {
    QUESTION_OPTIONS,
    QUESTION_TYPES,
-} from '../../../../utils/constants/QuestionTypesAndOptions'
-import { testActions } from '../../../../store'
-import ListenAndSelectEnglishWords from '../listenAndSelectEnglishWords/ListenAndSelectEnglishWords'
-import DescribeImage from '../describeImage/DescribeImage'
-import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNWords'
-import TypeWhatYouHear from '../typeWhatYouHear/TypeWhatYouHear'
-import HighLightTheAnswer from '../highlightTheAnswer/HighLightTheAnswer'
-import SelectBestTitle from '../selectBestTitle/SelectBestTitle'
-import SelectTheMainIdea from '../selectTheMainIdeal/SelectTheMainIdea'
-import RecordSayingStatement from '../RecordSayingStatement/RecordSayingStatement'
+} from '../../../utils/constants/QuestionTypesAndOptions'
+import { testActions } from '../../../store'
+import ListenAndSelectEnglishWords from './listenAndSelectEnglishWords/ListenAndSelectEnglishWords'
+import DescribeImage from './describeImage/DescribeImage'
+import RespondInAtLeastNWords from './respondInAtLeastNWords/RespondInAtLeastNWords'
+import TypeWhatYouHear from './typeWhatYouHear/TypeWhatYouHear'
+import HighLightTheAnswer from './highlightTheAnswer/HighLightTheAnswer'
+import SelectBestTitle from './selectBestTitle/SelectBestTitle'
+import SelectTheMainIdea from './selectTheMainIdeal/SelectTheMainIdea'
+import RecordSayingStatement from './RecordSayingStatement/RecordSayingStatement'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()

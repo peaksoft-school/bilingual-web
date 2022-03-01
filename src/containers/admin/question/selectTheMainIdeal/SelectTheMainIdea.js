@@ -77,7 +77,7 @@ const SelectTheMainIdea = () => {
       try {
          const selectIdeaData = {
             words,
-            testId: 1,
+            testId: 20,
             type: transformedType,
             title,
             duration,
