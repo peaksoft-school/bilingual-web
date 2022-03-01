@@ -9,20 +9,30 @@ import { testActions } from '../../../../store'
 import { addQuestionRequest } from '../../../../api/testService'
 import { ROUTES } from '../../../../utils/constants/general'
 import WordItem from './WordItem'
+import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
 
 const SelectRealEnglishWord = () => {
    const dispatch = useDispatch()
    const { title, duration, type } = useSelector((state) => state.questions)
    const navigate = useNavigate()
-   const [isOpenModal, setIsOpenModal] = React.useState(false)
+   const [isOpenModal, setIsOpenModal] = useState(false)
    const [words, setWords] = useState([])
 
+   const [isModal, setIsModal] = useState(false)
+   const [message, setMessage] = useState('')
+   const [error, setError] = useState(null)
+   const [datas, setDatas] = useState('')
+
+   const onCloseModalHandler = () => {
+      setIsModal((prevState) => !prevState)
+   }
+   const transformedType = type.replace(/[\s.,%]/g, '')
    const checkedHandler = (id) => {
       const optionsWithSelected = words.map((el) => {
          if (el.id === id) {
             return {
                ...el,
-               isChecked: !el.isChecked,
+               isTrue: !el.isTrue,
             }
          }
          return el
@@ -46,31 +56,50 @@ const SelectRealEnglishWord = () => {
          const updateWords = [...prevWords]
          updateWords.push({
             word: enteredValue,
-            isTrue: true,
-            isChecked: checkbox,
+            isTrue: checkbox,
+            // isChecked: checkbox,
             id: uuidv4(),
          })
          return updateWords
       })
    }
 
-   const selectFormHandler = (e) => {
+   const selectFormHandler = async (e) => {
       e.preventDefault()
-      const data = {
-         words,
-         title,
-         duration,
-         active: true,
+      try {
+         const data = {
+            testId: 1,
+            type: transformedType,
+            words,
+            title,
+            duration,
+            // active: true,
+         }
+         console.log(data)
+         const response = await addQuestionRequest(data)
+         setDatas(response.status)
+         setMessage('Question is saved')
+         setIsModal(true)
+         setWords([])
+         dispatch(testActions.resetQuestion())
+         navigate(ROUTES.SELECT_REAL_ENGLISH_WORDS)
+      } catch (error) {
+         setIsModal(true)
+         setMessage('Unable to save question')
+         setError(error.message)
       }
-      console.log(data)
-      dispatch(testActions.resetQuestion())
-      navigate(ROUTES.SELECT_REAL_ENGLISH_WORDS)
-      setWords([])
-      addQuestionRequest(3, type, data)
+      // addQuestionRequest(3, type, data)
    }
 
    return (
       <div>
+         <NotificationIconModal
+            open={isModal}
+            onConfirm={onCloseModalHandler}
+            error={error}
+            success={datas}
+            message={message}
+         />
          <form onSubmit={selectFormHandler}>
             <StledButton
                onClick={openModalHandler}
@@ -88,6 +117,7 @@ const SelectRealEnglishWord = () => {
                {words.map((option) => {
                   return (
                      <WordItem
+                        key={option.id}
                         words={option}
                         deleteWord={deleteWord}
                         checkedHandler={checkedHandler}

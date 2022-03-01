@@ -9,7 +9,7 @@ function WordItem({ words, deleteWord, checkedHandler }) {
          <Item>{words.word}</Item>
          <StyledDivIcons>
             <ReCheckbox
-               checked={words.isChecked}
+               checked={words.isTrue}
                onClick={() => checkedHandler(words.id)}
             />
             <StyledTrash
