@@ -17,18 +17,7 @@ const SelectBestTitle = () => {
    const [words, setWords] = React.useState([])
    const [passage, setPassage] = useState('')
    const dispatch = useDispatch()
-   const checkedHandler = (id) => {
-      const optionsWithSelected = words.map((el) => {
-         if (el.id === id) {
-            return {
-               ...el,
-               correct: !el.correct,
-            }
-         }
-         return el
-      })
-      setWords(optionsWithSelected)
-   }
+
    const onChangePassage = (e) => {
       setPassage(e.target.value)
    }
@@ -128,7 +117,6 @@ const SelectBestTitle = () => {
                {words.map((option) => {
                   return (
                      <SelectBestTitleOptionsItem
-                        checkedHandler={checkedHandler}
                         key={option.id}
                         option={option}
                         deletText={deletText}
