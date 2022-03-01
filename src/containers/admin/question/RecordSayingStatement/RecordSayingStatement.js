@@ -1,62 +1,51 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import Input from '../../../../components/UI/input/index'
-import Button from '../../../../components/UI/button/index'
-import { testActions } from '../../../../store'
+import styled from 'styled-components'
 import { addQuestionRequest } from '../../../../api/testService'
+
+import Button from '../../../../components/UI/button/index'
 import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
+import { testActions } from '../../../../store'
 import { ROUTES } from '../../../../utils/constants/general'
 
-const RespondInAtLeastNWords = () => {
+const RecordSayingStatement = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { title, duration, type } = useSelector((state) => state.questions)
 
-   const [questionStatement, setQuestionStatement] = useState('')
-   const [numberOfWords, setNumberOfWords] = useState('')
+   const [statement, setStatement] = useState('')
    const [isModal, setIsModal] = useState(false)
    const [message, setMessage] = useState('')
    const [error, setError] = useState(null)
    const [datas, setDatas] = useState('')
 
-   const enabled =
-      questionStatement.trim() &&
-      numberOfWords.trim() &&
-      title.trim() &&
-      duration.trim()
-
-   const statementRespond = (event) => {
-      setQuestionStatement(event.target.value)
-   }
-   const respondOfNumbers = (event) => {
-      setNumberOfWords(event.target.value)
-   }
+   const enabled = () => statement.trim() && title.trim() && duration.trim()
 
    const onCloseModalHandler = () => {
       setIsModal((prevState) => !prevState)
    }
 
-   const respondLeastWordsHandler = async (event) => {
+   const statementRecord = (event) => {
+      setStatement(event.target.value)
+   }
+
+   const recordSayingHandler = async (event) => {
       event.preventDefault()
       try {
-         const countOfWords = +numberOfWords
-         const respondData = {
+         const recordData = {
             testId: 1,
             type,
             title,
             duration,
-            questionStatement,
-            countOfWords,
+            statement,
          }
-         const response = await addQuestionRequest(respondData)
+         const response = await addQuestionRequest(recordData)
          setDatas(response.status)
          setMessage('Question is saved')
          setIsModal(true)
          dispatch(testActions.resetQuestion())
-         setQuestionStatement('')
-         setNumberOfWords('')
+         setStatement('')
          navigate(ROUTES)
       } catch (error) {
          setIsModal(true)
@@ -70,7 +59,7 @@ const RespondInAtLeastNWords = () => {
    }
 
    return (
-      <Div>
+      <Div style={{ marginTop: '30px' }}>
          <NotificationIconModal
             open={isModal}
             onConfirm={onCloseModalHandler}
@@ -78,18 +67,8 @@ const RespondInAtLeastNWords = () => {
             success={datas}
             message={message}
          />
-         <StyledP>Question statement</StyledP>
-         <Input
-            multiline
-            value={questionStatement}
-            onChange={statementRespond}
-         />
-         <StyledP>Number of minimum words</StyledP>
-         <Input
-            value={numberOfWords}
-            onChange={respondOfNumbers}
-            style={{ width: '83px' }}
-         />
+         <StyledSpan>Statement</StyledSpan>
+         <StyledInput value={statement} onChange={statementRecord} />
          <StyledDivOfModalFooter>
             <Button
                onClick={onGoBackHandler}
@@ -100,8 +79,8 @@ const RespondInAtLeastNWords = () => {
                GO BACK
             </Button>
             <Button
-               disabled={!enabled}
-               onClick={respondLeastWordsHandler}
+               disabled={!enabled()}
+               onClick={recordSayingHandler}
                type="submit"
                color="secondary"
                variant="contained"
@@ -113,13 +92,13 @@ const RespondInAtLeastNWords = () => {
    )
 }
 
-export default RespondInAtLeastNWords
+export default RecordSayingStatement
 
 const Div = styled.div`
    margin-top: 30px;
 `
 
-const StyledP = styled.p`
+const StyledSpan = styled.span`
    padding: 0;
    font-family: 'DINNextRoundedLTW01-Regular';
    font-style: normal;
@@ -127,6 +106,23 @@ const StyledP = styled.p`
    font-size: 16px;
    line-height: 18px;
    color: #4b4759;
+`
+
+const StyledInput = styled.input`
+   width: 100%;
+   height: 46px;
+   border: 1.53px solid #d4d0d0;
+   box-sizing: border-box;
+   border-radius: 8px;
+   outline: none;
+   margin: 16px auto 30px;
+   padding: 14px 20px 14px 20px;
+   font-family: 'DINNextRoundedLTW01-Regular';
+   font-style: normal;
+   font-weight: normal;
+   font-size: 16px;
+   line-height: 18px;
+   color: #4c4859;
 `
 
 const StyledDivOfModalFooter = styled.div`

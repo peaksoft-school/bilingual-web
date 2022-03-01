@@ -18,8 +18,11 @@ const SelectBestTitle = () => {
    const [passage, setPassage] = useState('')
    const dispatch = useDispatch()
 
-   const enabled =
-      words.length > 0 && title.trim() && duration.trim() && passage.trim()
+   const enabled = () => {
+      return (
+         words.length > 0 && title.trim() && duration.trim() && passage.trim()
+      )
+   }
 
    const checkedHandler = (id) => {
       const optionsWithSelected = words.map((el) => {
@@ -134,7 +137,7 @@ const SelectBestTitle = () => {
                   GO BACK
                </ButtonGoBack>
                <Button
-                  disabled={!enabled}
+                  disabled={!enabled()}
                   type="submit"
                   color="secondary"
                   variant="contained"

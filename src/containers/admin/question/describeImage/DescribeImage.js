@@ -94,8 +94,11 @@ const DescribeImage = () => {
    const [isModal, setIsModal] = useState(false)
    const [error, setError] = useState(null)
 
-   const enabled =
-      image.file && title.trim() && duration.trim() && correctAnswer.trim()
+   const enabled = () => {
+      return (
+         image.file && title.trim() && duration.trim() && correctAnswer.trim()
+      )
+   }
 
    const onCloseModalHandler = () => {
       setIsModal((prevState) => !prevState)
@@ -178,7 +181,7 @@ const DescribeImage = () => {
                GO BACK
             </StyledBtn>
             <Button
-               disabled={!enabled}
+               disabled={!enabled()}
                type="submit"
                color="secondary"
                variant="contained"

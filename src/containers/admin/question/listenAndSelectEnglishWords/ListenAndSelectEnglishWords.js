@@ -26,7 +26,7 @@ const ListenAndSelectEnglishWords = () => {
    const [error, setError] = useState(null)
    const [datas, setDatas] = useState('')
 
-   const enabled = options.length > 0 && title.trim() && duration.trim()
+   const enabled = () => options.length > 0 && title.trim() && duration.trim()
 
    const onCloseModalHandler = () => {
       setIsModal((prevState) => !prevState)
@@ -172,7 +172,7 @@ const ListenAndSelectEnglishWords = () => {
                </StyledBtn>
 
                <Button
-                  disabled={!enabled}
+                  disabled={!enabled()}
                   type="submit"
                   color="secondary"
                   variant="contained"

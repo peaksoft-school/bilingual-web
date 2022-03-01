@@ -17,7 +17,7 @@ const SelectRealEnglishWord = () => {
    const [isOpenModal, setIsOpenModal] = React.useState(false)
    const [words, setWords] = useState([])
 
-   const enabled = words.length > 0
+   const enabled = () => words.length > 0 && title.trim() && duration.trim()
 
    const checkedHandler = (id) => {
       const optionsWithSelected = words.map((el) => {
@@ -58,7 +58,6 @@ const SelectRealEnglishWord = () => {
 
    const selectFormHandler = (e) => {
       e.preventDefault()
-      if (words.length === 0 && title.trim() && duration.trim()) return
       const data = {
          words,
          title,
@@ -90,6 +89,7 @@ const SelectRealEnglishWord = () => {
                {words.map((option) => {
                   return (
                      <WordItem
+                        key={option}
                         words={option}
                         deleteWord={deleteWord}
                         checkedHandler={checkedHandler}
@@ -102,7 +102,7 @@ const SelectRealEnglishWord = () => {
                   GO BACK
                </StyledBtn>
                <Button
-                  disabled={!enabled}
+                  disabled={!enabled()}
                   type="submit"
                   color="secondary"
                   variant="contained"
