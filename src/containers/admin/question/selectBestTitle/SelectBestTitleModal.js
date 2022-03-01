@@ -70,7 +70,6 @@ const SelectBestTitleModal = ({ onClose, open, onAddOptions }) => {
    )
 }
 export default SelectBestTitleModal
-
 const DivTitle = styled('div')`
    margin: 42px 60px 16px;
 `
