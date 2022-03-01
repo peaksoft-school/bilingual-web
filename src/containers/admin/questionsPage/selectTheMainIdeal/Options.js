@@ -1,16 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
-import ReCheckbox from '../../../../components/UI/checkbox'
 import Trash from '../../../../assets/icons/trash.svg'
+import RadioButton from '../../../../components/UI/radioButton'
 
-function OptionItem({ option, deletText, checkedandler }) {
+function OptionItem({ option, deletText, onChangeRadioBtnHadler }) {
+   const radioButtonChangeHandler = (id) => {
+      onChangeRadioBtnHadler(id)
+   }
    return (
       <Box>
          <Span>{option.word}</Span>
          <StyledDivIcons>
-            <ReCheckbox
-               checked={option.isTrue}
-               onChange={() => checkedandler(option.id)}
+            <RadioButton
+               checked={option.correct}
+               onChange={() => radioButtonChangeHandler(option.id)}
             />
             <StyledTrash
                key={option}

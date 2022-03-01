@@ -16,21 +16,11 @@ const SelectTheMainIdea = () => {
    const transformedType = type.replace(/[\s.,%]/g, '')
    const [words, setWords] = React.useState([])
    const [passage, setPassage] = useState('')
+   const [formValue, setFormValue] = useState('')
+   const [message, setMessage] = useState('')
+   const [isModal, setIsModal] = useState(false)
+   const [error, setError] = useState(null)
    const dispatch = useDispatch()
-
-   const checkedandler = (id) => {
-      const optionsWithSelected = words.map((el) => {
-         if (el.id === id) {
-            return {
-               ...el,
-               isTrue: !el.isTrue,
-            }
-         }
-         return el
-      })
-
-      setWords(optionsWithSelected)
-   }
 
    const onChangePassage = (e) => {
       setPassage(e.target.value)
@@ -51,17 +41,24 @@ const SelectTheMainIdea = () => {
          const updateOptions = [...prevOptions]
          updateOptions.push({
             word: enteredValue,
-            isTrue: isChecked,
+            correct: isChecked,
             id: uuidv4(),
          })
          return updateOptions
       })
    }
 
-   const [formValue, setFormValue] = useState('')
-   const [message, setMessage] = useState('')
-   const [isModal, setIsModal] = useState(false)
-   const [error, setError] = useState(null)
+   const onChangeRadioBtnHadler = (id) => {
+      setWords((prev) => {
+         const updatedWords = [
+            ...prev.map((word) => {
+               if (word.id === id) return { ...word, correct: !word.correct }
+               return { ...word, correct: false }
+            }),
+         ]
+         return updatedWords
+      })
+   }
 
    const onCloseModal = () => {
       setIsModal((prev) => !prev)
@@ -131,7 +128,7 @@ const SelectTheMainIdea = () => {
                         key={option.id}
                         option={option}
                         deletText={deletText}
-                        checkedandler={checkedandler}
+                        onChangeRadioBtnHadler={onChangeRadioBtnHadler}
                      />
                   )
                })}
