@@ -88,6 +88,16 @@ const TypeWhatYouHear = () => {
    const dispatch = useDispatch()
    const { correctAnswer, attemptNumber } = question
 
+   const enabled = () => {
+      return (
+         audio.file.name &&
+         title.trim() &&
+         duration.trim() &&
+         correctAnswer.trim() &&
+         attemptNumber.trim()
+      )
+   }
+
    const onQuestionChangeHandler = (e) => {
       setQuestion((prev) => ({
          ...prev,
@@ -229,7 +239,12 @@ const TypeWhatYouHear = () => {
             <Button onClick={onGoBackHandler} variant="outlined">
                GO BACK
             </Button>
-            <ButtonSave type="sumbit" variant="contained" color="success">
+            <ButtonSave
+               disabled={!enabled()}
+               type="sumbit"
+               variant="contained"
+               color="success"
+            >
                SAVE
             </ButtonSave>
          </DivFooterSave>

@@ -18,6 +18,12 @@ const SelectBestTitle = () => {
    const [passage, setPassage] = useState('')
    const dispatch = useDispatch()
 
+   const enabled = () => {
+      return (
+         words.length > 0 && title.trim() && duration.trim() && passage.trim()
+      )
+   }
+
    const onChangePassage = (e) => {
       setPassage(e.target.value)
    }
@@ -129,7 +135,12 @@ const SelectBestTitle = () => {
                <ButtonGoBack color="primary" variant="outlined">
                   GO BACK
                </ButtonGoBack>
-               <Button type="submit" color="secondary" variant="contained">
+               <Button
+                  disabled={!enabled()}
+                  type="submit"
+                  color="secondary"
+                  variant="contained"
+               >
                   SAVE
                </Button>
             </StyledDivOfFooter>
