@@ -10,11 +10,20 @@ import {
    QUESTION_TYPES,
 } from '../../../../utils/constants/QuestionTypesAndOptions'
 import { testActions } from '../../../../store'
+import ListenAndSelectEnglishWords from '../listenAndSelectEnglishWords/ListenAndSelectEnglishWords'
+import DescribeImage from '../describeImage/DescribeImage'
+import RespondInAtLeastNWords from '../respondInAtLeastNWords/RespondInAtLeastNWords'
+import TypeWhatYouHear from '../typeWhatYouHear/TypeWhatYouHear'
+import HighLightTheAnswer from '../highlightTheAnswer/HighLightTheAnswer'
+import SelectBestTitle from '../selectBestTitle/SelectBestTitle'
+import SelectTheMainIdea from '../selectTheMainIdeal/SelectTheMainIdea'
+import RecordSayingStatement from '../RecordSayingStatement/RecordSayingStatement'
 
 const AddQuestionTypePage = () => {
    const dispatch = useDispatch()
    const title = useSelector((state) => state.questions.title)
    const duration = useSelector((state) => state.questions.duration)
+   const type = useSelector((state) => state.questions.type)
 
    const titleChageHandler = (e) => {
       dispatch(testActions.setTitle(e.target.value))
@@ -50,6 +59,7 @@ const AddQuestionTypePage = () => {
          </StyledDiv>
          <StyledP>Type</StyledP>
          <AppSelect
+            value={type}
             onChange={typeChageHandler}
             questionTypeChangeHandler={questionTypeChangeHandler}
             options={QUESTION_OPTIONS}
@@ -57,14 +67,30 @@ const AddQuestionTypePage = () => {
          {typeOfQuestion === QUESTION_TYPES.SELECT_THE_REAL_ENGLISH_WORD && (
             <SelectRealEnglishWord />
          )}
-         {/* {typeOfQuestion ===
+         {typeOfQuestion === QUESTION_TYPES.DESCRIBE_IMAGE && <DescribeImage />}
+         {typeOfQuestion === QUESTION_TYPES.RESPOND_IN_AT_LEAST_N_WORDS && (
+            <RespondInAtLeastNWords />
+         )}
+         {typeOfQuestion ===
             QUESTION_TYPES.LISTEN_AND_SELECT_REAL_ENGLISH_WORD && (
-            <ListenAndSelectRealEnglishWord />
-         )} */}
-         {/* {typeOfQuestion ===
-            QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
-            < /> */}
-         {/* )} */}
+            <ListenAndSelectEnglishWords />
+         )}
+
+         {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
+            <TypeWhatYouHear />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.SELECT_THE_MAIN_IDEA && (
+            <SelectTheMainIdea />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.HIGLIGHT_THE_ANSWER && (
+            <HighLightTheAnswer />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.SELSECT_BEST_TITLE && (
+            <SelectBestTitle />
+         )}
+         {typeOfQuestion === QUESTION_TYPES.RECORD_SAYING_STATEMENT && (
+            <RecordSayingStatement />
+         )}
       </ContentCard>
    )
 }

@@ -1,41 +1,40 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import Input from '../../../../components/UI/input'
 import ReCheckbox from '../../../../components/UI/checkbox/index'
 import Button from '../../../../components/UI/button/index'
 import ModalWrapper, {
    ModalFooter,
 } from '../../../../components/UI/modal/ModalWrapper'
 
-const SelectRealEnglishWordModal = ({ onClose, open, onAddOptions }) => {
+const SelectBestTitleModal = ({ onClose, open, onAddOptions }) => {
    const [enteredValue, setEnteredValue] = useState('')
-   const [checkbox, setCheckBox] = useState(false)
-
+   const [isChecked, setIsChecked] = useState(false)
    const goalInputChangeHandler = (event) => {
       setEnteredValue(event.target.value)
    }
    const enabled = enteredValue.length > 0
-
    const formSubmitHandler = (event) => {
       event.preventDefault()
       event.stopPropagation()
-      const answer = {
+      const ansewer = {
          enteredValue,
-         checkbox,
+         isChecked,
       }
-      onAddOptions(answer)
-      setCheckBox(false)
+      onAddOptions(ansewer)
+      setIsChecked(false)
       setEnteredValue('')
       onClose()
    }
-
    return (
       <ModalWrapper onClose={onClose} open={open}>
          <form onSubmit={formSubmitHandler}>
-            <Div>
-               <StyledSpan>Title</StyledSpan>
-            </Div>
-
-            <StyledInput
+            <DivTitle>
+               <StyledP>Title</StyledP>
+            </DivTitle>
+            <InputenteredValue
+               placeholder="Select best title"
+               multiline
                value={enteredValue}
                onChange={goalInputChangeHandler}
             />
@@ -43,37 +42,43 @@ const SelectRealEnglishWordModal = ({ onClose, open, onAddOptions }) => {
                <StyledSpanInModal>Is true option?</StyledSpanInModal>
                <ReCheckbox
                   onClick={() => {
-                     setCheckBox((checkbox) => !checkbox)
+                     setIsChecked((isChecked) => !isChecked)
                   }}
                />
             </div>
             <ModalFooter>
-               <StyledDivOfModalFooter>
-                  <Button
+               <StyledDivOfFooter>
+                  <ButtonGoBack
+                     onClick={onClose}
                      color="primary"
                      variant="outlined"
-                     sx={{ mr: '16px', background: 'white' }}
-                     onClick={onClose}
                   >
                      GO BACK
-                  </Button>
+                  </ButtonGoBack>
                   <Button
-                     type="submit"
+                     type="sumbit"
                      color="secondary"
                      variant="contained"
                      disabled={!enabled}
                   >
                      SAVE
                   </Button>
-               </StyledDivOfModalFooter>
+               </StyledDivOfFooter>
             </ModalFooter>
          </form>
       </ModalWrapper>
    )
 }
+export default SelectBestTitleModal
 
-export default SelectRealEnglishWordModal
-const StyledSpanInModal = styled.span`
+const DivTitle = styled('div')`
+   margin: 42px 60px 16px;
+`
+const InputenteredValue = styled(Input)`
+   width: 517px;
+   margin: 16px 60px 34px 60px;
+`
+const StyledSpanInModal = styled('span')`
    font-family: 'DINNextRoundedLTW01-Regular';
    font-style: normal;
    font-weight: normal;
@@ -82,13 +87,13 @@ const StyledSpanInModal = styled.span`
    color: #4c4859;
    margin-left: 60px;
 `
-const StyledDivOfModalFooter = styled.div`
+const StyledDivOfFooter = styled('div')`
    width: 100%;
    margin-right: 60px;
    display: flex;
    justify-content: flex-end;
 `
-const StyledSpan = styled.span`
+const StyledP = styled('p')`
    padding: 0;
    font-family: 'DINNextRoundedLTW01-Regular';
    font-style: normal;
@@ -97,25 +102,7 @@ const StyledSpan = styled.span`
    line-height: 18px;
    color: #4b4759;
 `
-
-const StyledInput = styled.input`
-   width: 100%;
-   height: 46px;
-   border: 1.53px solid #d4d0d0;
-   box-sizing: border-box;
-   border-radius: 8px;
-   outline: none;
-   margin: 16px auto 30px;
-   padding: 14px 20px 14px 20px;
-   font-family: 'DINNextRoundedLTW01-Regular';
-   font-style: normal;
-   font-weight: normal;
-   font-size: 16px;
-   line-height: 18px;
-   color: #4c4859;
-   width: 517px;
-   margin: 16px 60px 34px 60px;
-`
-const Div = styled.div`
-   margin: 42px 60px 16px;
+const ButtonGoBack = styled(Button)`
+   margin-right: 16px;
+   background: white;
 `

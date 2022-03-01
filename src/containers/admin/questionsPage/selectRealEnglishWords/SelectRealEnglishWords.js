@@ -18,17 +18,14 @@ const SelectRealEnglishWord = () => {
    const [words, setWords] = useState([])
 
    const checkedHandler = (id) => {
-      const selectedValue = words.find((el) => el.id === id)
       const optionsWithSelected = words.map((el) => {
-         if (el.id === selectedValue.id) {
+         if (el.id === id) {
             return {
-               ...selectedValue,
-               isChecked: !selectedValue.isChecked,
+               ...el,
+               isChecked: !el.isChecked,
             }
          }
-         return {
-            ...el,
-         }
+         return el
       })
 
       setWords(optionsWithSelected)
@@ -65,6 +62,7 @@ const SelectRealEnglishWord = () => {
          duration,
          active: true,
       }
+      console.log(data)
       dispatch(testActions.resetQuestion())
       navigate(ROUTES.SELECT_REAL_ENGLISH_WORDS)
       setWords([])
@@ -74,14 +72,13 @@ const SelectRealEnglishWord = () => {
    return (
       <div>
          <form onSubmit={selectFormHandler}>
-            <Button
+            <StledButton
                onClick={openModalHandler}
                color="primary"
                variant="contained"
-               sx={{ m: '32px 0 4px', float: 'right' }}
             >
                + ADD OPTIONS
-            </Button>
+            </StledButton>
             <SelectRealEnglishWordModal
                onAddOptions={addOptionsHandler}
                onClose={openModalHandler}
@@ -99,9 +96,9 @@ const SelectRealEnglishWord = () => {
                })}
             </StyledContainer>
             <StyledDivOfModalFooter>
-               <Button color="primary" variant="outlined" sx={{ mr: '16px' }}>
+               <StyledBtn color="primary" variant="outlined">
                   GO BACK
-               </Button>
+               </StyledBtn>
                <Button type="submit" color="secondary" variant="contained">
                   SAVE
                </Button>
@@ -124,4 +121,11 @@ const StyledDivOfModalFooter = styled.div`
    width: 100%;
    display: flex;
    justify-content: flex-end;
+`
+const StledButton = styled(Button)`
+   margin: 32px 0 4px;
+   float: right;
+`
+const StyledBtn = styled(Button)`
+   margin-right: 16px;
 `

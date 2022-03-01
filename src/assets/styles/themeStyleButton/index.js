@@ -5,19 +5,18 @@ export const theme = createTheme({
       primary: {
          main: '#3A10E5',
       },
+
       secondary: {
-         main: '#2AB930',
-      },
-      login: {
-         main: '#4C4C4C',
+         main: '#41994d',
       },
       inherit: {
          main: '#4C4C4C',
       },
-      sing: {
-         main: '#D4D0D0',
+      white: {
+         main: '#fff',
       },
    },
+
    shape: {
       borderRadius: 8,
    },
