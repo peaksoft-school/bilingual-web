@@ -6,7 +6,7 @@ import { getFromLocalStorage } from './utils/helpers/localstorege/localStorege'
 import { theme } from './assets/styles/themeStyle/theme'
 // import Routes from './routes/Routes'
 import { BILINGUAL_TOKEN, BILINGUAL_USER } from './utils/constants/general'
-import AddQuestionTypePage from './containers/admin/question/question'
+import HomePageTwo from './containers/client/homePage2/HomePageTwo'
 
 function App() {
    const dispatch = useDispatch()
@@ -32,7 +32,7 @@ function App() {
    return (
       <ThemeProvider theme={theme}>
          {/* <Routes /> */}
-         <AddQuestionTypePage />
+         <HomePageTwo />
       </ThemeProvider>
    )
 }
