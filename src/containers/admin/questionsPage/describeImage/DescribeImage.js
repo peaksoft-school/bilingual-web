@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { Button } from '@mui/material'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Input from '../../../../components/UI/input'
@@ -7,6 +6,7 @@ import {
    addQuestionRequest,
    postQuestionRequest,
 } from '../../../../api/testService'
+import Button from '../../../../components/UI/button/index'
 import { testActions } from '../../../../store'
 import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
 
@@ -59,6 +59,9 @@ const ImageUpload = styled('img')`
    height: 178px;
    border-radius: 5%;
 `
+const StyledBtn = styled(Button)`
+   margin-right: 16px;
+`
 
 const DescribeImage = () => {
    const [image, setImage] = useState({})
@@ -91,6 +94,9 @@ const DescribeImage = () => {
    const [isModal, setIsModal] = useState(false)
    const [error, setError] = useState(null)
 
+   const enabled =
+      image.file && title.trim() && duration.trim() && correctAnswer.trim()
+
    const onCloseModalHandler = () => {
       setIsModal((prevState) => !prevState)
    }
@@ -102,6 +108,9 @@ const DescribeImage = () => {
 
    const sumbitDescribeImageHandler = async (e) => {
       e.preventDefault()
+      if (correctAnswer.trim() === 0 && title.trim() && duration.trim()) {
+         return
+      }
       try {
          const responseImage = await sendFileToApi()
          const describeImageData = {
@@ -165,8 +174,15 @@ const DescribeImage = () => {
             name="correctAnswer"
          />
          <DivFooter>
-            <Button variant="outlined">GO BACK</Button>
-            <Button type="submit" variant="contained" color="success">
+            <StyledBtn color="primary" variant="outlined">
+               GO BACK
+            </StyledBtn>
+            <Button
+               disabled={!enabled}
+               type="submit"
+               color="secondary"
+               variant="contained"
+            >
                SAVE
             </Button>
          </DivFooter>
