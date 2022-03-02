@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import ContentCard from '../../../../components/UI/adminContentCard/index'
 import AppSelect from '../../../../components/UI/select'
 import Input from '../../../../components/UI/input/index'
-import SelectRealEnglishWord from './SelectRealEnglishWords'
+import SelectRealEnglishWord from '../selectRealEnglishWords/SelectRealEnglishWords'
 import {
    QUESTION_OPTIONS,
    QUESTION_TYPES,

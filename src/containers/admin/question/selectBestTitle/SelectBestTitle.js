@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuid7 } from 'uuid'
 import Input from '../../../../components/UI/input/index'
 import Button from '../../../../components/UI/button/index'
-import SelectTheMainIdeaModal from './SelectTheMainIdeaModal'
-import OptionItem from './Options'
+import SelectBestTitleModal from './SelectBestTitleModal'
+import SelectBestTitleOptionsItem from './SelectBestTitleOptionsItem'
 import { addQuestionRequest } from '../../../../api/testService'
 import { testActions } from '../../../../store'
 import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
 
-const SelectTheMainIdea = () => {
+const SelectBestTitle = () => {
    const [isOpenModal, setIsOpenModal] = React.useState(false)
    const { title, duration, type } = useSelector((state) => state.questions)
    const transformedType = type.replace(/[\s.,%]/g, '')
@@ -18,61 +18,57 @@ const SelectTheMainIdea = () => {
    const [passage, setPassage] = useState('')
    const dispatch = useDispatch()
 
-   const checkedandler = (id) => {
-      const optionsWithSelected = words.map((el) => {
-         if (el.id === id) {
-            return {
-               ...el,
-               isTrue: !el.isTrue,
-            }
-         }
-         return el
-      })
-
-      setWords(optionsWithSelected)
+   const enabled = () => {
+      return (
+         words.length > 0 && title.trim() && duration.trim() && passage.trim()
+      )
    }
 
    const onChangePassage = (e) => {
       setPassage(e.target.value)
    }
-
    const deletText = (id) => {
       const newText = words.filter((item) => item.id !== id)
       setWords(newText)
    }
-
    const openModalHandler = () => {
       setIsOpenModal((prev) => !prev)
    }
-
    const addOptionsHandler = (enteredText) => {
       const { enteredValue, isChecked } = enteredText
       setWords((prevOptions) => {
          const updateOptions = [...prevOptions]
          updateOptions.push({
             word: enteredValue,
-            isTrue: isChecked,
-            id: uuidv4(),
+            correct: isChecked,
+            id: uuid7(),
          })
          return updateOptions
       })
    }
-
    const [formValue, setFormValue] = useState('')
    const [message, setMessage] = useState('')
    const [isModal, setIsModal] = useState(false)
    const [error, setError] = useState(null)
-
+   const onChangeRadioBtnHandler = (id) => {
+      setWords((prev) => {
+         const updatedWords = [
+            ...prev.map((word) => {
+               if (word.id === id) return { ...word, correct: !word.correct }
+               return { ...word, correct: false }
+            }),
+         ]
+         return updatedWords
+      })
+   }
    const onCloseModal = () => {
       setIsModal((prev) => !prev)
    }
-
-   const clearSelectMAinIdeaState = () => {
+   const clearSelectBestTitleState = () => {
       setPassage('')
       setWords([])
    }
-
-   const selectMainIdeaFormHandler = async (e) => {
+   const selectBestTitleFormHandler = async (e) => {
       e.preventDefault()
       try {
          const selectIdeaData = {
@@ -88,16 +84,15 @@ const SelectTheMainIdea = () => {
          setMessage('Question is saved')
          setIsModal(true)
          dispatch(testActions.resetQuestion())
-         clearSelectMAinIdeaState()
+         clearSelectBestTitleState()
       } catch (error) {
          setIsModal(true)
          setMessage('Unable to save question')
          setError(error.message)
       }
    }
-
    return (
-      <form onSubmit={selectMainIdeaFormHandler}>
+      <form onSubmit={selectBestTitleFormHandler}>
          <NotificationIconModal
             open={isModal}
             onConfirm={onCloseModal}
@@ -119,7 +114,7 @@ const SelectTheMainIdea = () => {
             >
                + ADD OPTIONS
             </ButtonADDOptions>
-            <SelectTheMainIdeaModal
+            <SelectBestTitleModal
                onAddOptions={addOptionsHandler}
                onClose={openModalHandler}
                open={isOpenModal}
@@ -127,11 +122,11 @@ const SelectTheMainIdea = () => {
             <StyledContainer>
                {words.map((option) => {
                   return (
-                     <OptionItem
+                     <SelectBestTitleOptionsItem
                         key={option.id}
                         option={option}
                         deletText={deletText}
-                        checkedandler={checkedandler}
+                        onChangeRadioBtnHandler={onChangeRadioBtnHandler}
                      />
                   )
                })}
@@ -140,7 +135,12 @@ const SelectTheMainIdea = () => {
                <ButtonGoBack color="primary" variant="outlined">
                   GO BACK
                </ButtonGoBack>
-               <Button type="submit" color="secondary" variant="contained">
+               <Button
+                  disabled={!enabled()}
+                  type="submit"
+                  color="secondary"
+                  variant="contained"
+               >
                   SAVE
                </Button>
             </StyledDivOfFooter>
@@ -148,31 +148,25 @@ const SelectTheMainIdea = () => {
       </form>
    )
 }
-
-export default SelectTheMainIdea
-
+export default SelectBestTitle
 const InputPassage = styled(Input)`
    width: 100;
 `
-
 const ButtonADDOptions = styled(Button)`
    margin: 32px 0 22px;
    float: right;
 `
-
 const StyledContainer = styled('ul')`
    width: 100%;
    padding: 0px;
    box-sizing: border-box;
    counter-reset: my-counter;
 `
-
 const StyledDivOfFooter = styled('div')`
    width: 100%;
    display: flex;
    justify-content: flex-end;
 `
-
 const StyledP = styled.p`
    padding: 0;
    font-family: 'DINNextRoundedLTW01-Regular';
@@ -182,7 +176,6 @@ const StyledP = styled.p`
    line-height: 18px;
    color: #4b4759;
 `
-
 const ButtonGoBack = styled(Button)`
    margin-right: 16px;
 `

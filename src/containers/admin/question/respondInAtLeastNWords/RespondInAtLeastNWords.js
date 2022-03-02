@@ -21,6 +21,15 @@ const RespondInAtLeastNWords = () => {
    const [error, setError] = useState(null)
    const [datas, setDatas] = useState('')
 
+   const enabled = () => {
+      return (
+         questionStatement.trim() &&
+         numberOfWords.trim() &&
+         title.trim() &&
+         duration.trim()
+      )
+   }
+
    const statementRespond = (event) => {
       setQuestionStatement(event.target.value)
    }
@@ -94,6 +103,7 @@ const RespondInAtLeastNWords = () => {
                GO BACK
             </Button>
             <Button
+               disabled={!enabled()}
                onClick={respondLeastWordsHandler}
                type="submit"
                color="secondary"

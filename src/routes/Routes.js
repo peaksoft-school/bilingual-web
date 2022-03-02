@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate, Navigate, Route, Routes } from 'react-router-dom'
 import SubmittedResultsPage from '../containers/admin/evaluate/submittedResults/SubmittedResultsPage'
 import TestPage from '../containers/admin/tests/testPage/TestPage'
+import HomePage from '../containers/client/homePage/HomePage'
 import LoginPage from '../containers/login/LoginPage'
 import SignUp from '../containers/signUp/SignUp'
 import { ROLES, ROUTES } from '../utils/constants/general'
@@ -45,7 +46,7 @@ export default function AllRoutes() {
             path={ROUTES.USER}
             element={
                <PrivateRoute
-                  Component={<h1>User test page</h1>}
+                  Component={<HomePage />}
                   roles={[ROLES.ROLE_USER]}
                />
             }
