@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { logout } from '../../store/auth'
-import { ROUTES } from '../../utils/constants/general'
-import LogOutModal from '../adminHeader/LogOutModal'
-import Logo from '../../assets/icons/logo.svg'
+import { logout } from '../../../store/auth'
+import { ROUTES } from '../../../utils/constants/general'
+import Logo from '../../../assets/icons/logo.svg'
+import LogOutModalClient from '../layoutClient/LogOutModalClient'
 
 const Header = () => {
    const dispatch = useDispatch()
@@ -29,16 +29,16 @@ const Header = () => {
                <StyledLogo src={Logo} alt="logo" />
             </StyledLogoDiv>
             <StyledButtonDiv>
-               <StyledNavLink to={ROUTES.ADMIN_TEST}>test</StyledNavLink>
+               <StyledNavLink to={ROUTES.ADMIN_TEST}>TESTS</StyledNavLink>
                <StyledNavLink to={ROUTES.SUBMITED_RESULTS}>
-                  submitted results
+                  MY RESULTS
                </StyledNavLink>
                <StyledNavLinkLogOut onClick={modalHandler}>
                   log out
                </StyledNavLinkLogOut>
             </StyledButtonDiv>
          </StyledMainDiv>
-         <LogOutModal
+         <LogOutModalClient
             open={openModal}
             onClose={modalHandler}
             onConfirm={confirmationHandler}
@@ -46,6 +46,8 @@ const Header = () => {
       </StyledHeader>
    )
 }
+
+export default Header
 
 const StyledHeader = styled.div`
    margin: 0;
@@ -119,4 +121,3 @@ const StyledNavLinkLogOut = styled.button`
       border-color: #3a10e5;
    }
 `
-export default Header

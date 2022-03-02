@@ -10,6 +10,8 @@ export const ROUTES = {
    ADMIN_TEST: '/admin/test',
    SUBMITED_RESULTS: '/admin/submited-results',
    SELECT_REAL_ENGLISH_WORDS: 'amin/select-real-english-words',
+   HOME_PAGE: 'user/home-page',
+   CHECKING_YOUR_DEVICE: 'user/checking-your-device',
 }
 
 export const BILINGUAL_TOKEN = 'BILINGUAL_TOKEN'
