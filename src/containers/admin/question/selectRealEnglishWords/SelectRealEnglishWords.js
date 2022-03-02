@@ -58,6 +58,7 @@ const SelectRealEnglishWord = () => {
 
    const selectFormHandler = (e) => {
       e.preventDefault()
+      if (words.length === 0 && title.trim() && duration.trim()) return
       const data = {
          words,
          title,

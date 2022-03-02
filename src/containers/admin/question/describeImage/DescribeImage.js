@@ -117,7 +117,7 @@ const DescribeImage = () => {
       try {
          const responseImage = await sendFileToApi()
          const describeImageData = {
-            testId: 0,
+            testId: 1,
             type: transformedType,
             title,
             duration,
