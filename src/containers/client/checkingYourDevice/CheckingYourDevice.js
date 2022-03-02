@@ -9,9 +9,13 @@ function CheckingYourDevice() {
    const navigate = useNavigate()
 
    useEffect(() => {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
          navigate(ROUTES.USER_SELECT_REAL_ENGLISH_WORDS)
       }, 3000)
+
+      return () => {
+         clearTimeout(timer)
+      }
    }, [])
 
    return (
