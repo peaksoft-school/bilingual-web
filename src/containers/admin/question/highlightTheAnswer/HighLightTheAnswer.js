@@ -40,6 +40,16 @@ const HighLightTheAnswer = () => {
    const dispatch = useDispatch()
    const [questionStatement, setQuestionStatement] = React.useState('')
 
+   const enabled = () => {
+      return (
+         questionStatement.trim() &&
+         title.trim() &&
+         duration.trim() &&
+         passage.trim() &&
+         highlighted.trim()
+      )
+   }
+
    const onChangeHandlerinput = (props) => {
       setPassage(props)
    }
@@ -131,7 +141,12 @@ const HighLightTheAnswer = () => {
             <Button color="primary" variant="outlined" sx={{ mr: '16px' }}>
                GO BACK
             </Button>
-            <Button type="submit" color="secondary" variant="contained">
+            <Button
+               disabled={!enabled()}
+               type="submit"
+               color="secondary"
+               variant="contained"
+            >
                SAVE
             </Button>
          </StyledDivOfFooter>
