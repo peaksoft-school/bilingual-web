@@ -12,6 +12,7 @@ export const ROUTES = {
    SELECT_REAL_ENGLISH_WORDS: 'amin/select-real-english-words',
    HOME_PAGE: 'user/home-page',
    CHECKING_YOUR_DEVICE: 'user/checking-your-device',
+   USER_SELECT_REAL_ENGLISH_WORDS: 'user/select-real-english-words',
 }
 
 export const BILINGUAL_TOKEN = 'BILINGUAL_TOKEN'
