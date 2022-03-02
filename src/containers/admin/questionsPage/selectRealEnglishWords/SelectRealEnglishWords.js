@@ -57,7 +57,6 @@ const SelectRealEnglishWord = () => {
          updateWords.push({
             word: enteredValue,
             isTrue: checkbox,
-            // isChecked: checkbox,
             id: uuidv4(),
          })
          return updateWords
@@ -73,9 +72,7 @@ const SelectRealEnglishWord = () => {
             words,
             title,
             duration,
-            // active: true,
          }
-         console.log(data)
          const response = await addQuestionRequest(data)
          setDatas(response.status)
          setMessage('Question is saved')
