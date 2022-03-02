@@ -149,7 +149,9 @@ const DescribeImage = () => {
          <DivImage>
             <label htmlFor="contained-button-file">
                <InputImage
-                  accept="image/*"
+                  inputProps={{
+                     accept: 'image/*',
+                  }}
                   id="contained-button-file"
                   multiple
                   type="file"
