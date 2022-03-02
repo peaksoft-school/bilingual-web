@@ -1,16 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
-import ReCheckbox from '../../../../components/UI/checkbox'
 import Trash from '../../../../assets/icons/trash.svg'
+import RadioButton from '../../../../components/UI/radioButton'
 
-function SelectBestTitleOptionsItem({ option, deletText, checkedHandler }) {
+function SelectBestTitleOptionsItem({
+   option,
+   deletText,
+   onChangeRadioBtnHandler,
+}) {
+   const radioButtonChangeHandler = (id) => {
+      onChangeRadioBtnHandler(id)
+   }
    return (
       <Box>
          <Span>{option.word}</Span>
          <StyledDivIcons>
-            <ReCheckbox
-               checked={option.isTrue}
-               onChange={() => checkedHandler(option.id)}
+            <RadioButton
+               checked={option.correct}
+               onChange={() => radioButtonChangeHandler(option.id)}
             />
             <StyledTrash
                key={option}
@@ -23,7 +30,6 @@ function SelectBestTitleOptionsItem({ option, deletText, checkedHandler }) {
    )
 }
 export default SelectBestTitleOptionsItem
-
 const Span = styled('span')`
    width: 770px;
 `

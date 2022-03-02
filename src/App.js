@@ -4,9 +4,8 @@ import { useDispatch } from 'react-redux'
 import { authActions } from './store'
 import { getFromLocalStorage } from './utils/helpers/localstorege/localStorege'
 import { theme } from './assets/styles/themeStyle/theme'
-// import Routse from './routes/Routes'
+import Routse from './routes/Routes'
 import { BILINGUAL_TOKEN, BILINGUAL_USER } from './utils/constants/general'
-import AddQuestionTypePage from './containers/admin/questionsPage/selectRealEnglishWords/questionType'
 
 function App() {
    const dispatch = useDispatch()
@@ -31,8 +30,7 @@ function App() {
 
    return (
       <ThemeProvider theme={theme}>
-         {/* <Routes /> */}
-         <AddQuestionTypePage />
+         <Routse />
       </ThemeProvider>
    )
 }

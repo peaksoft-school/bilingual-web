@@ -88,6 +88,16 @@ const TypeWhatYouHear = () => {
    const dispatch = useDispatch()
    const { correctAnswer, attemptNumber } = question
 
+   const enabled = () => {
+      return (
+         audio.file.name &&
+         title.trim() &&
+         duration.trim() &&
+         correctAnswer.trim() &&
+         attemptNumber.trim()
+      )
+   }
+
    const onQuestionChangeHandler = (e) => {
       setQuestion((prev) => ({
          ...prev,
@@ -134,29 +144,29 @@ const TypeWhatYouHear = () => {
 
    const [isModal, setIsModal] = useState(false)
    const [message, setMessage] = useState('')
+   const [error, setError] = useState(null)
+   const [datas, setDatas] = useState('')
 
    const onCloseModalHandler = () => {
       setIsModal((prevState) => !prevState)
    }
-   const [error, setError] = useState(null)
-   const [datas, setDatas] = useState('')
 
    const submitPrintHearHandler = async (e) => {
       e.preventDefault()
-      const attempt = +attemptNumber
-      const response = await sendFileToApi()
-      const data = {
-         testId: 1,
-         type: transformedType,
-         title,
-         duration,
-         attempt,
-         correctAnswer,
-         file: response.data,
-      }
       try {
-         const res = await addQuestionRequest(data)
-         setDatas(res.status)
+         const attempt = +attemptNumber
+         const responseAudio = await sendFileToApi()
+         const data = {
+            testId: 1,
+            type: transformedType,
+            title,
+            duration,
+            attempt,
+            correctAnswer,
+            file: responseAudio.data,
+         }
+         const responseResult = await addQuestionRequest(data)
+         setDatas(responseResult.status)
          setMessage('Question is saved')
          setIsModal(true)
          dispatch(testActions.resetQuestion())
@@ -169,6 +179,18 @@ const TypeWhatYouHear = () => {
       }
    }
 
+   const isShowIcon = () => {
+      if (audio.file.name) {
+         return startStop ? (
+            <ImgStart src={start} onClick={playAudio} alt="start" />
+         ) : (
+            <ImgStart src={stop} onClick={stopAudio} alt="stop" />
+         )
+      }
+      return null
+   }
+
+   console.log(audio.file)
    return (
       <form onSubmit={submitPrintHearHandler}>
          <NotificationIconModal
@@ -189,7 +211,9 @@ const TypeWhatYouHear = () => {
                <StyledStack direction="row" alignItems="center" spacing={2}>
                   <label htmlFor="contained-button-file">
                      <InputStack
-                        accept="audio/mp3 audio/mpeg"
+                        inputProps={{
+                           accept: 'audio/*',
+                        }}
                         id="contained-button-file"
                         multiple
                         type="file"
@@ -199,11 +223,7 @@ const TypeWhatYouHear = () => {
                         Upload
                      </Button>
                   </label>
-                  {startStop ? (
-                     <ImgStart src={start} onClick={playAudio} alt="start" />
-                  ) : (
-                     <ImgStart src={stop} onClick={stopAudio} alt="stop" />
-                  )}
+                  {isShowIcon()}
                </StyledStack>
                <NumberSpan>{audio.file.name ? audio.file.name : ''}</NumberSpan>
             </DivUppload>
@@ -219,7 +239,12 @@ const TypeWhatYouHear = () => {
             <Button onClick={onGoBackHandler} variant="outlined">
                GO BACK
             </Button>
-            <ButtonSave type="sumbit" variant="contained" color="success">
+            <ButtonSave
+               disabled={!enabled()}
+               type="sumbit"
+               variant="contained"
+               color="success"
+            >
                SAVE
             </ButtonSave>
          </DivFooterSave>
