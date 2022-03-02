@@ -12,7 +12,7 @@ const StyledTextField = makeStyles({
 })
 function Input(props) {
    const inputClasses = StyledTextField()
-   const { placeholder, children, classes, fullWidth, ...other } = props
+   const { placeholder, children, classes, fullWidth, accept, ...other } = props
    return (
       <TextField
          className={inputClasses.root}
@@ -20,6 +20,7 @@ function Input(props) {
          fullWidth={fullWidth}
          classes={classes}
          sx={{ width: '100%' }}
+         accept={accept}
          {...other}
       >
          {children}

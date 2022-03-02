@@ -27,6 +27,8 @@ const SelectRealEnglishWord = () => {
       setIsModal((prevState) => !prevState)
    }
    const transformedType = type.replace(/[\s.,%]/g, '')
+   const enabled = () => words.length > 0 && title.trim() && duration.trim()
+
    const checkedHandler = (id) => {
       const optionsWithSelected = words.map((el) => {
          if (el.id === id) {
@@ -69,9 +71,9 @@ const SelectRealEnglishWord = () => {
          const data = {
             testId: 1,
             type: transformedType,
-            words,
             title,
             duration,
+            words,
          }
          const response = await addQuestionRequest(data)
          setDatas(response.status)
@@ -85,7 +87,6 @@ const SelectRealEnglishWord = () => {
          setMessage('Unable to save question')
          setError(error.message)
       }
-      // addQuestionRequest(3, type, data)
    }
 
    return (
@@ -114,7 +115,7 @@ const SelectRealEnglishWord = () => {
                {words.map((option) => {
                   return (
                      <WordItem
-                        key={option.id}
+                        key={option}
                         words={option}
                         deleteWord={deleteWord}
                         checkedHandler={checkedHandler}
@@ -126,7 +127,12 @@ const SelectRealEnglishWord = () => {
                <StyledBtn color="primary" variant="outlined">
                   GO BACK
                </StyledBtn>
-               <Button type="submit" color="secondary" variant="contained">
+               <Button
+                  disabled={!enabled()}
+                  type="submit"
+                  color="secondary"
+                  variant="contained"
+               >
                   SAVE
                </Button>
             </StyledDivOfModalFooter>

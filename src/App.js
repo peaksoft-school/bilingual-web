@@ -5,9 +5,7 @@ import { authActions } from './store'
 import { getFromLocalStorage } from './utils/helpers/localstorege/localStorege'
 import { theme } from './assets/styles/themeStyle/theme'
 // import Routes from './routes/Routes'
-
 import { BILINGUAL_TOKEN, BILINGUAL_USER } from './utils/constants/general'
-import AddQuestionTypePage from './containers/admin/questionsPage/selectRealEnglishWords/questionType'
 
 function App() {
    const dispatch = useDispatch()
@@ -30,12 +28,7 @@ function App() {
       return <CircularProgress />
    }
 
-   return (
-      <ThemeProvider theme={theme}>
-         {/* <Routes /> */}
-         <AddQuestionTypePage />
-      </ThemeProvider>
-   )
+   return <ThemeProvider theme={theme}>{/* <Routes /> */}</ThemeProvider>
 }
 
 export default App

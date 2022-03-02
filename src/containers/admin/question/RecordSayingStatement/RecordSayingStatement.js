@@ -20,6 +20,8 @@ const RecordSayingStatement = () => {
    const [error, setError] = useState(null)
    const [datas, setDatas] = useState('')
 
+   const enabled = () => statement.trim() && title.trim() && duration.trim()
+
    const onCloseModalHandler = () => {
       setIsModal((prevState) => !prevState)
    }
@@ -77,6 +79,7 @@ const RecordSayingStatement = () => {
                GO BACK
             </Button>
             <Button
+               disabled={!enabled()}
                onClick={recordSayingHandler}
                type="submit"
                color="secondary"
