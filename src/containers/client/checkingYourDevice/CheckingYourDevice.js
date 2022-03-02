@@ -8,17 +8,13 @@ import { ReactComponent as Circle } from '../../../assets/icons/progress.svg'
 function CheckingYourDevice() {
    const navigate = useNavigate()
 
-   const checkingDevice = () => {
+   useEffect(() => {
       const timer = setTimeout(() => {
          navigate(ROUTES.USER_SELECT_REAL_ENGLISH_WORDS)
       }, 3000)
       return () => {
          clearTimeout(timer)
       }
-   }
-
-   useEffect(() => {
-      checkingDevice()
    }, [])
 
    return (
