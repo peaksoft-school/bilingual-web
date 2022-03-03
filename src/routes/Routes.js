@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Navigate, Route, Routes } from 'react-router-dom'
 import SubmittedResultsPage from '../containers/admin/evaluate/submittedResults/SubmittedResultsPage'
+import AddQuestionTypePage from '../containers/admin/question/questionType/questionType'
+import AddNewTest from '../containers/admin/tests/addnewTestPage/AddNewTestPage'
 import TestPage from '../containers/admin/tests/testPage/TestPage'
 import CheckingYourDevice from '../containers/client/checkingYourDevice/CheckingYourDevice'
 import HomePage from '../containers/client/homePage/HomePage'
@@ -31,6 +33,34 @@ export default function AllRoutes() {
             element={
                <PrivateRoute
                   Component={<TestPage />}
+                  roles={[ROLES.ROLE_ADMIN]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.ADD_TEST_PAGE}
+            element={
+               <PrivateRoute
+                  Component={<AddNewTest />}
+                  roles={[ROLES.ROLE_ADMIN]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.TESTBYID}
+            element={
+               <PrivateRoute
+                  Component={<AddNewTest />}
+                  roles={[ROLES.ROLE_ADMIN]}
+               />
+            }
+         />
+
+         <Route
+            path={ROUTES.QUESTION_TYPE}
+            element={
+               <PrivateRoute
+                  Component={<AddQuestionTypePage />}
                   roles={[ROLES.ROLE_ADMIN]}
                />
             }
