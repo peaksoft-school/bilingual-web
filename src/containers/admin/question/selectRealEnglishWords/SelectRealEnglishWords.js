@@ -58,7 +58,7 @@ const SelectRealEnglishWord = () => {
          const updateWords = [...prevWords]
          updateWords.push({
             word: enteredValue,
-            isTrue: checkbox,
+            correct: checkbox,
             id: uuidv4(),
          })
          return updateWords

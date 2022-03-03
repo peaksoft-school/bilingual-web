@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux'
 import { authActions } from './store'
 import { getFromLocalStorage } from './utils/helpers/localstorege/localStorege'
 import { theme } from './assets/styles/themeStyle/theme'
-// import Routes from './routes/Routes'
 import { BILINGUAL_TOKEN, BILINGUAL_USER } from './utils/constants/general'
+import Routes from './routes/Routes'
 
 function App() {
    const dispatch = useDispatch()
@@ -28,7 +28,11 @@ function App() {
       return <CircularProgress />
    }
 
-   return <ThemeProvider theme={theme}>{/* <Routes /> */}</ThemeProvider>
+   return (
+      <ThemeProvider theme={theme}>
+         <Routes />
+      </ThemeProvider>
+   )
 }
 
 export default App

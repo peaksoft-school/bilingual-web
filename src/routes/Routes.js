@@ -3,10 +3,6 @@ import { useSelector } from 'react-redux'
 import { useNavigate, Navigate, Route, Routes } from 'react-router-dom'
 import SubmittedResultsPage from '../containers/admin/evaluate/submittedResults/SubmittedResultsPage'
 import TestPage from '../containers/admin/tests/testPage/TestPage'
-<<<<<<< HEAD
-// import TestPaage from '../containers/admin/tests/testPage/TestPage'
-=======
->>>>>>> bc0f9632f783c3c2556d812a2cdb8b3c230853f3
 import LoginPage from '../containers/login/LoginPage'
 import SignUp from '../containers/signUp/SignUp'
 import { ROLES, ROUTES } from '../utils/constants/general'
