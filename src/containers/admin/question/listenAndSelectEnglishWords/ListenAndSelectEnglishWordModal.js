@@ -60,10 +60,12 @@ const ListenAndSelectEnglishWordsModal = ({ onClose, open, onAddOptions }) => {
             <Style>
                <label htmlFor="contained-button-file">
                   <InputUpload
-                     accept="audio/mp3 audio/mpeg"
                      id="contained-button-file"
                      multiple
                      type="file"
+                     inputProps={{
+                        accept: 'audio/*',
+                     }}
                      onChange={audioHandler}
                   />
                   <Button component="span">Uppload audio file</Button>

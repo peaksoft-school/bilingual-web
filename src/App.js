@@ -4,9 +4,8 @@ import { useDispatch } from 'react-redux'
 import { authActions } from './store'
 import { getFromLocalStorage } from './utils/helpers/localstorege/localStorege'
 import { theme } from './assets/styles/themeStyle/theme'
-// import Routes from './routes/Routes'
+import Routes from './routes/Routes'
 import { BILINGUAL_TOKEN, BILINGUAL_USER } from './utils/constants/general'
-import HomePage from './containers/client/homePage/HomePage'
 
 function App() {
    const dispatch = useDispatch()
@@ -31,8 +30,7 @@ function App() {
 
    return (
       <ThemeProvider theme={theme}>
-         {/* <Routes /> */}
-         <HomePage />
+         <Routes />
       </ThemeProvider>
    )
 }

@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import homePage from '../../../assets/icons/homePage1.svg'
 import Button from '../../../components/UI/button/index'
 import LayoutClient from '../../../layout/clientLayout/layoutClient/LayoutClient'
+import { ROUTES } from '../../../utils/constants/general'
 
 const Div = styled('div')`
    display: flex;
@@ -50,7 +51,7 @@ const HomePage = () => {
    ])
 
    const onClicktoPractice = () => {
-      navigate()
+      navigate(ROUTES.HOME_PAGE_TWO)
    }
 
    return (
@@ -68,7 +69,9 @@ const HomePage = () => {
                         <P2>{test.shortDescription}</P2>
                      </DivText>
                      <DivButton>
-                        <Button>PRACTICE TEST</Button>
+                        <Button onClick={onClicktoPractice}>
+                           PRACTICE TEST
+                        </Button>
                      </DivButton>
                   </Div>
                </LayoutClient>

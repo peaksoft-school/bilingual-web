@@ -88,7 +88,7 @@ const HighLightTheAnswer = () => {
    const highlightSumbitHAndler = async (e) => {
       e.preventDefault()
       try {
-         const CorrectAnswer = highlighted
+         const correctAnswer = highlighted
          const data = {
             testId: 1,
             type: transformedType,
@@ -96,7 +96,7 @@ const HighLightTheAnswer = () => {
             duration,
             passage,
             questionStatement,
-            CorrectAnswer,
+            correctAnswer,
          }
          const response = await addQuestionRequest(data)
          setFormValue(response.status)

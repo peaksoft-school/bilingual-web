@@ -43,7 +43,9 @@ const Header = () => {
       </StyledHeader>
    )
 }
+
 export default Header
+
 const StyledHeader = styled.div`
    margin: 0;
    height: 94px;

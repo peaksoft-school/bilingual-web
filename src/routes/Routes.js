@@ -3,7 +3,9 @@ import { useSelector } from 'react-redux'
 import { useNavigate, Navigate, Route, Routes } from 'react-router-dom'
 import SubmittedResultsPage from '../containers/admin/evaluate/submittedResults/SubmittedResultsPage'
 import TestPage from '../containers/admin/tests/testPage/TestPage'
+import CheckingYourDevice from '../containers/client/checkingYourDevice/CheckingYourDevice'
 import HomePage from '../containers/client/homePage/HomePage'
+import HomePageTwo from '../containers/client/homePage2/HomePageTwo'
 import LoginPage from '../containers/login/LoginPage'
 import SignUp from '../containers/signUp/SignUp'
 import { ROLES, ROUTES } from '../utils/constants/general'
@@ -47,6 +49,24 @@ export default function AllRoutes() {
             element={
                <PrivateRoute
                   Component={<HomePage />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.HOME_PAGE_TWO}
+            element={
+               <PrivateRoute
+                  Component={<HomePageTwo />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.CHECKING_YOUR_DEVICE}
+            element={
+               <PrivateRoute
+                  Component={<CheckingYourDevice />}
                   roles={[ROLES.ROLE_USER]}
                />
             }

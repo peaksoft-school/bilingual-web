@@ -117,7 +117,7 @@ const DescribeImage = () => {
       try {
          const responseImage = await sendFileToApi()
          const describeImageData = {
-            testId: 0,
+            testId: 1,
             type: transformedType,
             title,
             duration,
@@ -149,7 +149,9 @@ const DescribeImage = () => {
          <DivImage>
             <label htmlFor="contained-button-file">
                <InputImage
-                  accept="image/*"
+                  inputProps={{
+                     accept: 'image/*',
+                  }}
                   id="contained-button-file"
                   multiple
                   type="file"
