@@ -1,21 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import SwitchButton from '../../../../components/UI/switchButton/index'
 import { ReactComponent as Edit } from '../../../../assets/icons/edit.svg'
 import { ReactComponent as Trash } from '../../../../assets/icons/trash.svg'
 import ConfirmModal from '../../../../components/UI/modal/ConfirmModal'
 
-const TestItems = ({ onClickToDelete, id }) => {
-   const navigate = useNavigate()
+const TestItems = ({ onClickToDelete, id, active, toggleHandler }) => {
+   const [accessToTest, setAccessToTest] = React.useState(active)
 
-   const [accessToTest, setAccessToTest] = React.useState(false)
    const onChangeHandlerSwitcher = () => {
-      setAccessToTest((prev) => !prev)
-   }
-
-   const onClickToEdit = () => {
-      navigate('/addQuestionsPage')
+      setAccessToTest((accessToTest) => !accessToTest)
+      toggleHandler({ id, isActive: !accessToTest })
    }
 
    const [confirmDeleteModal, setConfirmDeleteModal] = React.useState(false)
@@ -33,13 +29,11 @@ const TestItems = ({ onClickToDelete, id }) => {
             onChange={onChangeHandlerSwitcher}
             checked={accessToTest}
          />
-         <Link to={`addQuestionsPage/${id}`} key={id}>
-            <StyledButton type="button" onClick={onClickToEdit}>
-               <StyledEdit />
-            </StyledButton>
+         <Link to={`/admin/test/addQuestionPage/${id}`} key={id}>
+            <StyledEdit />
          </Link>
 
-         <StyledButton type="button" onClick={modalHandler}>
+         <StyledButton on type="button" onClick={modalHandler}>
             <StyledTresh />
          </StyledButton>
          <ConfirmModal

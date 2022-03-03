@@ -4,30 +4,31 @@ import styled from 'styled-components'
 import {
    deleteTestRequest,
    getAllTestRequest,
+   putTestActivationRequest,
 } from '../../../../api/testService'
 import ContentCard from '../../../../components/UI/adminContentCard/index'
 import Button from '../../../../components/UI/button/index'
+import { ROUTES } from '../../../../utils/constants/general'
 import TestItems from './TestItems'
 
 const TestPage = () => {
    const [tests, setTests] = React.useState([])
    const getTestTitle = async () => {
-      try {
-         const response = await getAllTestRequest()
-         setTests(response.data)
-      } catch (error) {
-         console.log(error)
-      }
+      const response = await getAllTestRequest()
+      setTests(response.data)
    }
 
    React.useEffect(() => {
       getTestTitle()
    }, [])
 
+   const toggleHandler = (isActiveById) => {
+      putTestActivationRequest(isActiveById)
+   }
+
    const navigate = useNavigate()
    const onClickToAddNewTest = () => {
-      navigate('/addNewTest')
-      setTests()
+      navigate(ROUTES.ADD_TEST_PAGE)
    }
 
    const onClickToDelete = async (id) => {
@@ -53,7 +54,9 @@ const TestPage = () => {
                      <StyledSpan>{test.title}</StyledSpan>
                      <TestItems
                         id={test.id}
+                        active={test.active}
                         onClickToDelete={onClickToDelete}
+                        toggleHandler={toggleHandler}
                      />
                   </StyledLists>
                )
