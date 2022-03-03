@@ -14,6 +14,9 @@ export const ROUTES = {
    ADD_QUESTION_PAGE: '/admin/test/addQuestionPage',
    QUESTION_TYPE: '/admin/test/questionType',
    TESTBYID: '/admin/test/addTestPage/:testById',
+   HOME_PAGE: 'user/home-page',
+   CHECKING_YOUR_DEVICE: 'user/checking-your-device',
+   USER_SELECT_REAL_ENGLISH_WORDS: 'user/select-real-english-words',
 }
 
 export const BILINGUAL_TOKEN = 'BILINGUAL_TOKEN'
