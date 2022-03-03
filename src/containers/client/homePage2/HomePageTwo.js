@@ -13,7 +13,7 @@ function HomePageTwo() {
    const navigate = useNavigate()
 
    const cancelHandler = () => {
-      navigate(ROUTES.HOME_PAGE)
+      navigate(-1)
    }
 
    const practiceTestHandler = () => {

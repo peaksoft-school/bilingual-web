@@ -10,18 +10,15 @@ import LogOutModalClient from '../layoutClient/LogOutModalClient'
 const Header = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-
    const [openModal, setOpenModal] = React.useState(false)
    const modalHandler = () => {
       setOpenModal((prev) => !prev)
    }
-
    const confirmationHandler = () => {
       modalHandler()
       dispatch(logout())
       navigate(ROUTES.LOGIN)
    }
-
    return (
       <StyledHeader>
          <StyledMainDiv>
@@ -99,7 +96,6 @@ const StyledNavLink = styled(NavLink)`
       color: #3a10e5;
    }
 `
-
 const StyledNavLinkLogOut = styled.button`
    width: 104px;
    height: 42px;

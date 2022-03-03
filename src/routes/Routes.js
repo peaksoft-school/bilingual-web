@@ -5,6 +5,9 @@ import SubmittedResultsPage from '../containers/admin/evaluate/submittedResults/
 import AddQuestionTypePage from '../containers/admin/question/questionType/questionType'
 import AddNewTest from '../containers/admin/tests/addnewTestPage/AddNewTestPage'
 import TestPage from '../containers/admin/tests/testPage/TestPage'
+import CheckingYourDevice from '../containers/client/checkingYourDevice/CheckingYourDevice'
+import HomePage from '../containers/client/homePage/HomePage'
+import HomePageTwo from '../containers/client/homePage2/HomePageTwo'
 import LoginPage from '../containers/login/LoginPage'
 import SignUp from '../containers/signUp/SignUp'
 import { ROLES, ROUTES } from '../utils/constants/general'
@@ -75,7 +78,25 @@ export default function AllRoutes() {
             path={ROUTES.USER}
             element={
                <PrivateRoute
-                  Component={<h1>User test page</h1>}
+                  Component={<HomePage />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.HOME_PAGE_TWO}
+            element={
+               <PrivateRoute
+                  Component={<HomePageTwo />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.CHECKING_YOUR_DEVICE}
+            element={
+               <PrivateRoute
+                  Component={<CheckingYourDevice />}
                   roles={[ROLES.ROLE_USER]}
                />
             }

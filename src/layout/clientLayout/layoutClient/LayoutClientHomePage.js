@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import MainContainer from '../mainContainerClient/MainContainerClient'
-import Header from '../clientButton/index'
 
 const StyledCardDiv = styled.div`
    margin-left: auto;
@@ -19,16 +18,13 @@ const StyledContentCard = styled.div`
    display: block;
 `
 
-const LayoutClient = ({ children }) => {
+const LayoutClientHomePage = ({ children }) => {
    return (
-      <>
-         <Header />
-         <MainContainer>
-            <StyledCardDiv>
-               <StyledContentCard>{children}</StyledContentCard>
-            </StyledCardDiv>
-         </MainContainer>
-      </>
+      <MainContainer>
+         <StyledCardDiv>
+            <StyledContentCard>{children}</StyledContentCard>
+         </StyledCardDiv>
+      </MainContainer>
    )
 }
-export default LayoutClient
+export default LayoutClientHomePage
