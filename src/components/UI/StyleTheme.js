@@ -14,6 +14,9 @@ export const theme = createTheme({
       inherit: {
          main: '#4C4C4C',
       },
+      sing: {
+         main: '#D4D0D0',
+      },
    },
    shape: {
       borderRadius: 8,

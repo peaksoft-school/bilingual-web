@@ -27,6 +27,7 @@ const TestPage = () => {
    const navigate = useNavigate()
    const onClickToAddNewTest = () => {
       navigate('/addNewTest')
+      setTests()
    }
 
    const onClickToDelete = async (id) => {

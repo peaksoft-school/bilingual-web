@@ -30,3 +30,6 @@ export const addQuestionRequest = (data) => {
 // export const putTestQuestionRequest = (toggle) => {
 //    return axiosInstance.put(`/`, toggle)
 // }
+export const uploadFileRequest = (fileData) => {
+   return axiosInstance.post(`api/files`, fileData)
+}
