@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import homePage from '../../../assets/icons/homePage1.svg'
 import Button from '../../../components/UI/button/index'
@@ -33,23 +35,62 @@ const DivButton = styled('div')`
 `
 
 const HomePage = () => {
+   const navigate = useNavigate()
+   const [tests, setTests] = useState([
+      {
+         duration: 20,
+         title: 'test',
+         shortDescription: 'shortDescription',
+      },
+      {
+         duration: 20,
+         title: 'test',
+         shortDescription: 'shortDescription',
+      },
+   ])
+
+   const onClicktoPractice = () => {
+      navigate()
+   }
+
    return (
-      <LayoutClient>
-         <Div>
-            <div>
-               <img src={homePage} alt="" />
-            </div>
-            <DivText>
-               <H1minutes>15 minutes</H1minutes>
-               <P1>Take a practice test </P1>
-               <P2>Train as much as you like.</P2>
-            </DivText>
-            <DivButton>
-               <Button>PRACTICE TEST</Button>
-            </DivButton>
-         </Div>
-      </LayoutClient>
+      <ul>
+         {tests.map((test) => {
+            return (
+               <LayoutClient key={test}>
+                  <Div>
+                     <div>
+                        <img src={homePage} alt="" />
+                     </div>
+                     <DivText>
+                        <H1minutes>{test.duration}</H1minutes>
+                        <P1>{test.title} </P1>
+                        <P2>{test.shortDescription}</P2>
+                     </DivText>
+                     <DivButton>
+                        <Button>PRACTICE TEST</Button>
+                     </DivButton>
+                  </Div>
+               </LayoutClient>
+            )
+         })}
+      </ul>
    )
+   // StyledUl>
+   //          {tests.map((test) => {
+   //             return (
+   //                <StyledLists key={test.id}>
+   //                   <StyledSpan>{test.title}</StyledSpan>
+   //                   <TestItem
+   //                      id={test.id}
+   //                      active={test.active}
+   //                      onClickToDelete={onClickToDelete}
+   //                      toggleHandler={toggleHandler}
+   //                   />
+   //                </StyledLists>
+   //             )
+   //          })}
+   //       </StyledUl>
 }
 
 export default HomePage

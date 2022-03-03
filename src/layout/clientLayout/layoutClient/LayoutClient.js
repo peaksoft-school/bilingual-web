@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import Header from '../clientButton/index'
 import MainContainer from '../mainContainerClient/MainContainerClient'
 
 const StyledCardDiv = styled.div`
@@ -19,14 +18,11 @@ const StyledContentCard = styled.div`
 `
 const LayoutClient = ({ children }) => {
    return (
-      <>
-         <Header />
-         <MainContainer>
-            <StyledCardDiv>
-               <StyledContentCard>{children}</StyledContentCard>
-            </StyledCardDiv>
-         </MainContainer>
-      </>
+      <MainContainer>
+         <StyledCardDiv>
+            <StyledContentCard>{children}</StyledContentCard>
+         </StyledCardDiv>
+      </MainContainer>
    )
 }
 export default LayoutClient
