@@ -29,7 +29,7 @@ export const getAllTestRequest = () => {
 export const deleteTestRequest = (id) => {
    return axiosInstance.delete(`/api/admin/tests/${id}`)
 }
-export const getTestRequestByID = (id) => {
+export const getTestByIdRequest = (id) => {
    return axiosInstance.get(`/api/admin/tests/${id}`)
 }
 export const putTestRequest = (id, editedTest) => {
@@ -37,6 +37,5 @@ export const putTestRequest = (id, editedTest) => {
 }
 export const putTestActivationRequest = (isActiveById) => {
    const { id, isActive } = isActiveById
-   console.log(isActiveById)
    return axiosInstance.put(`/api/admin/tests/block/${id}`, isActive)
 }

@@ -6,7 +6,7 @@ import { ReactComponent as Edit } from '../../../../assets/icons/edit.svg'
 import { ReactComponent as Trash } from '../../../../assets/icons/trash.svg'
 import ConfirmModal from '../../../../components/UI/modal/ConfirmModal'
 
-const TestItems = ({ onClickToDelete, id, active, toggleHandler }) => {
+const TestItem = ({ onClickToDelete, id, active, toggleHandler }) => {
    const [accessToTest, setAccessToTest] = React.useState(active)
 
    const onChangeHandlerSwitcher = () => {
@@ -45,7 +45,7 @@ const TestItems = ({ onClickToDelete, id, active, toggleHandler }) => {
    )
 }
 
-export default TestItems
+export default TestItem
 const StyledButton = styled.button`
    border: none;
    background: inherit;

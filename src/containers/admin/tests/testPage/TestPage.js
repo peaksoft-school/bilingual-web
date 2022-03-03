@@ -9,9 +9,11 @@ import {
 import ContentCard from '../../../../components/UI/adminContentCard/index'
 import Button from '../../../../components/UI/button/index'
 import { ROUTES } from '../../../../utils/constants/general'
-import TestItems from './TestItems'
+import TestItem from './TestItem'
 
 const TestPage = () => {
+   const navigate = useNavigate()
+
    const [tests, setTests] = React.useState([])
    const getTestTitle = async () => {
       const response = await getAllTestRequest()
@@ -26,7 +28,6 @@ const TestPage = () => {
       putTestActivationRequest(isActiveById)
    }
 
-   const navigate = useNavigate()
    const onClickToAddNewTest = () => {
       navigate(ROUTES.ADD_TEST_PAGE)
    }
@@ -52,7 +53,7 @@ const TestPage = () => {
                return (
                   <StyledLists key={test.id}>
                      <StyledSpan>{test.title}</StyledSpan>
-                     <TestItems
+                     <TestItem
                         id={test.id}
                         active={test.active}
                         onClickToDelete={onClickToDelete}
