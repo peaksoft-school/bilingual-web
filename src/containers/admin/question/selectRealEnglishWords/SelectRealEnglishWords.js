@@ -27,6 +27,7 @@ const SelectRealEnglishWord = () => {
       setIsModal((prevState) => !prevState)
    }
    const transformedType = type.replace(/[\s.,%]/g, '')
+
    const enabled = () => words.length > 0 && title.trim() && duration.trim()
 
    const checkedHandler = (id) => {
