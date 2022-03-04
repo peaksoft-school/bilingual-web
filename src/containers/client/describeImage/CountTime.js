@@ -1,13 +1,13 @@
 import styled from 'styled-components'
-import LinearDeterminate from '../../../components/UI/progressTime'
+import LinearDeterminate from '../../../components/UI/progressTime/LinearDeterminate'
 import { getPercent } from '../../../utils/helpers'
 
-const CountTime = ({ time }) => {
+const CountTime = ({ time, totalTime }) => {
    const { sec, min } = time
-   const timerMinutes = min < 10 ? `0${min}` : min
+   const timerMinutes = min < 10 ? `0${min}` : min || '00'
    const timerSeconds = sec < 10 ? `0${sec}` : sec
-   const percent = getPercent(170, sec + min * 60)
-   console.log(percent)
+   const percent = getPercent(totalTime * 60 || 60, sec + min * 60)
+   console.log(totalTime)
    return (
       <div>
          {/* <div>{timerSeconds}</div> */}

@@ -5,6 +5,7 @@ import SubmittedResultsPage from '../containers/admin/evaluate/submittedResults/
 import AddQuestionTypePage from '../containers/admin/question/questionType/questionType'
 import AddNewTest from '../containers/admin/tests/addnewTestPage/AddNewTestPage'
 import TestPage from '../containers/admin/tests/testPage/TestPage'
+import DescribeImage from '../containers/client/describeImage/DescribeImage'
 import LoginPage from '../containers/login/LoginPage'
 import SignUp from '../containers/signUp/SignUp'
 import { ROLES, ROUTES } from '../utils/constants/general'
@@ -75,7 +76,7 @@ export default function AllRoutes() {
             path={ROUTES.USER}
             element={
                <PrivateRoute
-                  Component={<h1>User test page</h1>}
+                  Component={<DescribeImage />}
                   roles={[ROLES.ROLE_USER]}
                />
             }
