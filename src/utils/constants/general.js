@@ -14,8 +14,9 @@ export const ROUTES = {
    ADD_QUESTION_PAGE: '/admin/test/addQuestionPage',
    QUESTION_TYPE: '/admin/test/questionType',
    TESTBYID: '/admin/test/addTestPage/:testById',
-   HOME_PAGE: 'user/home-page',
-   CHECKING_YOUR_DEVICE: 'user/checking-your-device',
+   HOME_PAGE: '/user/home-page',
+   HOME_PAGE_TWO: '/user/home-page-two',
+   CHECKING_YOUR_DEVICE: '/user/checking-your-device',
    USER_SELECT_REAL_ENGLISH_WORDS: 'user/select-real-english-words',
 }
 
