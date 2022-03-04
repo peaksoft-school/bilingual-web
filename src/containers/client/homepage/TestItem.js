@@ -50,6 +50,7 @@ const DivButton = styled('div')`
    top: 40px;
 `
 const TestItem = ({ test }) => {
+   console.log(test)
    const { title, duration, shortDescription } = test
    const navigate = useNavigate()
 
