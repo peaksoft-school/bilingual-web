@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import line from '../../../assets/icons/Line.svg'
-import elephant from '../../../assets/icons/elephant.svg'
 import LayoutClient from '../../../layout/clientLayout/layoutClient/LayoutClient'
+import Button from '../../../components/UI/button/index'
 import CountTime from '../../../components/UI/progressTime/CountTime'
-import { getUserTest } from '../../../api/clientService'
+import { getFiles, getUserTest } from '../../../api/clientService'
 
 const DivStyled = styled('div')`
    margin-top: 50px;
@@ -33,17 +32,37 @@ const Input = styled('textarea')`
    resize: none;
 `
 
+const DivButton = styled('div')`
+   margin-top: 90px;
+   border-top: 2px solid #d4d0d0;
+   padding-top: 32px;
+   display: flex;
+   justify-content: flex-end;
+`
+const ButtonS = styled(Button)`
+   width: 143px;
+`
+
 const DescribeImage = () => {
    const [state, setState] = useState({})
    const [time, setTime] = useState({ min: 0, sec: 0 })
+   const [text, setText] = useState('')
+
+   const [files, setFiles] = useState([])
 
    useEffect(() => setTime({ ...time, min: state?.duration }), [state])
 
    const getAllLanguagesApi = async () => {
       const requestConfig = await getUserTest()
-      setState(requestConfig.data[8]?.questions[1])
+      const fileName = requestConfig.data.file
+      const api = await getFiles(fileName)
+
+      setFiles(api)
+
+      setState(requestConfig.data)
    }
 
+   console.log(state.file)
    useEffect(() => getAllLanguagesApi(), [])
 
    useEffect(() => {
@@ -63,6 +82,13 @@ const DescribeImage = () => {
          })
       }, 1000)
    }, [])
+
+   const onChangeText = (e) => {
+      setText(e.target.value)
+   }
+   console.log(files)
+
+   const enabled = () => text.trim()
    return (
       <LayoutClient>
          <div>
@@ -73,12 +99,23 @@ const DescribeImage = () => {
                <StyledP>{state.title}</StyledP>
             </DivStyled>
             <DivImgInput>
-               <img src={elephant} alt="listen" />
-               <Input type="text" multiline placeholder="Your response" />
+               <img src={files} alt="listen" />
+               <Input
+                  onChange={onChangeText}
+                  type="text"
+                  multiline
+                  placeholder="Your response"
+               />
             </DivImgInput>
-            <div>
-               <img src={line} alt="line" />
-            </div>
+            <DivButton>
+               <ButtonS
+                  disabled={!enabled()}
+                  color="primary"
+                  variant="contained"
+               >
+                  NEXT
+               </ButtonS>
+            </DivButton>
          </div>
       </LayoutClient>
    )
