@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import line from '../../../assets/icons/Line.svg'
 import elephant from '../../../assets/icons/elephant.svg'
 import LayoutClient from '../../../layout/clientLayout/layoutClient/LayoutClient'
-import CountTime from './CountTime'
+import CountTime from '../../../components/UI/progressTime/CountTime'
 import { getUserTest } from '../../../api/clientService'
 
 const DivStyled = styled('div')`
