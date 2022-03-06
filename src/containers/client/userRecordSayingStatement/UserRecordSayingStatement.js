@@ -146,7 +146,7 @@ const H2time = styled('h2')`
 `
 const HeaderTitle = styled.p`
    margin: 0 auto;
-   margin-top: 30px;
+   margin-top: 50px;
    font-family: 'DINNextRoundedLTW01';
    font-size: 28px;
    color: #4c4859;

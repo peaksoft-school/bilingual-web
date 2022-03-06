@@ -1,6 +1,6 @@
 import React from 'react'
-import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 import LayoutClient from '../../../layout/clientLayout/layoutClient/LayoutClient'
 import { ReactComponent as Try } from '../../../assets/icons/img-try.svg'
 import { ReactComponent as IconOnline } from '../../../assets/icons/icon_online.svg'

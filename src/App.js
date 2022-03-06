@@ -5,8 +5,7 @@ import { authActions } from './store'
 import { getFromLocalStorage } from './utils/helpers/localstorege/localStorege'
 import { theme } from './assets/styles/themeStyle/theme'
 import { BILINGUAL_TOKEN, BILINGUAL_USER } from './utils/constants/general'
-import UserRecordSayingStatement from './containers/client/userRecordSayingStatement/UserRecordSayingStatement'
-// import Routes from './routes/Routes'
+import Routes from './routes/Routes'
 
 function App() {
    const dispatch = useDispatch()
@@ -31,8 +30,7 @@ function App() {
 
    return (
       <ThemeProvider theme={theme}>
-         {/* <Routes /> */}
-         <UserRecordSayingStatement />
+         <Routes />
       </ThemeProvider>
    )
 }
