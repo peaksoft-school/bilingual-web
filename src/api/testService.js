@@ -22,3 +22,20 @@ export const addQuestionRequest = (data) => {
 export const uploadFileRequest = (fileData) => {
    return axiosInstance.post(`api/files`, fileData)
 }
+
+export const getAllTestRequest = () => {
+   return axiosInstance.get(`/api/admin/tests`)
+}
+export const deleteTestRequest = (id) => {
+   return axiosInstance.delete(`/api/admin/tests/${id}`)
+}
+export const getTestByIdRequest = (id) => {
+   return axiosInstance.get(`/api/admin/tests/${id}`)
+}
+export const putTestRequest = (id, editedTest) => {
+   return axiosInstance.put(`/api/admin/tests/${id}`, editedTest)
+}
+export const putTestActivationRequest = (isActiveById) => {
+   const { id, isActive } = isActiveById
+   return axiosInstance.put(`/api/admin/tests/block/${id}`, isActive)
+}

@@ -1,18 +1,40 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import {
+   deleteTestRequest,
+   getAllTestRequest,
+   putTestActivationRequest,
+} from '../../../../api/testService'
 import ContentCard from '../../../../components/UI/adminContentCard/index'
 import Button from '../../../../components/UI/button/index'
-import TestItems from './TestItems'
+import { ROUTES } from '../../../../utils/constants/general'
+import TestItem from './TestItem'
 
 const TestPage = () => {
    const navigate = useNavigate()
 
    const [tests, setTests] = React.useState([])
+   const getTestTitle = async () => {
+      const response = await getAllTestRequest()
+      setTests(response.data)
+   }
+
+   React.useEffect(() => {
+      getTestTitle()
+   }, [])
+
+   const toggleHandler = (isActiveById) => {
+      putTestActivationRequest(isActiveById)
+   }
 
    const onClickToAddNewTest = () => {
-      navigate('/addNewTest')
-      setTests()
+      navigate(ROUTES.ADD_TEST_PAGE)
+   }
+
+   const onClickToDelete = async (id) => {
+      await deleteTestRequest(id)
+      await getTestTitle()
    }
 
    return (
@@ -31,7 +53,12 @@ const TestPage = () => {
                return (
                   <StyledLists key={test.id}>
                      <StyledSpan>{test.title}</StyledSpan>
-                     <TestItems />
+                     <TestItem
+                        id={test.id}
+                        active={test.active}
+                        onClickToDelete={onClickToDelete}
+                        toggleHandler={toggleHandler}
+                     />
                   </StyledLists>
                )
             })}

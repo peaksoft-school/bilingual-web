@@ -9,12 +9,15 @@ export const ROUTES = {
    USER: '/user/tests',
    ADMIN_TEST: '/admin/test',
    SUBMITED_RESULTS: '/admin/submited-results',
-   SELECT_REAL_ENGLISH_WORDS: 'amin/select-real-english-words',
+   SELECT_REAL_ENGLISH_WORDS: 'admin/test/select-real-english-words',
+   ADD_TEST_PAGE: '/admin/test/addTestPage',
+   ADD_QUESTION_PAGE: '/admin/test/addQuestionPage',
+   QUESTION_TYPE: '/admin/test/questionType',
+   TESTBYID: '/admin/test/addTestPage/:testById',
    HOME_PAGE: '/user/home-page',
+   HOME_PAGE_TWO: '/user/home-page-two',
    CHECKING_YOUR_DEVICE: '/user/checking-your-device',
-   USER_SELECT_REAL_ENGLISH_WORDS: '/user/select-real-english-words',
-   USER_HOME_PAGE_PAGE: '/user/home-page-two',
-   USER_RECORD_SAYING_STATEMENT: '/user/record-saying-statement',
+   USER_SELECT_REAL_ENGLISH_WORDS: 'user/select-real-english-words',
 }
 
 export const BILINGUAL_TOKEN = 'BILINGUAL_TOKEN'

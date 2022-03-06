@@ -2,15 +2,16 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Navigate, Route, Routes } from 'react-router-dom'
 import SubmittedResultsPage from '../containers/admin/evaluate/submittedResults/SubmittedResultsPage'
+import AddQuestionTypePage from '../containers/admin/question/questionType/questionType'
+import AddNewTest from '../containers/admin/tests/addnewTestPage/AddNewTestPage'
 import TestPage from '../containers/admin/tests/testPage/TestPage'
-import UserRespondInAtLeastNWords from '../containers/client/userRespondInAtLeastNWords/UserRespondInAtLeastNWords'
+import CheckingYourDevice from '../containers/client/checkingYourDevice/CheckingYourDevice'
+import HomePage from '../containers/client/homepage/HomePage'
+import HomePageTwo from '../containers/client/homePage2/HomePageTwo'
 import LoginPage from '../containers/login/LoginPage'
 import SignUp from '../containers/signUp/SignUp'
 import { ROLES, ROUTES } from '../utils/constants/general'
 import PrivateRoute from './private/PrivateRoute'
-import HomePageTwo from '../containers/client/homePage2/HomePageTwo'
-import CheckingYourDevice from '../containers/client/checkingYourDevice/CheckingYourDevice'
-import UserRecordSayingStatement from '../containers/client/userRecordSayingStatement/UserRecordSayingStatement'
 
 export default function AllRoutes() {
    const navigate = useNavigate()
@@ -32,6 +33,34 @@ export default function AllRoutes() {
             element={
                <PrivateRoute
                   Component={<TestPage />}
+                  roles={[ROLES.ROLE_ADMIN]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.ADD_TEST_PAGE}
+            element={
+               <PrivateRoute
+                  Component={<AddNewTest />}
+                  roles={[ROLES.ROLE_ADMIN]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.TESTBYID}
+            element={
+               <PrivateRoute
+                  Component={<AddNewTest />}
+                  roles={[ROLES.ROLE_ADMIN]}
+               />
+            }
+         />
+
+         <Route
+            path={ROUTES.QUESTION_TYPE}
+            element={
+               <PrivateRoute
+                  Component={<AddQuestionTypePage />}
                   roles={[ROLES.ROLE_ADMIN]}
                />
             }
@@ -67,16 +96,25 @@ export default function AllRoutes() {
             path={ROUTES.USER}
             element={
                <PrivateRoute
-                  Component={<UserRespondInAtLeastNWords />}
+                  Component={<HomePage />}
                   roles={[ROLES.ROLE_USER]}
                />
             }
          />
          <Route
-            path={ROUTES.USER_RECORD_SAYING_STATEMENT}
+            path={ROUTES.HOME_PAGE_TWO}
             element={
                <PrivateRoute
-                  Component={<UserRecordSayingStatement />}
+                  Component={<HomePageTwo />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.CHECKING_YOUR_DEVICE}
+            element={
+               <PrivateRoute
+                  Component={<CheckingYourDevice />}
                   roles={[ROLES.ROLE_USER]}
                />
             }
