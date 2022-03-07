@@ -15,12 +15,12 @@ export const ROUTES = {
    QUESTION_TYPE: '/admin/test/questionType',
    TESTBYID: '/admin/test/addTestPage/:testById',
    HOME_PAGE: '/user/home-page',
-   HOME_PAGE_TWO: '/user/home-page-two/test',
-   HOME_PAGE_TWO_TESTBYID: '/user/home-page-two/test/:testById',
+   START_PRACTICE_TEST: '/user/start-practice-test/test',
+   START_PRACTICE_TEST_TESTBYID: '/user/start-practice-test/test/:testById',
    CHECKING_YOUR_DEVICE:
-      '/user/home-page-two/test/:testById/checking-your-device',
+      '/user/start-practice-test/test/:testById/checking-your-device',
    TEST_QUESTIONBYID:
-      '/user/home-page-two/test/:testById/question/:questionById',
+      '/user/start-practice-test/test/:testById/question/:questionById',
    USER_SELECT_REAL_ENGLISH_WORDS: 'user/select-real-english-words',
 }
 

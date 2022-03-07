@@ -9,7 +9,7 @@ import { ReactComponent as IcPhoto } from '../../../assets/icons/ic-photo.svg'
 import Button from '../../../components/UI/button/index'
 import { ROUTES } from '../../../utils/constants/general'
 
-function HomePageTwo() {
+function StartPracticeTest() {
    const navigate = useNavigate()
 
    const params = useParams()
@@ -20,7 +20,7 @@ function HomePageTwo() {
 
    const practiceTestHandler = () => {
       navigate(
-         `${ROUTES.HOME_PAGE_TWO}/${params.testById}/checking-your-device`
+         `${ROUTES.START_PRACTICE_TEST}/${params.testById}/checking-your-device`
       )
    }
 
@@ -68,7 +68,7 @@ function HomePageTwo() {
    )
 }
 
-export default HomePageTwo
+export default StartPracticeTest
 
 const HeaderTitle = styled.p`
    font-family: 'DINNextRoundedLTW01';

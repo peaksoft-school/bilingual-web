@@ -11,7 +11,7 @@ function CheckingYourDevice() {
 
    useEffect(() => {
       const timer = setTimeout(() => {
-         navigate(`${ROUTES.HOME_PAGE_TWO}/${params.testById}/question/1`)
+         navigate(`${ROUTES.START_PRACTICE_TEST}/${params.testById}/question/1`)
       }, 3000)
 
       return () => {

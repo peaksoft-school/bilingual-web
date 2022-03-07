@@ -54,7 +54,7 @@ const TestItem = ({ test }) => {
    const navigate = useNavigate()
 
    const onClicktoPractice = () => {
-      navigate(`${ROUTES.HOME_PAGE_TWO}/${id}`)
+      navigate(`${ROUTES.START_PRACTICE_TEST}/${id}`)
    }
    return (
       <MainContainer>
