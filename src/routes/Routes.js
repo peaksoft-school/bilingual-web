@@ -7,7 +7,7 @@ import AddNewTest from '../containers/admin/tests/addnewTestPage/AddNewTestPage'
 import TestPage from '../containers/admin/tests/testPage/TestPage'
 import CheckingYourDevice from '../containers/client/checkingYourDevice/CheckingYourDevice'
 import HomePage from '../containers/client/homepage/HomePage'
-import HomePageTwo from '../containers/client/homePage2/HomePageTwo'
+import StartPracticeTest from '../containers/client/startPracticeTest/StartPracticeTest'
 import LoginPage from '../containers/login/LoginPage'
 import SignUp from '../containers/signUp/SignUp'
 import { ROLES, ROUTES } from '../utils/constants/general'
@@ -84,10 +84,10 @@ export default function AllRoutes() {
             }
          />
          <Route
-            path={ROUTES.HOME_PAGE_TWO}
+            path={ROUTES.START_PRACTICE_TEST_TESTBYID}
             element={
                <PrivateRoute
-                  Component={<HomePageTwo />}
+                  Component={<StartPracticeTest />}
                   roles={[ROLES.ROLE_USER]}
                />
             }
@@ -97,6 +97,15 @@ export default function AllRoutes() {
             element={
                <PrivateRoute
                   Component={<CheckingYourDevice />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.TEST_QUESTIONBYID}
+            element={
+               <PrivateRoute
+                  Component={<h1>question 1</h1>}
                   roles={[ROLES.ROLE_USER]}
                />
             }
