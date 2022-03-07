@@ -4,6 +4,7 @@ import TestItem from './TestItem'
 
 const HomePage = () => {
    const [tests, setTests] = useState([{}])
+   console.log(setTests)
    return (
       <>
          <Header />

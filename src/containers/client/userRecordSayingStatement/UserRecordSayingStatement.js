@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import MicRecorder from 'mic-recorder-to-mp3'
-import classes from './UserRecordSayingStatement.module.css'
 import { ReactComponent as Head } from '../../../assets/icons/Head.svg'
 import { ReactComponent as Ellipse } from '../../../assets/icons/Ellipse.svg'
 import Button from '../../../components/UI/button/index'
@@ -16,7 +15,6 @@ function UserRecordSayingStatement() {
    const [record, setRecord] = useState({
       isRecording: false,
       blobURL: '',
-      isBlocked: false,
    })
 
    console.log(record)
@@ -35,21 +33,16 @@ function UserRecordSayingStatement() {
 
    const start = () => {
       onClickHandler()
-      if (record.isBlocked) {
-         console.log('Отказано в доступе')
-      } else {
-         Mp3Recorder.start()
-            .then(() => {
-               setRecord({ isRecording: true })
-            })
-            .catch((e) => console.error(e))
-      }
+      Mp3Recorder.start()
+         .then(() => {
+            setRecord({ isRecording: true })
+         })
+         .catch((e) => console.error(e))
    }
 
    const stop = () => {
       Mp3Recorder.stop()
          .getMp3()
-         // eslint-disable-next-line no-unused-vars
          .then(([buffer, blob]) => {
             const blobURL = URL.createObjectURL(blob)
             setRecord({ blobURL, isRecording: false })
@@ -62,7 +55,6 @@ function UserRecordSayingStatement() {
             player.play()
             console.log('buffer:', buffer, 'blob:', blob)
          })
-         .catch((e) => console.log('error:', e))
    }
 
    const onClickHandler = () => {
@@ -99,21 +91,20 @@ function UserRecordSayingStatement() {
                   <Div>
                      <Ellipse /> <P>RECORDING...</P>
                   </Div>
-                  <div className={classes.loader}>
-                     <span className={classes.stroke} />
-                     <span className={classes.stroke} />
-                     <span className={classes.stroke} />
-                     <span className={classes.stroke} />
-                     <span className={classes.stroke} />
-                     <span className={classes.stroke} />
-                     <span className={classes.stroke} />
-                     <span className={classes.stroke} />
-                     <span className={classes.stroke} />
-                     <span className={classes.stroke} />
-                  </div>
+                  <Loader>
+                     <span />
+                     <span />
+                     <span />
+                     <span />
+                     <span />
+                     <span />
+                     <span />
+                     <span />
+                     <span />
+                     <span />
+                  </Loader>
                   <Button
                      onClick={stop}
-                     disabled={!record.isRecording}
                      color="primary"
                      variant="contained"
                      sx={{ width: '143px' }}
@@ -128,6 +119,100 @@ function UserRecordSayingStatement() {
 }
 
 export default UserRecordSayingStatement
+
+// const span = styled.span`
+//    display: block;
+//    position: relative;
+//    background: #3a10e5;
+//    height: 100%;
+//    width: 5px;
+//    border-radius: 50px;
+//    margin: 0 4px;
+//    animation: animate 1.2s linear infinite;
+//    &:nth-child(1) {
+//       animation-delay: 0s;
+//    }
+//    &:nth-child(2) {
+//       animation-delay: 0.3s;
+//    }
+//    &:nth-child(3) {
+//       animation-delay: 0.6s;
+//    }
+//    &:nth-child(4) {
+//       animation-delay: 0.9s;
+//    }
+//    &:nth-child(5) {
+//       animation-delay: 0.6s;
+//    }
+//    &:nth-child(6) {
+//       animation-delay: 0.3s;
+//    }
+//    &:nth-child(7) {
+//       animation-delay: 0s;
+//    }
+//    &:nth-child(8) {
+//       animation-delay: 0.3s;
+//    }
+//    &:nth-child(9) {
+//       animation-delay: 0.6s;
+//    }
+//    &:nth-child(10) {
+//       animation-delay: 0.9s;
+//    }
+// `
+const Loader = styled.div`
+   height: 50px;
+   display: flex;
+   align-items: center;
+   span {
+      display: block;
+      position: relative;
+      background: #3a10e5;
+      height: 100%;
+      width: 5px;
+      border-radius: 50px;
+      margin: 0 4px;
+      animation: animate 1.2s linear infinite;
+   }
+   @keyframes animate {
+      50% {
+         height: 20%;
+      }
+      100% {
+         height: 100%;
+      }
+   }
+   span:nth-child(1) {
+      animation-delay: 0s;
+   }
+   span:nth-child(2) {
+      animation-delay: 0.3s;
+   }
+   span:nth-child(3) {
+      animation-delay: 0.6s;
+   }
+   .span:nth-child(4) {
+      animation-delay: 0.9s;
+   }
+   span:nth-child(5) {
+      animation-delay: 0.6s;
+   }
+   span:nth-child(6) {
+      animation-delay: 0.3s;
+   }
+   span:nth-child(7) {
+      animation-delay: 0s;
+   }
+   span:nth-child(8) {
+      animation-delay: 0.3s;
+   }
+   span:nth-child(9) {
+      animation-delay: 0.6s;
+   }
+   span:nth-child(10) {
+      animation-delay: 0.9s;
+   }
+`
 
 const ButtonDiv = styled.div`
    display: flex;

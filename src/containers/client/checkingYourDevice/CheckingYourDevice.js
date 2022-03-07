@@ -10,7 +10,7 @@ function CheckingYourDevice() {
 
    useEffect(() => {
       setTimeout(() => {
-         navigate(ROUTES.USER_SELECT_REAL_ENGLISH_WORDS)
+         navigate(ROUTES.USER_RESPOND_IN_AT_LEAST_WORDS)
       }, 3000)
    }, [])
 

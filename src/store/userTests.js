@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getUserTests } from '../api/clientService'
 
-export const allTest = createAsyncThunk('tests/allTest', async (thunkAPI) => {
+export const tests = createAsyncThunk('tests/allTest', async (id, thunkAPI) => {
    try {
-      const response = await getUserTests(5)
-      console.log(response.data)
+      const response = await getUserTests(id)
       return response.data
    } catch (error) {
       return thunkAPI.rejectWithValue(error.message)
@@ -24,10 +23,10 @@ export const testsSlice = createSlice({
    name: 'tests',
    initialState,
    extraReducers: {
-      [allTest.fulfilled]: (state, action) => {
+      [tests.fulfilled]: (state, action) => {
          state.questions = action.payload
       },
-      [allTest.rejected]: (state, action) => {
+      [tests.rejected]: (state, action) => {
          state.questions = action.payload.questions
          state.title = action.payload.title
          state.duration = action.payload.duration

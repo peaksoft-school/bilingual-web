@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { postUserTests } from '../../../api/clientService'
 import Button from '../../../components/UI/button/index'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
-import { allTest } from '../../../store/userTests'
+import { tests } from '../../../store/userTests'
+
+import { ROUTES } from '../../../utils/constants/general'
 import CountTime from './CountTime'
 
 function UserRespondInAtLeastNWords() {
    const dispatch = useDispatch()
-   // const navigate = useNavigate()
+   const navigate = useNavigate()
    const questions = useSelector((state) => state.tests.questions)
-   console.log(questions)
 
-   const [words, setWords] = useState('')
+   const [answer, setAnswer] = useState('')
    const [time, setTime] = useState({ min: 0, sec: 0 })
 
    useEffect(() => setTime({ ...time, min: questions?.duration }), [questions])
@@ -25,6 +27,7 @@ function UserRespondInAtLeastNWords() {
             if (time.sec > 0) updateIn.sec -= 1
             if (time.sec === 0) {
                if (time.min === 0) {
+                  navigate(ROUTES.USER_RECORD_SAYING_STATEMENT)
                   clearInterval(myInterval)
                } else if (time.min > 0) {
                   updateIn.min -= 1
@@ -41,22 +44,30 @@ function UserRespondInAtLeastNWords() {
    }, [])
 
    const onChangeWords = (event) => {
-      setWords(event.target.value)
+      setAnswer(event.target.value)
    }
 
    const countOfWords = () => {
-      return words
+      return answer
          .trim()
          .replace(/[ ]+/g, ' ')
          .split(' ')
          .filter((i) => i).length
    }
 
-   useEffect(() => {
-      dispatch(allTest())
-   }, [])
+   useEffect(() => dispatch(tests(5)), [])
 
    const enabled = () => countOfWords() > questions.count
+
+   const respondLeastWordsHandler = () => {
+      const userAnswer = {
+         questionId: 1,
+         type: 'RESPOND_IN_AT_LEAST_N_WORDS',
+         answer,
+      }
+      console.log(userAnswer)
+      postUserTests(userAnswer)
+   }
 
    return (
       <LayoutTest>
@@ -75,6 +86,7 @@ function UserRespondInAtLeastNWords() {
          </Div>
          <FooterDiv>
             <Button
+               onClick={respondLeastWordsHandler}
                disabled={!enabled()}
                color="primary"
                variant="contained"

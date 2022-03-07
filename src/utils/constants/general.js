@@ -18,6 +18,8 @@ export const ROUTES = {
    HOME_PAGE_TWO: '/user/home-page-two',
    CHECKING_YOUR_DEVICE: '/user/checking-your-device',
    USER_SELECT_REAL_ENGLISH_WORDS: 'user/select-real-english-words',
+   USER_RESPOND_IN_AT_LEAST_WORDS: '/user/respond-in-a-least-words',
+   USER_RECORD_SAYING_STATEMENT: '/user/record-saying-statement',
 }
 
 export const BILINGUAL_TOKEN = 'BILINGUAL_TOKEN'
