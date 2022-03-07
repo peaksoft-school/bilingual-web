@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import LayoutClient from '../../../layout/clientLayout/layoutClient/LayoutClient'
 import Button from '../../../components/UI/button/index'
 import CountTime from '../../../components/UI/progressTime/CountTime'
-import { getUserTest } from '../../../api/clientService'
+import { getTest, submitQuestion } from '../../../store/testActions'
 
 const DivStyled = styled('div')`
    margin-top: 50px;
@@ -48,23 +50,42 @@ const ButtonS = styled(Button)`
 `
 
 const DescribeImage = () => {
-   const [state, setState] = useState({})
+   const [state, setState] = useState({
+      title: '',
+      duration: '',
+      file: '',
+   })
+
+   const { testId } = useParams()
+
+   const { currentQuestion } = useSelector((state) => state.test)
+   const { id: userId } = useSelector((state) => state.auth.user)
+
+   const dispatch = useDispatch()
+
+   console.log(currentQuestion)
+   console.log(state)
+
+   useEffect(async () => {
+      const { questions } = await dispatch(getTest(testId)).unwrap()
+      setState(questions[currentQuestion] || { ...state })
+   }, [currentQuestion])
 
    const [text, setText] = useState('')
-   const [files, setFiles] = useState([])
-
-   const getAllLanguagesApi = async () => {
-      const requestConfig = await getUserTest()
-
-      setFiles(requestConfig.data.file)
-
-      setState(requestConfig.data)
-   }
-
-   useEffect(() => getAllLanguagesApi(), [])
 
    const onChangeText = (e) => {
       setText(e.target.value)
+   }
+
+   const nextQuestion = () => dispatch(submitQuestion({ testId, userId }))
+
+   const submitTest = async (e) => {
+      e.preventDefault()
+      await nextQuestion().unwrap()
+      // navigate(
+      //    `/user/test/${testId}/${ROUTES[questions[currentQuestion + 2].type]}`
+      // )
+      setText('')
    }
 
    const enabled = () => text.trim()
@@ -75,11 +96,11 @@ const DescribeImage = () => {
                <CountTime time={state.duration} totalTime={state.duration} />
             </div>
             <DivStyled>
-               <StyledP>{state.title}</StyledP>
+               <StyledP>{state?.title}</StyledP>
             </DivStyled>
             <DivImgInput>
                <Img
-                  src={`http://3.65.208.103/api/files/${files}`}
+                  src={`http://3.65.208.103/api/files/${state?.file}`}
                   alt="listen"
                />
                <Input
@@ -87,6 +108,7 @@ const DescribeImage = () => {
                   type="text"
                   multiline
                   placeholder="Your response"
+                  value={text}
                />
             </DivImgInput>
             <DivButton>
@@ -94,6 +116,7 @@ const DescribeImage = () => {
                   disabled={!enabled()}
                   color="primary"
                   variant="contained"
+                  onClick={submitTest}
                >
                   NEXT
                </ButtonS>
