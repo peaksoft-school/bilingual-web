@@ -50,11 +50,11 @@ const DivButton = styled('div')`
    top: 40px;
 `
 const TestItem = ({ test }) => {
-   const { title, duration, shortDescription } = test
+   const { title, duration, shortDescription, id } = test
    const navigate = useNavigate()
 
    const onClicktoPractice = () => {
-      navigate(ROUTES.HOME_PAGE_TWO)
+      navigate(`${ROUTES.START_PRACTICE_TEST}/${id}`)
    }
    return (
       <MainContainer>

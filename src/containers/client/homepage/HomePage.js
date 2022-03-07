@@ -1,17 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { getAllTest } from '../../../api/clientService'
 import Header from '../../../layout/adminHeader'
 import TestItem from './TestItem'
 
 const HomePage = () => {
-   const [tests, setTests] = useState([{}])
-   console.log(setTests)
+   const [tests, setTests] = useState([])
+
+   const getAllLanguagesApi = async () => {
+      const requestConfig = await getAllTest()
+
+      setTests(requestConfig.data)
+   }
+
+   useEffect(() => getAllLanguagesApi(), [])
    return (
       <>
          <Header />
          <ul>
-            {tests.map((test) => {
-               return <TestItem key={test} test={test} />
-            })}
+            {tests.map((test) => (
+               <TestItem key={test.id} test={test} />
+            ))}
          </ul>
       </>
    )
