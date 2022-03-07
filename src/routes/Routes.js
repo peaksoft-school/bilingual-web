@@ -84,7 +84,7 @@ export default function AllRoutes() {
             }
          />
          <Route
-            path={ROUTES.HOME_PAGE_TWO}
+            path={ROUTES.HOME_PAGE_TWO_TESTBYID}
             element={
                <PrivateRoute
                   Component={<HomePageTwo />}
@@ -97,6 +97,15 @@ export default function AllRoutes() {
             element={
                <PrivateRoute
                   Component={<CheckingYourDevice />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.TEST_QUESTIONBYID}
+            element={
+               <PrivateRoute
+                  Component={<h1>question 1</h1>}
                   roles={[ROLES.ROLE_USER]}
                />
             }

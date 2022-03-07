@@ -9,10 +9,8 @@ const HomePage = () => {
    const getAllLanguagesApi = async () => {
       const requestConfig = await getAllTest()
 
-      // setTests(requestConfig)
       setTests(requestConfig.data)
    }
-   console.log(tests)
 
    useEffect(() => getAllLanguagesApi(), [])
    return (

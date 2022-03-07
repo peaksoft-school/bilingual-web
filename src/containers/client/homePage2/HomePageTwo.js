@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import LayoutClient from '../../../layout/clientLayout/layoutClient/LayoutClient'
 import { ReactComponent as Try } from '../../../assets/icons/img-try.svg'
 import { ReactComponent as IconOnline } from '../../../assets/icons/icon_online.svg'
@@ -12,12 +12,16 @@ import { ROUTES } from '../../../utils/constants/general'
 function HomePageTwo() {
    const navigate = useNavigate()
 
+   const params = useParams()
+
    const cancelHandler = () => {
       navigate(ROUTES.HOME_PAGE)
    }
 
    const practiceTestHandler = () => {
-      navigate(ROUTES.CHECKING_YOUR_DEVICE)
+      navigate(
+         `${ROUTES.HOME_PAGE_TWO}/${params.testById}/checking-your-device`
+      )
    }
 
    return (
