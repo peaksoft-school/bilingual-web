@@ -16,13 +16,13 @@ export const ROUTES = {
    TESTBYID: '/admin/test/addTestPage/:testById',
    HOME_PAGE: '/user/home-page',
    START_PRACTICE_TEST: '/user/start-practice-test/test',
-   START_PRACTICE_TEST_TESTBYID: '/user/start-practice-test/test/:testById',
+   START_PRACTICE_TEST_TEST_BY_ID: '/user/start-practice-test/test/:testById',
    CHECKING_YOUR_DEVICE:
       '/user/start-practice-test/test/:testById/checking-your-device',
    TEST_QUESTIONBYID:
       '/user/start-practice-test/test/:testById/question/:questionById',
    USER_SELECT_REAL_ENGLISH_WORDS: 'user/select-real-english-words',
-   USER_RESPOND_IN_AT_LEAST_WORDS: '/user/respond-in-a-least-words',
+   USER_RESPOND_IN_AT_LEAST_N_WORDS: '/user/respond-in-at-least-n-words',
    USER_RECORD_SAYING_STATEMENT: '/user/record-saying-statement',
 }
 

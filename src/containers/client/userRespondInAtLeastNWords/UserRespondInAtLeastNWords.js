@@ -1,47 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { postUserTests } from '../../../api/clientService'
 import Button from '../../../components/UI/button/index'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
-import { tests } from '../../../store/userTests'
-
-import { ROUTES } from '../../../utils/constants/general'
-import CountTime from './CountTime'
 
 function UserRespondInAtLeastNWords() {
-   const dispatch = useDispatch()
-   const navigate = useNavigate()
-   const questions = useSelector((state) => state.tests.questions)
-
    const [answer, setAnswer] = useState('')
-   const [time, setTime] = useState({ min: 0, sec: 0 })
-
-   useEffect(() => setTime({ ...time, min: questions?.duration }), [questions])
-
-   useEffect(() => {
-      const myInterval = setInterval(() => {
-         setTime((time) => {
-            const updateIn = { ...time }
-            if (time.sec > 0) updateIn.sec -= 1
-            if (time.sec === 0) {
-               if (time.min === 0) {
-                  navigate(ROUTES.USER_RECORD_SAYING_STATEMENT)
-                  clearInterval(myInterval)
-               } else if (time.min > 0) {
-                  updateIn.min -= 1
-                  updateIn.sec = 59
-               }
-            }
-            return updateIn
-         })
-      }, 1000)
-
-      return () => {
-         clearTimeout(myInterval)
-      }
-   }, [])
 
    const onChangeWords = (event) => {
       setAnswer(event.target.value)
@@ -55,9 +18,7 @@ function UserRespondInAtLeastNWords() {
          .filter((i) => i).length
    }
 
-   useEffect(() => dispatch(tests(5)), [])
-
-   const enabled = () => countOfWords() > questions.count
+   const enabled = () => countOfWords() > 5
 
    const respondLeastWordsHandler = () => {
       const userAnswer = {
@@ -65,19 +26,14 @@ function UserRespondInAtLeastNWords() {
          type: 'RESPOND_IN_AT_LEAST_N_WORDS',
          answer,
       }
-      console.log(userAnswer)
-      postUserTests(userAnswer)
    }
 
    return (
       <LayoutTest>
-         <div>
-            <CountTime time={time} totalTime={questions.duration} />
-         </div>
-         <HeaderTitle>{questions.title}</HeaderTitle>
+         <HeaderTitle>Respond to the question in at least 50 words</HeaderTitle>
          <Div>
             <Text>
-               <P>{questions.statement}</P>
+               <P>describe a time you were surprised. what happened?”</P>
             </Text>
             <TextAreaDiv>
                <TextArea onChange={onChangeWords} />
