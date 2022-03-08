@@ -9,7 +9,6 @@ const StyledCardDiv = styled.div`
    width: 100%;
 `
 const StyledContentCard = styled.div`
-   /* margin-top: 66px; */
    padding: 35px 44px;
    border-radius: 10px;
    box-shadow: 0px 4px 39px rgba(196, 196, 196, 0.6);
