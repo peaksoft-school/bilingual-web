@@ -18,7 +18,7 @@ function UserRespondInAtLeastNWords() {
          .filter((i) => i).length
    }
 
-   const enabled = () => countOfWords() > 5
+   const enabled = () => countOfWords() >= 5
 
    const respondLeastWordsHandler = () => {
       const userAnswer = {
