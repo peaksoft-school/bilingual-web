@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import MainContainer from '../mainContainerClient/MainContainer'
-import HeaderButton from './HeaderButton'
+import QuitButton from './QuitButton'
 
 const StyledCardDiv = styled.div`
    margin-left: auto;
@@ -21,7 +21,7 @@ const StyledContentCard = styled.div`
 const LayoutTest = ({ children }) => {
    return (
       <>
-         <HeaderButton />
+         <QuitButton />
          <MainContainer>
             <StyledCardDiv>
                <StyledContentCard>{children}</StyledContentCard>

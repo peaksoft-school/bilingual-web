@@ -6,7 +6,7 @@ import { logout } from '../../../store/auth'
 import { ROUTES } from '../../../utils/constants/general'
 import LogOutModalClient from '../layoutClient/LogOutModalClient'
 
-const HeaderButton = () => {
+const QuitButton = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
 
@@ -25,7 +25,7 @@ const HeaderButton = () => {
       <StyledHeader>
          <StyledMainDiv>
             <StyledNavLinkLogOut onClick={modalHandler}>
-               log out
+               QUIT TEST
             </StyledNavLinkLogOut>
          </StyledMainDiv>
          <LogOutModalClient
@@ -37,7 +37,7 @@ const HeaderButton = () => {
    )
 }
 
-export default HeaderButton
+export default QuitButton
 
 const StyledHeader = styled.div`
    margin: 0;
@@ -54,15 +54,6 @@ const StyledMainDiv = styled.div`
    align-items: center;
    box-sizing: border-box;
 `
-// const StyledButtonDiv = styled.div`
-//    width: 431px;
-//    height: 100%;
-//    display: flex;
-//    justify-content: flex-end;
-//    align-items: center;
-//    box-sizing: border-box;
-// `
-
 const StyledNavLinkLogOut = styled.button`
    width: 104px;
    height: 42px;
