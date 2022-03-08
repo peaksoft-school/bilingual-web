@@ -7,6 +7,7 @@ const CountTime = ({ time, totalTime }) => {
    const [time1, setTime1] = useState({ min: 0, sec: 0 })
    useEffect(() => {
       setTime1({ min: time, sec: 0 })
+      return () => setTime1({ min: 0, sec: 0 })
    }, [time])
 
    const timerMinutes = time1.min < 10 ? `0${time1.min}` : time1.min || '00'

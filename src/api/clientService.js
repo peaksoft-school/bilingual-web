@@ -7,6 +7,6 @@ export const getAllTest = () => {
    return axiosInstance.get('/api/user/tests')
 }
 
-export const postUserAnswerQuestion = (testId, userId) => {
-   return axiosInstance.post(`/api/user/tests/${testId}/${userId}`)
+export const postUserAnswerQuestion = (testId, userId, answers) => {
+   return axiosInstance.post(`/api/user/tests/${testId}/${userId}`, answers)
 }

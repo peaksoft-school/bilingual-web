@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Navigate, Route, Routes } from 'react-router-dom'
@@ -13,6 +14,8 @@ import DescribeImage from '../containers/client/describeImage/DescribeImage'
 import SignUp from '../containers/signUp/SignUp'
 import { ROLES, ROUTES } from '../utils/constants/general'
 import PrivateRoute from './private/PrivateRoute'
+import UserRespondInAtLeastNWords from '../containers/client/userRespondInAtLeastNWords/UserRespondInAtLeastNWords'
+import UserRecordSayingStatement from '../containers/client/UserRecordSayingStatemen/UserRecordSayingStatemen'
 
 export default function AllRoutes() {
    const navigate = useNavigate()
@@ -56,7 +59,6 @@ export default function AllRoutes() {
                />
             }
          />
-
          <Route
             path={ROUTES.QUESTION_TYPE}
             element={
@@ -85,7 +87,7 @@ export default function AllRoutes() {
             }
          />
          <Route
-            path={ROUTES.START_PRACTICE_TEST_TESTBYID}
+            path={ROUTES.START_PRACTICE_TEST_TEST_BY_ID}
             element={
                <PrivateRoute
                   Component={<StartPracticeTest />}
@@ -107,6 +109,24 @@ export default function AllRoutes() {
             element={
                <PrivateRoute
                   Component={<DescribeImage />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={`/user/test/:testId/${ROUTES.RESPOND_IN_AT_LEAST_N_WORDS}`}
+            element={
+               <PrivateRoute
+                  Component={<UserRespondInAtLeastNWords />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={`/user/test/:testId/${ROUTES.RECORD_SAYING_STATEMENT}`}
+            element={
+               <PrivateRoute
+                  Component={<UserRecordSayingStatement />}
                   roles={[ROLES.ROLE_USER]}
                />
             }

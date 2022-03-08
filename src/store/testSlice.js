@@ -26,7 +26,7 @@ const testSlice = createSlice({
          state.id = payload.id
       },
       [submitQuestion.fulfilled]: (state) => {
-         state.currentQuestion += 3
+         state.currentQuestion += 1
       },
    },
 })

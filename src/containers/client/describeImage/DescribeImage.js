@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useDispatch, useSelector, useStore } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import LayoutClient from '../../../layout/clientLayout/layoutClient/LayoutClient'
 import Button from '../../../components/UI/button/index'
 import CountTime from '../../../components/UI/progressTime/CountTime'
 import { getTest, submitQuestion } from '../../../store/testActions'
+import { ROUTES } from '../../../utils/constants/general'
 
 const DivStyled = styled('div')`
    margin-top: 50px;
@@ -56,6 +57,8 @@ const DescribeImage = () => {
       file: '',
    })
 
+   const { getState } = useStore()
+
    const { testId } = useParams()
 
    const { currentQuestion } = useSelector((state) => state.test)
@@ -63,28 +66,33 @@ const DescribeImage = () => {
 
    const dispatch = useDispatch()
 
-   console.log(currentQuestion)
-   console.log(state)
-
    useEffect(async () => {
       const { questions } = await dispatch(getTest(testId)).unwrap()
       setState(questions[currentQuestion] || { ...state })
-   }, [currentQuestion])
+      console.log(questions)
+   }, [])
 
    const [text, setText] = useState('')
 
-   const onChangeText = (e) => {
-      setText(e.target.value)
-   }
+   const onChangeText = (e) => setText(e.target.value)
 
-   const nextQuestion = () => dispatch(submitQuestion({ testId, userId }))
+   const navigate = useNavigate()
 
    const submitTest = async (e) => {
       e.preventDefault()
-      await nextQuestion().unwrap()
-      // navigate(
-      //    `/user/test/${testId}/${ROUTES[questions[currentQuestion + 2].type]}`
-      // )
+      const answers = {
+         questionResults: {
+            type: 'DESCRIBE_IMAGE',
+            file: state.file,
+            answer: text,
+         },
+      }
+      await dispatch(submitQuestion({ testId, userId, answers })).unwrap()
+
+      const { currentQuestion, questions } = getState().test
+      navigate(
+         `/user/test/${testId}/${ROUTES[questions[currentQuestion].type]}`
+      )
       setText('')
    }
 

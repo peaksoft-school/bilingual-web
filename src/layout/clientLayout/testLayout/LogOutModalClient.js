@@ -1,5 +1,4 @@
 import React from 'react'
-import Box from '@mui/material/Box'
 import { Typography } from '@mui/material'
 import styled from 'styled-components'
 import Modal from '@mui/material/Modal'
@@ -14,7 +13,7 @@ export default function LogOutModalClient({ open, onClose, onConfirm }) {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
          >
-            <Box sx={style}>
+            <Div>
                <Typography
                   id="modal-modal-description"
                   sx={{
@@ -50,24 +49,24 @@ export default function LogOutModalClient({ open, onClose, onConfirm }) {
                      QUIT TEST
                   </Button>
                </StyledButton>
-            </Box>
+            </Div>
          </Modal>
       </div>
    )
 }
 
-const style = {
-   position: 'absolute',
-   top: '50%',
-   left: '50%',
-   transform: 'translate(-50%, -50%)',
-   width: '430px',
-   borderRadius: '10px',
-   bgcolor: '#FFFFFF',
-   boxShadow: '0px 4px 39px -5px rgba(196, 196, 196, 0.6)',
-   p: '32px 32px ',
-   boxSizing: 'border-box',
-}
+const Div = styled('div')`
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   width: 430px;
+   borderradius: 10px;
+   bgcolor: #ffffff;
+   boxshadow: 0px 4px 39px -5px rgba(196, 196, 196, 0.6);
+   p: 32px 32px;
+   boxsizing: border-box;
+`
 const StyledButton = styled.div`
    margin-top: 34px;
    display: flex;

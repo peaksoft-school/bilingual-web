@@ -20,9 +20,7 @@ function CheckingYourDevice() {
          navigate(`/user/test/${id}/${ROUTES[questions[0].type]}`)
       }, 3000)
 
-      return () => {
-         clearTimeout(timer)
-      }
+      return () => clearTimeout(timer)
    }, [])
 
    return (
