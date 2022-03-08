@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Navigate, Route, Routes } from 'react-router-dom'
@@ -8,6 +9,7 @@ import TestPage from '../containers/admin/tests/testPage/TestPage'
 import CheckingYourDevice from '../containers/client/checkingYourDevice/CheckingYourDevice'
 import HomePage from '../containers/client/homepage/HomePage'
 import StartPracticeTest from '../containers/client/startPracticeTest/StartPracticeTest'
+import UserRespondInAtLeastNWords from '../containers/client/userRespondInAtLeastNWords/UserRespondInAtLeastNWords'
 import LoginPage from '../containers/login/LoginPage'
 import SignUp from '../containers/signUp/SignUp'
 import { ROLES, ROUTES } from '../utils/constants/general'
@@ -74,6 +76,7 @@ export default function AllRoutes() {
                />
             }
          />
+
          <Route
             path={ROUTES.USER}
             element={
@@ -84,7 +87,7 @@ export default function AllRoutes() {
             }
          />
          <Route
-            path={ROUTES.START_PRACTICE_TEST_TESTBYID}
+            path={ROUTES.START_PRACTICE_TEST_TEST_BY_ID}
             element={
                <PrivateRoute
                   Component={<StartPracticeTest />}
@@ -102,10 +105,10 @@ export default function AllRoutes() {
             }
          />
          <Route
-            path={ROUTES.TEST_QUESTIONBYID}
+            path={ROUTES.USER_RESPOND_IN_AT_LEAST_N_WORDS}
             element={
                <PrivateRoute
-                  Component={<h1>question 1</h1>}
+                  Component={<UserRespondInAtLeastNWords />}
                   roles={[ROLES.ROLE_USER]}
                />
             }
