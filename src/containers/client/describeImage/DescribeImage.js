@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector, useStore } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import LayoutClient from '../../../layout/clientLayout/layoutClient/LayoutClient'
 import Button from '../../../components/UI/button/index'
 import CountTime from '../../../components/UI/progressTime/CountTime'
 import { getTest, submitQuestion } from '../../../store/testActions'
 import { ROUTES } from '../../../utils/constants/general'
+import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
 
 const DivStyled = styled('div')`
    margin-top: 50px;
@@ -52,9 +52,7 @@ const ButtonS = styled(Button)`
 
 const DescribeImage = () => {
    const [state, setState] = useState({
-      title: '',
       duration: '',
-      file: '',
    })
 
    const { getState } = useStore()
@@ -83,7 +81,6 @@ const DescribeImage = () => {
       const answers = {
          questionResults: {
             type: 'DESCRIBE_IMAGE',
-            file: state.file,
             answer: text,
          },
       }
@@ -96,9 +93,11 @@ const DescribeImage = () => {
       setText('')
    }
 
+   console.log(state, 'state')
+
    const enabled = () => text.trim()
    return (
-      <LayoutClient>
+      <LayoutTest>
          <div>
             <div>
                <CountTime time={state.duration} totalTime={state.duration} />
@@ -130,7 +129,7 @@ const DescribeImage = () => {
                </ButtonS>
             </DivButton>
          </div>
-      </LayoutClient>
+      </LayoutTest>
    )
 }
 export default DescribeImage

@@ -10,23 +10,31 @@ import { ReactComponent as Ellipse } from '../../../assets/icons/Ellipse.svg'
 import Button from '../../../components/UI/button/index'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
 import { ROUTES } from '../../../utils/constants/general'
+import CountTime from '../../../components/UI/progressTime/CountTime'
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 })
 
 function UserRecordSayingStatement() {
    const navigate = useNavigate()
    const dispatch = useDispatch()
+   const { currentQuestion } = useSelector((state) => state.test)
    const { id: userId } = useSelector((state) => state.auth.user)
    const { questions } = useSelector((state) => state.test)
    const { testId } = useParams()
    const { getState } = useStore()
-
+   const [state, setState] = useState({
+      duration: '',
+   })
 
    const [showButton, setShowButton] = useState(true)
    const [record, setRecord] = useState({
       isRecording: false,
       blobURL: '',
    })
+
+   console.log(currentQuestion, 'here')
+   console.log(questions, 'questions')
+   console.log(showButton, 'showButton')
 
    useEffect(() => {
       navigator.getUserMedia(
@@ -48,6 +56,7 @@ function UserRecordSayingStatement() {
    }
 
    useEffect(() => {
+      setState(questions[currentQuestion] || { ...state })
       if (questions.length === 0) {
          return navigate(`/user/start-practice-test/test/${testId}`)
       }
@@ -75,8 +84,10 @@ function UserRecordSayingStatement() {
    const onClickHandler = () => {
       setShowButton((prev) => !prev)
    }
+
    return (
       <LayoutTest>
+         <CountTime time={state.duration} totalTime={state.duration} />
          <HeaderTitle>Record yorself saying the statement below:</HeaderTitle>
          <Main>
             <Head />

@@ -3,11 +3,16 @@ import { useDispatch, useSelector, useStore } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Button from '../../../components/UI/button/index'
+import CountTime from '../../../components/UI/progressTime/CountTime'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
 import { submitQuestion } from '../../../store/testActions'
 import { ROUTES } from '../../../utils/constants/general'
 
 function UserRespondInAtLeastNWords() {
+   const [state, setState] = useState({
+      duration: '',
+   })
+
    const [answer, setAnswer] = useState('')
 
    const onChangeWords = (event) => {
@@ -33,8 +38,10 @@ function UserRespondInAtLeastNWords() {
 
    const { id: userId } = useSelector((state) => state.auth.user)
    const { questions } = useSelector((state) => state.test)
+   const { currentQuestion } = useSelector((state) => state.test)
 
    useEffect(() => {
+      setState(questions[currentQuestion] || { ...state })
       if (questions.length === 0) {
          return navigate(`/user/start-practice-test/test/${testId}`)
       }
@@ -43,10 +50,12 @@ function UserRespondInAtLeastNWords() {
 
    const respondLeastWordsHandler = async () => {
       const answers = {
-         questionResults: {
-            type: 'RESPOND_IN_AT_LEAST_N_WORDS',
-            answer,
-         },
+         questionResults: [
+            {
+               type: 'RESPOND_IN_AT_LEAST_N_WORDS',
+               answer,
+            },
+         ],
       }
       await dispatch(submitQuestion({ testId, userId, answers })).unwrap()
       const { currentQuestion, questions } = getState().test
@@ -57,6 +66,7 @@ function UserRespondInAtLeastNWords() {
 
    return (
       <LayoutTest>
+         <CountTime time={state.duration} totalTime={state.duration} />
          <HeaderTitle>Respond to the question in at least 50 words</HeaderTitle>
          <Div>
             <Text>
