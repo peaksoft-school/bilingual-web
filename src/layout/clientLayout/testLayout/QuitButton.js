@@ -1,13 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { logout } from '../../../store/auth'
 import { ROUTES } from '../../../utils/constants/general'
 import LogOutModalClient from '../layoutClient/LogOutModalClient'
 
 const QuitButton = () => {
-   const dispatch = useDispatch()
    const navigate = useNavigate()
 
    const [openModal, setOpenModal] = React.useState(false)
@@ -17,8 +14,7 @@ const QuitButton = () => {
 
    const confirmationHandler = () => {
       modalHandler()
-      dispatch(logout())
-      navigate(ROUTES.LOGIN)
+      navigate(ROUTES.USER)
    }
 
    return (

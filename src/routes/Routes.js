@@ -1,4 +1,3 @@
-/* eslint-disable no-plusplus */
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Navigate, Route, Routes } from 'react-router-dom'
@@ -10,12 +9,13 @@ import CheckingYourDevice from '../containers/client/checkingYourDevice/Checking
 import HomePage from '../containers/client/homepage/HomePage'
 import StartPracticeTest from '../containers/client/startPracticeTest/StartPracticeTest'
 import LoginPage from '../containers/login/LoginPage'
-import DescribeImage from '../containers/client/describeImage/DescribeImage'
+import DescribeImage from '../containers/client/describeImage/UserDescribeImage'
 import SignUp from '../containers/signUp/SignUp'
 import { ROLES, ROUTES } from '../utils/constants/general'
 import PrivateRoute from './private/PrivateRoute'
 import UserRespondInAtLeastNWords from '../containers/client/userRespondInAtLeastNWords/UserRespondInAtLeastNWords'
 import UserRecordSayingStatement from '../containers/client/UserRecordSayingStatemen/UserRecordSayingStatemen'
+// import EndTest from '../containers/client/endTest/EndTest'
 
 export default function AllRoutes() {
    const navigate = useNavigate()

@@ -29,9 +29,9 @@ const Header = () => {
                <StyledLogo src={Logo} alt="logo" />
             </StyledLogoDiv>
             <StyledButtonDiv>
-               <StyledNavLink to={ROUTES.ADMIN_TEST}>test</StyledNavLink>
+               <StyledNavLink to={ROUTES.USER}>TESTS</StyledNavLink>
                <StyledNavLink to={ROUTES.SUBMITED_RESULTS}>
-                  submitted results
+                  SEUMBITTED RESULTS
                </StyledNavLink>
                <StyledNavLinkLogOut onClick={modalHandler}>
                   log out

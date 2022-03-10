@@ -51,6 +51,7 @@ const ButtonS = styled(Button)`
 `
 
 const DescribeImage = () => {
+   const navigate = useNavigate()
    const [state, setState] = useState({
       duration: '',
    })
@@ -67,14 +68,11 @@ const DescribeImage = () => {
    useEffect(async () => {
       const { questions } = await dispatch(getTest(testId)).unwrap()
       setState(questions[currentQuestion] || { ...state })
-      console.log(questions)
    }, [])
 
    const [text, setText] = useState('')
 
    const onChangeText = (e) => setText(e.target.value)
-
-   const navigate = useNavigate()
 
    const submitTest = async (e) => {
       e.preventDefault()
@@ -92,8 +90,6 @@ const DescribeImage = () => {
       )
       setText('')
    }
-
-   console.log(state, 'state')
 
    const enabled = () => text.trim()
    return (

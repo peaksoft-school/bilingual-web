@@ -17,7 +17,7 @@ export const ROUTES = {
    RESPOND_IN_AT_LEAST_N_WORDS: 'respond-in-at-least-n-words',
    RECORD_SAYING_STATEMENT: 'record-saying-statement',
    TESTBYID: '/admin/test/addTestPage/:testById',
-   HOME_PAGE: '/user/home-page',
+   HOME_PAGE: '/user/tests/home-page',
    START_PRACTICE_TEST: '/user/start-practice-test/test',
    START_PRACTICE_TEST_TEST_BY_ID: '/user/start-practice-test/test/:testById',
    CHECKING_YOUR_DEVICE:
