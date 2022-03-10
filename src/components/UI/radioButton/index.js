@@ -18,7 +18,7 @@ const RadioButton = (props) => {
 
 export default RadioButton
 const StyledRadioButton = styled(Radio)`
-   &.Mui-checked {
+   .MuiRadio-colorPrimary &.Mui-checked {
       color: #3a10e5;
    }
 `
