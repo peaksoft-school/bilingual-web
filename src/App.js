@@ -6,8 +6,7 @@ import { getFromLocalStorage } from './utils/helpers/localstorege/localStorege'
 import { theme } from './assets/styles/themeStyle/theme'
 import { BILINGUAL_TOKEN, BILINGUAL_USER } from './utils/constants/general'
 
-// import Routes from './routes/Routes'
-import UserSelectTheMainIdea from './containers/client/userSelectTheMainIdea/UserSelectTheMainIdea'
+import Routes from './routes/Routes'
 
 function App() {
    const dispatch = useDispatch()
@@ -32,8 +31,7 @@ function App() {
 
    return (
       <ThemeProvider theme={theme}>
-         {/* <Routes /> */}
-         <UserSelectTheMainIdea />
+         <Routes />
       </ThemeProvider>
    )
 }
