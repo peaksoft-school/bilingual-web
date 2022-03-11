@@ -152,7 +152,12 @@ const SelectTheMainIdea = () => {
    const onGoBackHandler = () => {
       dispatch(testActions.resetQuestion())
       clearSelectMAinIdeaState()
-      navigate(-2)
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
    }
 
    return (

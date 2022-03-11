@@ -78,7 +78,12 @@ const RecordSayingStatement = () => {
    const onGoBackHandler = () => {
       dispatch(testActions.resetQuestion())
       setStatement('')
-      navigate(-2)
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
    }
 
    const onCloseModalHandler = () => {

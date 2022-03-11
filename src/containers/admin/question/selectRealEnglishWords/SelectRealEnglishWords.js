@@ -132,7 +132,12 @@ const SelectRealEnglishWord = () => {
    const onGoBackHandler = () => {
       dispatch(testActions.resetQuestion())
       setWords([])
-      navigate(-1)
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
    }
 
    return (

@@ -16,7 +16,10 @@ import {
 } from '../../../../api/testService'
 import { testActions } from '../../../../store'
 import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
-import { ROUTES } from '../../../../utils/constants/general'
+import {
+   GET_FILE_FROM_SERVER,
+   ROUTES,
+} from '../../../../utils/constants/general'
 
 const StyledP = styled('p')`
    padding: 0;
@@ -105,16 +108,14 @@ const TypeWhatYouHear = () => {
       useSelector((state) => state.questions)
 
    const [audio, setAudio] = useState({ file: null, play: null })
+
    const getFileByFileName = async () => {
-      try {
-         const newAudio = new Audio()
-         newAudio.src = `http://3.65.208.103/api/files/${optionss.file}`
-         newAudio.controls = true
-         setAudio((prevState) => ({ ...prevState, play: newAudio }))
-      } catch (error) {
-         console.log(error)
-      }
+      const newAudio = new Audio()
+      newAudio.src = `${GET_FILE_FROM_SERVER}/${optionss.file}`
+      newAudio.controls = true
+      setAudio((prevState) => ({ ...prevState, play: newAudio }))
    }
+
    React.useEffect(async () => {
       if (questionByIdd) {
          setQuestion({

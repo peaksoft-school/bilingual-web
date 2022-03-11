@@ -33,18 +33,13 @@ const AddQuestionTypePage = () => {
    const type = useSelector((state) => state.questions.type)
 
    const getQuestionById = async () => {
-      try {
-         if (questionByIdd) {
-            const response = await getQuestionByIdRequest(questionByIdd)
-
-            dispatch(testActions.setTitle(response.data.title))
-            dispatch(testActions.setDuration(response.data.duration))
-            dispatch(testActions.setOptions(response.data))
-            dispatch(testActions.setQuestionId(questionByIdd))
-            dispatch(testActions.setType(response.data.type))
-         }
-      } catch (error) {
-         console.log(error)
+      if (questionByIdd) {
+         const response = await getQuestionByIdRequest(questionByIdd)
+         dispatch(testActions.setTitle(response.data.title))
+         dispatch(testActions.setDuration(response.data.duration))
+         dispatch(testActions.setOptions(response.data))
+         dispatch(testActions.setQuestionId(questionByIdd))
+         dispatch(testActions.setType(response.data.type))
       }
    }
 

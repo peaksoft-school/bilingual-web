@@ -12,7 +12,10 @@ import Button from '../../../../components/UI/button/index'
 import loading from '../../../../assets/icons/refresh.png'
 import { testActions } from '../../../../store'
 import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
-import { ROUTES } from '../../../../utils/constants/general'
+import {
+   GET_FILE_FROM_SERVER,
+   ROUTES,
+} from '../../../../utils/constants/general'
 
 const StyledP = styled('p')`
    padding: 0;
@@ -111,7 +114,7 @@ const DescribeImage = () => {
       if (questionByIdd) {
          setcCorrectAnswer(optionss.correctAnswer)
          setImage({
-            preview: `http://3.65.208.103/api/files/${optionss.file}`,
+            preview: `${GET_FILE_FROM_SERVER}/${optionss.file}`,
          })
       }
    }, [])
@@ -208,7 +211,12 @@ const DescribeImage = () => {
    const onGoBackHandler = () => {
       dispatch(testActions.resetQuestion())
       clearStateDescribeImageState()
-      navigate(-2)
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
    }
 
    return (

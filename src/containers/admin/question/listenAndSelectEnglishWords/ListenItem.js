@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import ReCheckbox from '../../../../components/UI/checkbox'
 import { ReactComponent as Trash } from '../../../../assets/icons/trash.svg'
 import SoundIcon from '../../../../assets/icons/sound.svg'
+import { GET_FILE_FROM_SERVER } from '../../../../utils/constants/general'
 
 function ListenItem({ option, deleteWord, checkedHandler }) {
    const [buttonName, setButtonName] = React.useState('Play')
@@ -10,7 +11,7 @@ function ListenItem({ option, deleteWord, checkedHandler }) {
    const handleClick = () => {
       const data = option
       if ('file' in data) {
-         const audio = new Audio(`http://3.65.208.103/api/files/${option.file}`)
+         const audio = new Audio(`${GET_FILE_FROM_SERVER}/${option.file}`)
          audio.play()
       } else if ('file' in data.fileName) {
          if (buttonName === 'Play') {

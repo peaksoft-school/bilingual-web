@@ -160,7 +160,6 @@ const ListenAndSelectEnglishWords = () => {
             setOptions([])
          }
       } catch (error) {
-         console.log(error)
          setIsLoading(false)
          setIsModal(true)
          setMessage('Unable to save question')
@@ -182,7 +181,12 @@ const ListenAndSelectEnglishWords = () => {
    const onGoBackHandler = () => {
       dispatch(testActions.resetQuestion())
       setOptions([])
-      navigate(-2)
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
    }
 
    return (

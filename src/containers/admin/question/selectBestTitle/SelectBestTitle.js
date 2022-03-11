@@ -30,7 +30,6 @@ const SelectBestTitle = () => {
    const [passage, setPassage] = useState('')
    const dispatch = useDispatch()
 
-   console.log(optionss, 'optionss1112345')
    React.useEffect(() => {
       if (questionByIdd) {
          setWords(optionss.options)
@@ -100,7 +99,6 @@ const SelectBestTitle = () => {
             }
             const responseResult = await addQuestionRequest(selectIdeaData)
             setFormValue(responseResult.status)
-            console.log(responseResult, 'post responseResult')
          }
          if (questionByIdd) {
             setIsLoading(true)
@@ -116,7 +114,6 @@ const SelectBestTitle = () => {
                questionByIdd,
                selectIdeaData
             )
-            console.log(responseResult, 'put responseResult')
             setFormValue(responseResult.status)
          }
          setMessage('Question is saved')
@@ -143,7 +140,12 @@ const SelectBestTitle = () => {
    const onGoBackHandler = () => {
       dispatch(testActions.resetQuestion())
       clearSelectBestTitleState()
-      navigate(-2)
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
    }
 
    const openModalHandler = () => {

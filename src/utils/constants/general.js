@@ -30,3 +30,4 @@ export const ROUTES = {
 
 export const BILINGUAL_TOKEN = 'BILINGUAL_TOKEN'
 export const BILINGUAL_USER = 'BILINGUAL_USER'
+export const GET_FILE_FROM_SERVER = 'http://3.65.208.103/api/files'

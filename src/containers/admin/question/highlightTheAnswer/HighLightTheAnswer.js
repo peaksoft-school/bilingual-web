@@ -67,7 +67,6 @@ const HighLightTheAnswer = () => {
    const transformedType = type.replace(/[\s.,%]/g, '')
    const dispatch = useDispatch()
    const [questionStatement, setQuestionStatement] = React.useState('')
-   console.log(optionss, 'optionss')
    const enabled = () => {
       return (
          questionStatement.trim() &&
@@ -175,7 +174,12 @@ const HighLightTheAnswer = () => {
    const onGoBackHandler = () => {
       dispatch(testActions.resetQuestion())
       clearHighLightState()
-      navigate(-2)
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
    }
 
    return (
