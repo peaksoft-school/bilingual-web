@@ -101,7 +101,7 @@ const AddQuestionTypePage = () => {
          )}
 
          {type === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && <TypeWhatYouHear />}
-         {type === QUESTION_TYPES.SELECT_THE_MAIN_IDEA && <SelectTheMainIdea />}
+         {type === QUESTION_TYPES.SELECT_MAIN_IDEA && <SelectTheMainIdea />}
          {type === QUESTION_TYPES.HIGLIGHT_THE_ANSWER && <HighLightTheAnswer />}
          {type === QUESTION_TYPES.SELSECT_BEST_TITLE && <SelectBestTitle />}
          {type === QUESTION_TYPES.RECORD_SAYING_STATEMENT && (
