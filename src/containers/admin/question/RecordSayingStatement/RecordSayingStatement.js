@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { addQuestionRequest } from '../../../../api/testService'
-
+import {
+   addQuestionRequest,
+   putQuestionRequest,
+} from '../../../../api/testService'
 import Button from '../../../../components/UI/button/index'
+import loading from '../../../../assets/icons/refresh.png'
 import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
 import { testActions } from '../../../../store'
 import { ROUTES } from '../../../../utils/constants/general'
@@ -12,41 +15,59 @@ import { ROUTES } from '../../../../utils/constants/general'
 const RecordSayingStatement = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   const { title, duration, type } = useSelector((state) => state.questions)
+   const params = useParams()
+   const { testById } = params
+   const { title, duration, type, testId, optionss, questionByIdd } =
+      useSelector((state) => state.questions)
 
    const [statement, setStatement] = useState('')
    const [isModal, setIsModal] = useState(false)
    const [message, setMessage] = useState('')
    const [error, setError] = useState(null)
    const [datas, setDatas] = useState('')
+   const [isLoading, setIsLoading] = useState(false)
 
    const enabled = () => statement.trim() && title.trim() && duration.trim()
-
-   const onCloseModalHandler = () => {
-      setIsModal((prevState) => !prevState)
-   }
 
    const statementRecord = (event) => {
       setStatement(event.target.value)
    }
+   React.useEffect(() => {
+      if (questionByIdd) {
+         setStatement(optionss.statement)
+      }
+   }, [])
 
    const recordSayingHandler = async (event) => {
       event.preventDefault()
       try {
-         const recordData = {
-            testId: 1,
-            type,
-            title,
-            duration,
-            statement,
+         if (!questionByIdd) {
+            setIsLoading(true)
+            const recordData = {
+               testId: +testId,
+               type,
+               title,
+               duration,
+               statement,
+            }
+            const response = await addQuestionRequest(recordData)
+            setDatas(response.status)
          }
-         const response = await addQuestionRequest(recordData)
-         setDatas(response.status)
+         if (questionByIdd) {
+            setIsLoading(true)
+            const recordData = {
+               testId: +testById,
+               type,
+               title,
+               duration,
+               statement,
+            }
+            const response = await putQuestionRequest(questionByIdd, recordData)
+            setDatas(response.status)
+         }
          setMessage('Question is saved')
          setIsModal(true)
-         dispatch(testActions.resetQuestion())
-         setStatement('')
-         navigate(ROUTES)
+         setIsLoading(false)
       } catch (error) {
          setIsModal(true)
          setMessage('Unable to save question')
@@ -55,7 +76,21 @@ const RecordSayingStatement = () => {
    }
 
    const onGoBackHandler = () => {
-      navigate(-1)
+      dispatch(testActions.resetQuestion())
+      setStatement('')
+      navigate(-2)
+   }
+
+   const onCloseModalHandler = () => {
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
+      dispatch(testActions.resetQuestion())
+      setStatement('')
+      setIsModal((prevState) => !prevState)
    }
 
    return (
@@ -85,7 +120,11 @@ const RecordSayingStatement = () => {
                color="secondary"
                variant="contained"
             >
-               SAVE
+               {!isLoading ? (
+                  <span>SAVE</span>
+               ) : (
+                  <Styledloading src={loading} alt="loading" />
+               )}
             </Button>
          </StyledDivOfModalFooter>
       </Div>
@@ -129,4 +168,20 @@ const StyledDivOfModalFooter = styled.div`
    width: 100%;
    display: flex;
    justify-content: flex-end;
+`
+const Styledloading = styled.img`
+   width: 20px;
+   height: 20px;
+   animation-name: rotate;
+   animation-duration: 3s;
+   animation-iteration-count: infinite;
+   animation-timing-function: linear;
+   @keyframes rotate {
+      from {
+         transform: rotate(360deg);
+      }
+      to {
+         transform: rotate(-360deg);
+      }
+   }
 `

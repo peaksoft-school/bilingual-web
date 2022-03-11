@@ -17,6 +17,8 @@ export const ROUTES = {
    HOME_PAGE: 'user/home-page',
    CHECKING_YOUR_DEVICE: 'user/checking-your-device',
    USER_SELECT_REAL_ENGLISH_WORDS: 'user/select-real-english-words',
+   NEWTESTBYID: '/admin/test/:testId/questionType',
+   QUESTIONBYID: '/admin/test/addTestPage/:testById/questionType/:questionById',
 }
 
 export const BILINGUAL_TOKEN = 'BILINGUAL_TOKEN'

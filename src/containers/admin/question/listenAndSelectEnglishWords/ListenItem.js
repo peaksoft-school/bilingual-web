@@ -8,12 +8,18 @@ function ListenItem({ option, deleteWord, checkedHandler }) {
    const [buttonName, setButtonName] = React.useState('Play')
 
    const handleClick = () => {
-      if (buttonName === 'Play') {
-         option.fileName.play.play()
-         setButtonName('Pause')
-      } else {
-         option.fileName.play.pause()
-         setButtonName('Play')
+      const data = option
+      if ('file' in data) {
+         const audio = new Audio(`http://3.65.208.103/api/files/${option.file}`)
+         audio.play()
+      } else if ('file' in data.fileName) {
+         if (buttonName === 'Play') {
+            option.fileName.play.play()
+            setButtonName('Pause')
+         } else {
+            option.fileName.play.pause()
+            setButtonName('Play')
+         }
       }
    }
    return (
@@ -29,7 +35,7 @@ function ListenItem({ option, deleteWord, checkedHandler }) {
          <Item>{option.word}</Item>
          <StyledDivIcons>
             <ReCheckbox
-               checked={option.isTrue}
+               checked={option.correct}
                onClick={() => checkedHandler(option.id)}
             />
             <StyledTrash onClick={() => deleteWord(option.id)} />

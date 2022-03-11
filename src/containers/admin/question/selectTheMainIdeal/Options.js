@@ -9,7 +9,7 @@ function OptionItem({ option, deletText, checkedandler }) {
          <Span>{option.word}</Span>
          <StyledDivIcons>
             <ReCheckbox
-               checked={option.isTrue}
+               checked={option.correct}
                onChange={() => checkedandler(option.id)}
             />
             <StyledTrash

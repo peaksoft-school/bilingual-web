@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import ContentCard from '../../../../components/UI/adminContentCard/index'
 import AppSelect from '../../../../components/UI/select'
 import Input from '../../../../components/UI/input/index'
@@ -18,13 +19,40 @@ import HighLightTheAnswer from '../highlightTheAnswer/HighLightTheAnswer'
 import SelectBestTitle from '../selectBestTitle/SelectBestTitle'
 import SelectTheMainIdea from '../selectTheMainIdeal/SelectTheMainIdea'
 import RecordSayingStatement from '../RecordSayingStatement/RecordSayingStatement'
+import { getQuestionByIdRequest } from '../../../../api/testService'
 
 const AddQuestionTypePage = () => {
+   const params = useParams()
+
+   const testById = params.testId
+   const questionByIdd = params.questionById
+
    const dispatch = useDispatch()
    const title = useSelector((state) => state.questions.title)
    const duration = useSelector((state) => state.questions.duration)
    const type = useSelector((state) => state.questions.type)
 
+   const getQuestionById = async () => {
+      try {
+         if (questionByIdd) {
+            const response = await getQuestionByIdRequest(questionByIdd)
+
+            dispatch(testActions.setTitle(response.data.title))
+            dispatch(testActions.setDuration(response.data.duration))
+            dispatch(testActions.setOptions(response.data))
+            dispatch(testActions.setQuestionId(questionByIdd))
+            dispatch(testActions.setType(response.data.type))
+         }
+      } catch (error) {
+         console.log(error)
+      }
+   }
+
+   React.useEffect(() => {
+      getQuestionById()
+   }, [])
+
+   dispatch(testActions.setTestId(testById))
    const titleChageHandler = (e) => {
       dispatch(testActions.setTitle(e.target.value))
    }
@@ -33,12 +61,6 @@ const AddQuestionTypePage = () => {
    }
    const typeChageHandler = (e) => {
       dispatch(testActions.setType(e.target.value))
-   }
-
-   const [typeOfQuestion, setTypeOfQuestion] = React.useState('')
-
-   const questionTypeChangeHandler = (id) => {
-      setTypeOfQuestion(id)
    }
 
    return (
@@ -54,41 +76,35 @@ const AddQuestionTypePage = () => {
             </div>
             <div>
                <StyledP>Duration (in minutes)</StyledP>
-               <Input onChange={durationChageHandler} value={duration} />
+               <Input
+                  type="number"
+                  onChange={durationChageHandler}
+                  value={duration}
+               />
             </div>
          </StyledDiv>
          <StyledP>Type</StyledP>
          <AppSelect
             value={type}
             onChange={typeChageHandler}
-            questionTypeChangeHandler={questionTypeChangeHandler}
             options={QUESTION_OPTIONS}
          />
-         {typeOfQuestion === QUESTION_TYPES.SELECT_THE_REAL_ENGLISH_WORD && (
+         {type === QUESTION_TYPES.SELECT_THE_REAL_ENGLISH_WORD && (
             <SelectRealEnglishWord />
          )}
-         {typeOfQuestion === QUESTION_TYPES.DESCRIBE_IMAGE && <DescribeImage />}
-         {typeOfQuestion === QUESTION_TYPES.RESPOND_IN_AT_LEAST_N_WORDS && (
+         {type === QUESTION_TYPES.DESCRIBE_IMAGE && <DescribeImage />}
+         {type === QUESTION_TYPES.RESPOND_IN_AT_LEAST_N_WORDS && (
             <RespondInAtLeastNWords />
          )}
-         {typeOfQuestion ===
-            QUESTION_TYPES.LISTEN_AND_SELECT_REAL_ENGLISH_WORD && (
+         {type === QUESTION_TYPES.LISTEN_AND_SELECT_REAL_ENGLISH_WORD && (
             <ListenAndSelectEnglishWords />
          )}
 
-         {typeOfQuestion === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && (
-            <TypeWhatYouHear />
-         )}
-         {typeOfQuestion === QUESTION_TYPES.SELECT_THE_MAIN_IDEA && (
-            <SelectTheMainIdea />
-         )}
-         {typeOfQuestion === QUESTION_TYPES.HIGLIGHT_THE_ANSWER && (
-            <HighLightTheAnswer />
-         )}
-         {typeOfQuestion === QUESTION_TYPES.SELSECT_BEST_TITLE && (
-            <SelectBestTitle />
-         )}
-         {typeOfQuestion === QUESTION_TYPES.RECORD_SAYING_STATEMENT && (
+         {type === QUESTION_TYPES.TYPE_WHAT_YOU_HEAR && <TypeWhatYouHear />}
+         {type === QUESTION_TYPES.SELECT_THE_MAIN_IDEA && <SelectTheMainIdea />}
+         {type === QUESTION_TYPES.HIGLIGHT_THE_ANSWER && <HighLightTheAnswer />}
+         {type === QUESTION_TYPES.SELSECT_BEST_TITLE && <SelectBestTitle />}
+         {type === QUESTION_TYPES.RECORD_SAYING_STATEMENT && (
             <RecordSayingStatement />
          )}
       </ContentCard>

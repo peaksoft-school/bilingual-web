@@ -1,17 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import { putQuestionActivationRequest } from '../../../../api/testService'
 import SwitchButton from '../../../../components/UI/switchButton/index'
 import { ReactComponent as Edit } from '../../../../assets/icons/edit.svg'
 import { ReactComponent as Trash } from '../../../../assets/icons/trash.svg'
 import ConfirmModal from '../../../../components/UI/modal/ConfirmModal'
 
-const TestItem = ({ onClickToDelete, id, active, toggleHandler }) => {
-   const [accessToTest, setAccessToTest] = React.useState(active)
+const Items = (props) => {
+   const { onClickToDelete, id, active } = props
+   const params = useParams()
+   const testById = parseInt(params.testById, 10)
 
+   const [accessToQuestion, setAccessToQuestion] = React.useState(active)
    const onChangeHandlerSwitcher = () => {
-      setAccessToTest((accessToTest) => !accessToTest)
-      toggleHandler({ id, isActive: !accessToTest })
+      setAccessToQuestion((accessToQuestion) => !accessToQuestion)
+      putQuestionActivationRequest({ id, isActive: !accessToQuestion })
    }
 
    const [confirmDeleteModal, setConfirmDeleteModal] = React.useState(false)
@@ -27,9 +31,12 @@ const TestItem = ({ onClickToDelete, id, active, toggleHandler }) => {
          <SwitchButton
             type="checkbox"
             onChange={onChangeHandlerSwitcher}
-            checked={accessToTest}
+            checked={accessToQuestion}
          />
-         <Link to={`/admin/test/addTestPage/${id}`} key={id}>
+         <Link
+            to={`/admin/test/addTestPage/${testById}/questionType/${id}`}
+            key={id}
+         >
             <StyledEdit />
          </Link>
 
@@ -45,14 +52,16 @@ const TestItem = ({ onClickToDelete, id, active, toggleHandler }) => {
    )
 }
 
-export default TestItem
+export default Items
 const StyledButton = styled.button`
    border: none;
+   padding: 0px;
    background: inherit;
    cursor: pointer;
 `
 
 const StyledIconsDiv = styled.div`
+   margin-left: 10px;
    width: 112px;
    display: flex;
    justify-content: space-between;

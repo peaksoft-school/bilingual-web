@@ -1,18 +1,22 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Stack } from '@mui/material'
 import start from '../../../../assets/icons/start.svg'
 import stop from '../../../../assets/icons/stop.svg'
+import loading from '../../../../assets/icons/refresh.png'
 import Input from '../../../../components/UI/input/index'
 import Button from '../../../../components/UI/button/index'
 import {
    postQuestionRequest,
    addQuestionRequest,
+   putQuestionRequest,
 } from '../../../../api/testService'
 import { testActions } from '../../../../store'
 import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
+import { ROUTES } from '../../../../utils/constants/general'
 
 const StyledP = styled('p')`
    padding: 0;
@@ -74,6 +78,22 @@ const ButtonSave = styled(Button)`
       border: none;
    }
 `
+const Styledloading = styled.img`
+   width: 20px;
+   height: 20px;
+   animation-name: rotate;
+   animation-duration: 3s;
+   animation-iteration-count: infinite;
+   animation-timing-function: linear;
+   @keyframes rotate {
+      from {
+         transform: rotate(360deg);
+      }
+      to {
+         transform: rotate(-360deg);
+      }
+   }
+`
 
 const TypeWhatYouHear = () => {
    const [question, setQuestion] = useState({
@@ -81,20 +101,41 @@ const TypeWhatYouHear = () => {
       fileName: '',
       attemptNumber: '',
    })
-   const { title, duration, type } = useSelector((state) => state.questions)
+   const { title, duration, type, testId, optionss, questionByIdd } =
+      useSelector((state) => state.questions)
+
+   const [audio, setAudio] = useState({ file: null, play: null })
+   const getFileByFileName = async () => {
+      try {
+         const newAudio = new Audio()
+         newAudio.src = `http://3.65.208.103/api/files/${optionss.file}`
+         newAudio.controls = true
+         setAudio((prevState) => ({ ...prevState, play: newAudio }))
+      } catch (error) {
+         console.log(error)
+      }
+   }
+   React.useEffect(async () => {
+      if (questionByIdd) {
+         setQuestion({
+            correctAnswer: optionss.correctAnswer,
+            fileName: optionss.file,
+            attemptNumber: optionss.count,
+         })
+
+         await getFileByFileName()
+      }
+      return ''
+   }, [])
+
    const [startStop, setStartStop] = useState(true)
-   const [audio, setAudio] = useState({ file: {} })
    const transformedType = type.replace(/[\s.,%]/g, '')
    const dispatch = useDispatch()
    const { correctAnswer, attemptNumber } = question
 
    const enabled = () => {
       return (
-         audio.file.name &&
-         title.trim() &&
-         duration.trim() &&
-         correctAnswer.trim() &&
-         attemptNumber.trim()
+         audio.play && title.trim() && duration.trim() && correctAnswer.trim()
       )
    }
 
@@ -110,18 +151,19 @@ const TypeWhatYouHear = () => {
       setQuestion({ correctAnswer: '', attemptNumber: '' })
    }
 
-   const sendFileToApi = () => {
-      const formData = new FormData()
-      formData.append('file', audio.file)
-      const response = postQuestionRequest(formData)
-      return response
+   function sendFileToApi() {
+      if (audio.file) {
+         const formData = new FormData()
+         formData.append('file', audio.file)
+         const response = postQuestionRequest(formData)
+         return response
+      }
+      return optionss.file
    }
 
    const navigate = useNavigate()
-
-   const onGoBackHandler = () => {
-      navigate(-1)
-   }
+   const params = useParams()
+   const { testById } = params
 
    const stopAudio = () => {
       setStartStop(true)
@@ -146,32 +188,45 @@ const TypeWhatYouHear = () => {
    const [message, setMessage] = useState('')
    const [error, setError] = useState(null)
    const [datas, setDatas] = useState('')
-
-   const onCloseModalHandler = () => {
-      setIsModal((prevState) => !prevState)
-   }
-
+   const [isLoading, setIsLoading] = useState(false)
    const submitPrintHearHandler = async (e) => {
       e.preventDefault()
       try {
          const attempt = +attemptNumber
-         const responseAudio = await sendFileToApi()
-         const data = {
-            testId: 1,
-            type: transformedType,
-            title,
-            duration,
-            attempt,
-            correctAnswer,
-            file: responseAudio.data,
+         if (!questionByIdd) {
+            setIsLoading(true)
+            const responseAudio = await sendFileToApi()
+            const data = {
+               testId: +testId,
+               type: transformedType,
+               title,
+               duration,
+               attempt,
+               correctAnswer,
+               file: responseAudio.data,
+            }
+            const responseResult = await addQuestionRequest(data)
+            setDatas(responseResult.status)
          }
-         const responseResult = await addQuestionRequest(data)
-         setDatas(responseResult.status)
+         if (questionByIdd) {
+            setIsLoading(true)
+            const responseAudio = await sendFileToApi()
+            const data = {
+               testId: +testById,
+               type: transformedType,
+               title,
+               duration,
+               attempt,
+               correctAnswer,
+               file: responseAudio.data ? responseAudio.data : responseAudio,
+            }
+
+            const responseResult = await putQuestionRequest(questionByIdd, data)
+            setDatas(responseResult.status)
+         }
+         setIsLoading(false)
          setMessage('Question is saved')
          setIsModal(true)
-         dispatch(testActions.resetQuestion())
-         navigate('/*')
-         clearState()
       } catch (error) {
          setIsModal(true)
          setMessage('Unable to save question')
@@ -179,8 +234,31 @@ const TypeWhatYouHear = () => {
       }
    }
 
+   const onCloseModalHandler = () => {
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
+      dispatch(testActions.resetQuestion())
+      clearState()
+      setIsModal((prevState) => !prevState)
+   }
+
+   const onGoBackHandler = () => {
+      dispatch(testActions.resetQuestion())
+      clearState()
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
+   }
+
    const isShowIcon = () => {
-      if (audio.file.name) {
+      if (audio.play) {
          return startStop ? (
             <ImgStart src={start} onClick={playAudio} alt="start" />
          ) : (
@@ -190,7 +268,6 @@ const TypeWhatYouHear = () => {
       return null
    }
 
-   console.log(audio.file)
    return (
       <form onSubmit={submitPrintHearHandler}>
          <NotificationIconModal
@@ -204,6 +281,7 @@ const TypeWhatYouHear = () => {
             <StyledP>Number off Replays</StyledP>
             <DivUppload>
                <InputNumber
+                  type="number"
                   name="attemptNumber"
                   value={question.attemptNumber}
                   onChange={onQuestionChangeHandler}
@@ -225,7 +303,9 @@ const TypeWhatYouHear = () => {
                   </label>
                   {isShowIcon()}
                </StyledStack>
-               <NumberSpan>{audio.file.name ? audio.file.name : ''}</NumberSpan>
+               <NumberSpan>
+                  {audio.file ? audio.file.name : optionss.file}
+               </NumberSpan>
             </DivUppload>
          </div>
          <StyledP>Correct answer</StyledP>
@@ -245,7 +325,11 @@ const TypeWhatYouHear = () => {
                variant="contained"
                color="success"
             >
-               SAVE
+               {!isLoading ? (
+                  <span>SAVE</span>
+               ) : (
+                  <Styledloading src={loading} alt="loading" />
+               )}
             </ButtonSave>
          </DivFooterSave>
       </form>

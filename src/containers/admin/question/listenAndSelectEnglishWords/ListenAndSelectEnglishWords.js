@@ -1,44 +1,55 @@
 /* eslint-disable no-await-in-loop */
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../../components/UI/button/index'
+import loading from '../../../../assets/icons/refresh.png'
 import { testActions } from '../../../../store'
 import {
    addQuestionRequest,
+   putQuestionRequest,
    uploadFileRequest,
 } from '../../../../api/testService'
-import { ROUTES } from '../../../../utils/constants/general'
 import ListenItem from './ListenItem'
 import ListenAndSelectEnglishWordsModal from './ListenAndSelectEnglishWordModal'
 import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
+import { ROUTES } from '../../../../utils/constants/general'
 
 const ListenAndSelectEnglishWords = () => {
    const dispatch = useDispatch()
-   const { title, duration, type } = useSelector((state) => state.questions)
    const navigate = useNavigate()
+   const params = useParams()
+   const { testById } = params
+
+   const { title, duration, type, testId, optionss, questionByIdd } =
+      useSelector((state) => state.questions)
+
    const [options, setOptions] = useState([])
    const [isOpenModal, setIsOpenModal] = React.useState(false)
    const [isModal, setIsModal] = useState(false)
    const [message, setMessage] = useState('')
    const [error, setError] = useState(null)
    const [datas, setDatas] = useState('')
+   const [isLoading, setIsLoading] = useState(false)
 
    const enabled = () => options.length > 0 && title.trim() && duration.trim()
 
-   const onCloseModalHandler = () => {
-      setIsModal((prevState) => !prevState)
-   }
    const transformedType = type.replace(/[\s.,%]/g, '')
+
+   React.useEffect(() => {
+      if (questionByIdd) {
+         setOptions(optionss.options)
+      }
+   }, [])
 
    const checkedHandler = (id) => {
       const optionsWithSelected = options.map((el) => {
          if (el.id === id) {
             return {
                ...el,
-               isTrue: !el.isTrue,
+               correct: !el.correct,
             }
          }
          return el
@@ -69,9 +80,15 @@ const ListenAndSelectEnglishWords = () => {
    const sendFilesToApi = async () => {
       let copyOfOptions = [...options]
 
+      const newOptions = options.filter((item) =>
+         // eslint-disable-next-line no-prototype-builtins
+         item.hasOwnProperty('fileName')
+      )
+
       // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < options.length; i++) {
-         const currentOption = options[i] //
+      for (let i = 0; i < newOptions.length; i++) {
+         const currentOption = newOptions[i] //
+
          const audio = currentOption.fileName.file
          const fileNameCameFrombackend = await uploadFile(audio)
 
@@ -88,7 +105,6 @@ const ListenAndSelectEnglishWords = () => {
             })
          }
       }
-
       return copyOfOptions
    }
 
@@ -99,7 +115,7 @@ const ListenAndSelectEnglishWords = () => {
          const updateWords = [...prevWords]
          updateWords.push({
             word: enteredValue,
-            isTrue: checkbox,
+            correct: checkbox,
             fileName: audio,
             id: uuidv4(),
          })
@@ -110,26 +126,63 @@ const ListenAndSelectEnglishWords = () => {
    const selectFormHandler = async (e) => {
       e.preventDefault()
       try {
-         const updatedOptions = await sendFilesToApi()
-         const data = {
-            testId: 1,
-            type: transformedType,
-            title,
-            duration,
-            options: updatedOptions,
+         if (!questionByIdd) {
+            setIsLoading(true)
+            const updatedOptions = await sendFilesToApi()
+            const data = {
+               testId: +testId,
+               type: transformedType,
+               title,
+               duration,
+               options: updatedOptions,
+            }
+
+            const response = await addQuestionRequest(data)
+            setDatas(response.status)
+            setMessage('Question is saved')
+            setIsModal(true)
+            setOptions([])
          }
-         const response = await addQuestionRequest(data)
-         setDatas(response.status)
-         setMessage('Question is saved')
-         setIsModal(true)
-         setOptions([])
-         dispatch(testActions.resetQuestion())
-         navigate(ROUTES.SELECT_REAL_ENGLISH_WORDS)
+         if (questionByIdd) {
+            setIsLoading(true)
+            const updatedOptions = await sendFilesToApi()
+            const data = {
+               testId: +testById,
+               type: transformedType,
+               title,
+               duration,
+               options: updatedOptions,
+            }
+            const response = await putQuestionRequest(questionByIdd, data)
+            setDatas(response.status)
+            setMessage('Question is saved')
+            setIsModal(true)
+            setOptions([])
+         }
       } catch (error) {
+         console.log(error)
+         setIsLoading(false)
          setIsModal(true)
          setMessage('Unable to save question')
          setError(error.message)
       }
+   }
+
+   const onCloseModalHandler = () => {
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
+      dispatch(testActions.resetQuestion())
+      setIsModal((prevState) => !prevState)
+   }
+
+   const onGoBackHandler = () => {
+      dispatch(testActions.resetQuestion())
+      setOptions([])
+      navigate(-2)
    }
 
    return (
@@ -167,7 +220,11 @@ const ListenAndSelectEnglishWords = () => {
                })}
             </StyledContainer>
             <StyledDivOfModalFooter>
-               <StyledBtn color="primary" variant="outlined">
+               <StyledBtn
+                  onClick={onGoBackHandler}
+                  color="primary"
+                  variant="outlined"
+               >
                   GO BACK
                </StyledBtn>
 
@@ -177,7 +234,11 @@ const ListenAndSelectEnglishWords = () => {
                   color="secondary"
                   variant="contained"
                >
-                  SAVE
+                  {!isLoading ? (
+                     <span>SAVE</span>
+                  ) : (
+                     <Styledloading src={loading} alt="loading" />
+                  )}
                </Button>
             </StyledDivOfModalFooter>
          </form>
@@ -206,4 +267,20 @@ const StyledBtn = styled(Button)`
 const StledButton = styled(Button)`
    margin: 32px 0 4px;
    float: right;
+`
+const Styledloading = styled.img`
+   width: 20px;
+   height: 20px;
+   animation-name: rotate;
+   animation-duration: 3s;
+   animation-iteration-count: infinite;
+   animation-timing-function: linear;
+   @keyframes rotate {
+      from {
+         transform: rotate(360deg);
+      }
+      to {
+         transform: rotate(-360deg);
+      }
+   }
 `

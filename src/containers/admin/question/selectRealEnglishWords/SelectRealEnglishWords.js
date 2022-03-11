@@ -1,20 +1,29 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../../components/UI/button/index'
+import loading from '../../../../assets/icons/refresh.png'
 import SelectRealEnglishWordModal from './SelectRealEnglishWordModal'
 import { testActions } from '../../../../store'
-import { addQuestionRequest } from '../../../../api/testService'
+import {
+   addQuestionRequest,
+   putQuestionRequest,
+} from '../../../../api/testService'
 import { ROUTES } from '../../../../utils/constants/general'
 import WordItem from './WordItem'
 import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
 
 const SelectRealEnglishWord = () => {
    const dispatch = useDispatch()
-   const { title, duration, type } = useSelector((state) => state.questions)
    const navigate = useNavigate()
+   const params = useParams()
+   const { testById } = params
+
+   const { title, duration, type, testId, optionss, questionByIdd } =
+      useSelector((state) => state.questions)
+
    const [isOpenModal, setIsOpenModal] = useState(false)
    const [words, setWords] = useState([])
 
@@ -22,20 +31,22 @@ const SelectRealEnglishWord = () => {
    const [message, setMessage] = useState('')
    const [error, setError] = useState(null)
    const [datas, setDatas] = useState('')
-
-   const onCloseModalHandler = () => {
-      setIsModal((prevState) => !prevState)
-   }
-   const transformedType = type.replace(/[\s.,%]/g, '')
+   const [isLoading, setIsLoading] = useState(false)
 
    const enabled = () => words.length > 0 && title.trim() && duration.trim()
+
+   React.useEffect(() => {
+      if (questionByIdd) {
+         setWords(optionss.options)
+      }
+   }, [])
 
    const checkedHandler = (id) => {
       const optionsWithSelected = words.map((el) => {
          if (el.id === id) {
             return {
                ...el,
-               isTrue: !el.isTrue,
+               correct: !el.correct,
             }
          }
          return el
@@ -69,25 +80,59 @@ const SelectRealEnglishWord = () => {
    const selectFormHandler = async (e) => {
       e.preventDefault()
       try {
-         const data = {
-            testId: 1,
-            type: transformedType,
-            title,
-            duration,
-            words,
+         if (!questionByIdd) {
+            setIsLoading(true)
+            const data = {
+               testId: +testId,
+               type,
+               title,
+               duration,
+               words,
+            }
+
+            const response = await addQuestionRequest(data)
+            setDatas(response.status)
+            setMessage('Question is saved')
+            setIsModal(true)
+            setWords([])
          }
-         const response = await addQuestionRequest(data)
-         setDatas(response.status)
-         setMessage('Question is saved')
-         setIsModal(true)
-         setWords([])
-         dispatch(testActions.resetQuestion())
-         navigate(ROUTES.SELECT_REAL_ENGLISH_WORDS)
+         if (questionByIdd) {
+            setIsLoading(true)
+            const data = {
+               testId: +testById,
+               type,
+               title,
+               duration,
+               words,
+            }
+
+            const response = await putQuestionRequest(questionByIdd, data)
+            setDatas(response.status)
+            setMessage('Question is changed')
+            setIsModal(true)
+            setWords([])
+         }
       } catch (error) {
          setIsModal(true)
          setMessage('Unable to save question')
          setError(error.message)
+         setIsLoading(false)
       }
+   }
+   const onCloseModalHandler = () => {
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
+      dispatch(testActions.resetQuestion())
+      setIsModal((prevState) => !prevState)
+   }
+   const onGoBackHandler = () => {
+      dispatch(testActions.resetQuestion())
+      setWords([])
+      navigate(-1)
    }
 
    return (
@@ -113,10 +158,11 @@ const SelectRealEnglishWord = () => {
                open={isOpenModal}
             />
             <StyledContainer>
-               {words.map((option) => {
+               {words.map((option, index) => {
                   return (
                      <WordItem
-                        key={option}
+                        index={index + 1}
+                        key={option.id}
                         words={option}
                         deleteWord={deleteWord}
                         checkedHandler={checkedHandler}
@@ -125,7 +171,11 @@ const SelectRealEnglishWord = () => {
                })}
             </StyledContainer>
             <StyledDivOfModalFooter>
-               <StyledBtn color="primary" variant="outlined">
+               <StyledBtn
+                  onClick={onGoBackHandler}
+                  color="primary"
+                  variant="outlined"
+               >
                   GO BACK
                </StyledBtn>
                <Button
@@ -134,7 +184,11 @@ const SelectRealEnglishWord = () => {
                   color="secondary"
                   variant="contained"
                >
-                  SAVE
+                  {!isLoading ? (
+                     <span>SAVE</span>
+                  ) : (
+                     <Styledloading src={loading} alt="loading" />
+                  )}
                </Button>
             </StyledDivOfModalFooter>
          </form>
@@ -162,4 +216,20 @@ const StledButton = styled(Button)`
 `
 const StyledBtn = styled(Button)`
    margin-right: 16px;
+`
+const Styledloading = styled.img`
+   width: 20px;
+   height: 20px;
+   animation-name: rotate;
+   animation-duration: 3s;
+   animation-iteration-count: infinite;
+   animation-timing-function: linear;
+   @keyframes rotate {
+      from {
+         transform: rotate(360deg);
+      }
+      to {
+         transform: rotate(-360deg);
+      }
+   }
 `

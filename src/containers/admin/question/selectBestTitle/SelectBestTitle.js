@@ -1,22 +1,42 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import { v4 as uuid7 } from 'uuid'
 import Input from '../../../../components/UI/input/index'
 import Button from '../../../../components/UI/button/index'
+import loading from '../../../../assets/icons/refresh.png'
 import SelectBestTitleModal from './SelectBestTitleModal'
 import SelectBestTitleOptionsItem from './SelectBestTitleOptionsItem'
-import { addQuestionRequest } from '../../../../api/testService'
+import {
+   addQuestionRequest,
+   putQuestionRequest,
+} from '../../../../api/testService'
 import { testActions } from '../../../../store'
 import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
+import { ROUTES } from '../../../../utils/constants/general'
 
 const SelectBestTitle = () => {
+   const navigate = useNavigate()
+   const params = useParams()
+   const { testById } = params
+
+   const { title, duration, type, testId, optionss, questionByIdd } =
+      useSelector((state) => state.questions)
+
    const [isOpenModal, setIsOpenModal] = React.useState(false)
-   const { title, duration, type } = useSelector((state) => state.questions)
    const transformedType = type.replace(/[\s.,%]/g, '')
    const [words, setWords] = React.useState([])
    const [passage, setPassage] = useState('')
    const dispatch = useDispatch()
+
+   console.log(optionss, 'optionss1112345')
+   React.useEffect(() => {
+      if (questionByIdd) {
+         setWords(optionss.options)
+         setPassage(optionss.passage)
+      }
+   }, [])
 
    const enabled = () => {
       return (
@@ -31,9 +51,7 @@ const SelectBestTitle = () => {
       const newText = words.filter((item) => item.id !== id)
       setWords(newText)
    }
-   const openModalHandler = () => {
-      setIsOpenModal((prev) => !prev)
-   }
+
    const addOptionsHandler = (enteredText) => {
       const { enteredValue, isChecked } = enteredText
       setWords((prevOptions) => {
@@ -50,6 +68,7 @@ const SelectBestTitle = () => {
    const [message, setMessage] = useState('')
    const [isModal, setIsModal] = useState(false)
    const [error, setError] = useState(null)
+   const [isLoading, setIsLoading] = useState(false)
    const onChangeRadioBtnHandler = (id) => {
       setWords((prev) => {
          const updatedWords = [
@@ -61,9 +80,7 @@ const SelectBestTitle = () => {
          return updatedWords
       })
    }
-   const onCloseModal = () => {
-      setIsModal((prev) => !prev)
-   }
+
    const clearSelectBestTitleState = () => {
       setPassage('')
       setWords([])
@@ -71,25 +88,66 @@ const SelectBestTitle = () => {
    const selectBestTitleFormHandler = async (e) => {
       e.preventDefault()
       try {
-         const selectIdeaData = {
-            words,
-            testId: 1,
-            type: transformedType,
-            title,
-            duration,
-            passage,
+         if (!questionByIdd) {
+            setIsLoading(true)
+            const selectIdeaData = {
+               words,
+               testId: +testId,
+               type: transformedType,
+               title,
+               duration,
+               passage,
+            }
+            const responseResult = await addQuestionRequest(selectIdeaData)
+            setFormValue(responseResult.status)
+            console.log(responseResult, 'post responseResult')
          }
-         const responseResult = await addQuestionRequest(selectIdeaData)
-         setFormValue(responseResult.status)
+         if (questionByIdd) {
+            setIsLoading(true)
+            const selectIdeaData = {
+               words,
+               testId: +testById,
+               type: transformedType,
+               title,
+               duration,
+               passage,
+            }
+            const responseResult = await putQuestionRequest(
+               questionByIdd,
+               selectIdeaData
+            )
+            console.log(responseResult, 'put responseResult')
+            setFormValue(responseResult.status)
+         }
          setMessage('Question is saved')
          setIsModal(true)
-         dispatch(testActions.resetQuestion())
-         clearSelectBestTitleState()
+         setIsLoading(false)
       } catch (error) {
          setIsModal(true)
          setMessage('Unable to save question')
          setError(error.message)
       }
+   }
+   const onCloseModal = () => {
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
+      dispatch(testActions.resetQuestion())
+      clearSelectBestTitleState()
+      setIsModal((prev) => !prev)
+   }
+
+   const onGoBackHandler = () => {
+      dispatch(testActions.resetQuestion())
+      clearSelectBestTitleState()
+      navigate(-2)
+   }
+
+   const openModalHandler = () => {
+      setIsOpenModal((prev) => !prev)
    }
    return (
       <form onSubmit={selectBestTitleFormHandler}>
@@ -132,7 +190,11 @@ const SelectBestTitle = () => {
                })}
             </StyledContainer>
             <StyledDivOfFooter>
-               <ButtonGoBack color="primary" variant="outlined">
+               <ButtonGoBack
+                  onClick={onGoBackHandler}
+                  color="primary"
+                  variant="outlined"
+               >
                   GO BACK
                </ButtonGoBack>
                <Button
@@ -141,7 +203,11 @@ const SelectBestTitle = () => {
                   color="secondary"
                   variant="contained"
                >
-                  SAVE
+                  {!isLoading ? (
+                     <span>SAVE</span>
+                  ) : (
+                     <Styledloading src={loading} alt="loading" />
+                  )}
                </Button>
             </StyledDivOfFooter>
          </div>
@@ -178,4 +244,20 @@ const StyledP = styled.p`
 `
 const ButtonGoBack = styled(Button)`
    margin-right: 16px;
+`
+const Styledloading = styled.img`
+   width: 20px;
+   height: 20px;
+   animation-name: rotate;
+   animation-duration: 3s;
+   animation-iteration-count: infinite;
+   animation-timing-function: linear;
+   @keyframes rotate {
+      from {
+         transform: rotate(360deg);
+      }
+      to {
+         transform: rotate(-360deg);
+      }
+   }
 `

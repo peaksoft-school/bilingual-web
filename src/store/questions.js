@@ -4,6 +4,9 @@ const initialState = {
    title: '',
    type: '',
    duration: '',
+   testId: '',
+   questionByIdd: '',
+   optionss: '',
 }
 
 const questionSlice = createSlice({
@@ -18,6 +21,15 @@ const questionSlice = createSlice({
       },
       setDuration(state, action) {
          state.duration = action.payload
+      },
+      setTestId(state, action) {
+         state.testId = action.payload
+      },
+      setOptions(state, action) {
+         state.optionss = action.payload
+      },
+      setQuestionId(state, action) {
+         state.questionByIdd = action.payload
       },
       resetQuestion() {
          return initialState

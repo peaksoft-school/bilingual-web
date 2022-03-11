@@ -1,18 +1,25 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Input from '../../../../components/UI/input/index'
 import Button from '../../../../components/UI/button/index'
+import loading from '../../../../assets/icons/refresh.png'
 import { testActions } from '../../../../store'
-import { addQuestionRequest } from '../../../../api/testService'
+import {
+   addQuestionRequest,
+   putQuestionRequest,
+} from '../../../../api/testService'
 import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
 import { ROUTES } from '../../../../utils/constants/general'
 
 const RespondInAtLeastNWords = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   const { title, duration, type } = useSelector((state) => state.questions)
+   const params = useParams()
+   const { testById } = params
+   const { title, duration, type, testId, optionss, questionByIdd } =
+      useSelector((state) => state.questions)
 
    const [questionStatement, setQuestionStatement] = useState('')
    const [numberOfWords, setNumberOfWords] = useState('')
@@ -20,15 +27,23 @@ const RespondInAtLeastNWords = () => {
    const [message, setMessage] = useState('')
    const [error, setError] = useState(null)
    const [datas, setDatas] = useState('')
+   const [isLoading, setIsLoading] = useState(false)
 
    const enabled = () => {
       return (
          questionStatement.trim() &&
-         numberOfWords.trim() &&
+         // numberOfWords.trim() &&
          title.trim() &&
          duration.trim()
       )
    }
+
+   React.useEffect(() => {
+      if (questionByIdd) {
+         setQuestionStatement(optionss.statement)
+         setNumberOfWords(optionss.count)
+      }
+   }, [])
 
    const statementRespond = (event) => {
       setQuestionStatement(event.target.value)
@@ -37,30 +52,43 @@ const RespondInAtLeastNWords = () => {
       setNumberOfWords(event.target.value)
    }
 
-   const onCloseModalHandler = () => {
-      setIsModal((prevState) => !prevState)
-   }
-
    const respondLeastWordsHandler = async (event) => {
       event.preventDefault()
       try {
-         const countOfWords = +numberOfWords
-         const respondData = {
-            testId: 1,
-            type,
-            title,
-            duration,
-            questionStatement,
-            countOfWords,
+         if (!questionByIdd) {
+            setIsLoading(true)
+            const countOfWords = +numberOfWords
+            const respondData = {
+               testId: +testId,
+               type,
+               title,
+               duration,
+               questionStatement,
+               countOfWords,
+            }
+            const response = await addQuestionRequest(respondData)
+            setDatas(response.status)
          }
-         const response = await addQuestionRequest(respondData)
-         setDatas(response.status)
+         if (questionByIdd) {
+            setIsLoading(true)
+            const countOfWords = +numberOfWords
+            const respondData = {
+               testId: +testById,
+               type,
+               title,
+               duration,
+               questionStatement,
+               countOfWords,
+            }
+            const response = await putQuestionRequest(
+               questionByIdd,
+               respondData
+            )
+            setDatas(response.status)
+         }
          setMessage('Question is saved')
          setIsModal(true)
-         dispatch(testActions.resetQuestion())
-         setQuestionStatement('')
-         setNumberOfWords('')
-         navigate(ROUTES)
+         setIsLoading(false)
       } catch (error) {
          setIsModal(true)
          setMessage('Unable to save question')
@@ -69,7 +97,23 @@ const RespondInAtLeastNWords = () => {
    }
 
    const onGoBackHandler = () => {
-      navigate(-1)
+      dispatch(testActions.resetQuestion())
+      setQuestionStatement('')
+      setNumberOfWords('')
+      navigate(-2)
+   }
+
+   const onCloseModalHandler = () => {
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
+      dispatch(testActions.resetQuestion())
+      setQuestionStatement('')
+      setNumberOfWords('')
+      setIsModal((prevState) => !prevState)
    }
 
    return (
@@ -109,7 +153,11 @@ const RespondInAtLeastNWords = () => {
                color="secondary"
                variant="contained"
             >
-               SAVE
+               {!isLoading ? (
+                  <span>SAVE</span>
+               ) : (
+                  <Styledloading src={loading} alt="loading" />
+               )}
             </Button>
          </StyledDivOfModalFooter>
       </Div>
@@ -136,4 +184,20 @@ const StyledDivOfModalFooter = styled.div`
    width: 100%;
    display: flex;
    justify-content: flex-end;
+`
+const Styledloading = styled.img`
+   width: 20px;
+   height: 20px;
+   animation-name: rotate;
+   animation-duration: 3s;
+   animation-iteration-count: infinite;
+   animation-timing-function: linear;
+   @keyframes rotate {
+      from {
+         transform: rotate(360deg);
+      }
+      to {
+         transform: rotate(-360deg);
+      }
+   }
 `
