@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import LayoutClient from '../../../layout/clientLayout/layoutClient/LayoutClient'
 import { ROUTES } from '../../../utils/constants/general'
@@ -7,15 +7,16 @@ import { ReactComponent as Circle } from '../../../assets/icons/progress.svg'
 
 function CheckingYourDevice() {
    const navigate = useNavigate()
+   const params = useParams()
 
    useEffect(() => {
       const timer = setTimeout(() => {
-         navigate(ROUTES.USER_SELECT_REAL_ENGLISH_WORDS)
+         navigate(
+            `${ROUTES.USER_RESPOND_IN_AT_LEAST_N_WORDS}/${params.testById}/question/1`
+         )
       }, 3000)
 
-      return () => {
-         clearTimeout(timer)
-      }
+      return () => clearTimeout(timer)
    }, [])
 
    return (
