@@ -22,9 +22,12 @@ export const ROUTES = {
    TEST_QUESTIONBYID:
       '/user/start-practice-test/test/:testById/question/:questionById',
    USER_SELECT_REAL_ENGLISH_WORDS: 'user/select-real-english-words',
+   NEWTESTBYID: '/admin/test/:testId/questionType',
+   QUESTIONBYID: '/admin/test/addTestPage/:testById/questionType/:questionById',
    USER_RESPOND_IN_AT_LEAST_N_WORDS: '/user/respond-in-at-least-n-words',
    USER_RECORD_SAYING_STATEMENT: '/user/record-saying-statement',
 }
 
 export const BILINGUAL_TOKEN = 'BILINGUAL_TOKEN'
 export const BILINGUAL_USER = 'BILINGUAL_USER'
+export const GET_FILE_FROM_SERVER = 'http://3.65.208.103/api/files'

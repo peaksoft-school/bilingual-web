@@ -68,6 +68,24 @@ export default function AllRoutes() {
             }
          />
          <Route
+            path={ROUTES.QUESTIONBYID}
+            element={
+               <PrivateRoute
+                  Component={<AddQuestionTypePage />}
+                  roles={[ROLES.ROLE_ADMIN]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.NEWTESTBYID}
+            element={
+               <PrivateRoute
+                  Component={<AddQuestionTypePage />}
+                  roles={[ROLES.ROLE_ADMIN]}
+               />
+            }
+         />
+         <Route
             path={ROUTES.SUBMITED_RESULTS}
             element={
                <PrivateRoute

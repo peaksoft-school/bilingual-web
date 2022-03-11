@@ -3,17 +3,24 @@ import styled from 'styled-components'
 import ReCheckbox from '../../../../components/UI/checkbox'
 import { ReactComponent as Trash } from '../../../../assets/icons/trash.svg'
 import SoundIcon from '../../../../assets/icons/sound.svg'
+import { GET_FILE_FROM_SERVER } from '../../../../utils/constants/general'
 
 function ListenItem({ option, deleteWord, checkedHandler }) {
    const [buttonName, setButtonName] = React.useState('Play')
 
    const handleClick = () => {
-      if (buttonName === 'Play') {
-         option.fileName.play.play()
-         setButtonName('Pause')
-      } else {
-         option.fileName.play.pause()
-         setButtonName('Play')
+      const data = option
+      if ('file' in data) {
+         const audio = new Audio(`${GET_FILE_FROM_SERVER}/${option.file}`)
+         audio.play()
+      } else if ('file' in data.fileName) {
+         if (buttonName === 'Play') {
+            option.fileName.play.play()
+            setButtonName('Pause')
+         } else {
+            option.fileName.play.pause()
+            setButtonName('Play')
+         }
       }
    }
    return (
@@ -29,7 +36,7 @@ function ListenItem({ option, deleteWord, checkedHandler }) {
          <Item>{option.word}</Item>
          <StyledDivIcons>
             <ReCheckbox
-               checked={option.isTrue}
+               checked={option.correct}
                onClick={() => checkedHandler(option.id)}
             />
             <StyledTrash onClick={() => deleteWord(option.id)} />

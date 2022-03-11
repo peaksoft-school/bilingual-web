@@ -1,22 +1,42 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import Input from '../../../../components/UI/input/index'
 import Button from '../../../../components/UI/button/index'
+import loading from '../../../../assets/icons/refresh.png'
 import SelectTheMainIdeaModal from './SelectTheMainIdeaModal'
 import OptionItem from './Options'
-import { addQuestionRequest } from '../../../../api/testService'
+import {
+   addQuestionRequest,
+   putQuestionRequest,
+} from '../../../../api/testService'
 import { testActions } from '../../../../store'
 import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
+import { ROUTES } from '../../../../utils/constants/general'
 
 const SelectTheMainIdea = () => {
+   const navigate = useNavigate()
+   const params = useParams()
+   const { testById } = params
+
+   const { title, duration, type, testId, optionss, questionByIdd } =
+      useSelector((state) => state.questions)
+
    const [isOpenModal, setIsOpenModal] = React.useState(false)
-   const { title, duration, type } = useSelector((state) => state.questions)
    const transformedType = type.replace(/[\s.,%]/g, '')
    const [words, setWords] = React.useState([])
    const [passage, setPassage] = useState('')
+   const [isLoading, setIsLoading] = useState(false)
+
    const dispatch = useDispatch()
+   React.useEffect(() => {
+      if (questionByIdd) {
+         setWords(optionss.options)
+         setPassage(optionss.passage)
+      }
+   }, [])
 
    const enabled = () => {
       return (
@@ -29,7 +49,7 @@ const SelectTheMainIdea = () => {
          if (el.id === id) {
             return {
                ...el,
-               isTrue: !el.isTrue,
+               correct: !el.correct,
             }
          }
          return el
@@ -57,7 +77,7 @@ const SelectTheMainIdea = () => {
          const updateOptions = [...prevOptions]
          updateOptions.push({
             word: enteredValue,
-            isTrue: isChecked,
+            correct: isChecked,
             id: uuidv4(),
          })
          return updateOptions
@@ -69,10 +89,6 @@ const SelectTheMainIdea = () => {
    const [isModal, setIsModal] = useState(false)
    const [error, setError] = useState(null)
 
-   const onCloseModal = () => {
-      setIsModal((prev) => !prev)
-   }
-
    const clearSelectMAinIdeaState = () => {
       setPassage('')
       setWords([])
@@ -81,24 +97,66 @@ const SelectTheMainIdea = () => {
    const selectMainIdeaFormHandler = async (e) => {
       e.preventDefault()
       try {
-         const selectIdeaData = {
-            words,
-            testId: 20,
-            type: transformedType,
-            title,
-            duration,
-            passage,
+         if (!questionByIdd) {
+            setIsLoading(true)
+
+            const selectIdeaData = {
+               words,
+               testId: +testId,
+               type: transformedType,
+               title,
+               duration,
+               passage,
+            }
+            const responseResult = await addQuestionRequest(selectIdeaData)
+            setFormValue(responseResult.status)
          }
-         const responseResult = await addQuestionRequest(selectIdeaData)
-         setFormValue(responseResult.status)
+         if (questionByIdd) {
+            setIsLoading(true)
+
+            const selectIdeaData = {
+               words,
+               testId: +testById,
+               type: transformedType,
+               title,
+               duration,
+               passage,
+            }
+            const responseResult = await putQuestionRequest(
+               questionByIdd,
+               selectIdeaData
+            )
+            setFormValue(responseResult.status)
+         }
          setMessage('Question is saved')
          setIsModal(true)
-         dispatch(testActions.resetQuestion())
-         clearSelectMAinIdeaState()
+         setIsLoading(false)
       } catch (error) {
          setIsModal(true)
          setMessage('Unable to save question')
          setError(error.message)
+      }
+   }
+   const onCloseModal = () => {
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
+      dispatch(testActions.resetQuestion())
+      clearSelectMAinIdeaState()
+      setIsModal((prev) => !prev)
+   }
+
+   const onGoBackHandler = () => {
+      dispatch(testActions.resetQuestion())
+      clearSelectMAinIdeaState()
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
       }
    }
 
@@ -143,7 +201,11 @@ const SelectTheMainIdea = () => {
                })}
             </StyledContainer>
             <StyledDivOfFooter>
-               <ButtonGoBack color="primary" variant="outlined">
+               <ButtonGoBack
+                  onClick={onGoBackHandler}
+                  color="primary"
+                  variant="outlined"
+               >
                   GO BACK
                </ButtonGoBack>
                <Button
@@ -152,7 +214,11 @@ const SelectTheMainIdea = () => {
                   color="secondary"
                   variant="contained"
                >
-                  SAVE
+                  {!isLoading ? (
+                     <span>SAVE</span>
+                  ) : (
+                     <Styledloading src={loading} alt="loading" />
+                  )}
                </Button>
             </StyledDivOfFooter>
          </div>
@@ -196,4 +262,20 @@ const StyledP = styled.p`
 
 const ButtonGoBack = styled(Button)`
    margin-right: 16px;
+`
+const Styledloading = styled.img`
+   width: 20px;
+   height: 20px;
+   animation-name: rotate;
+   animation-duration: 3s;
+   animation-iteration-count: infinite;
+   animation-timing-function: linear;
+   @keyframes rotate {
+      from {
+         transform: rotate(360deg);
+      }
+      to {
+         transform: rotate(-360deg);
+      }
+   }
 `
