@@ -6,6 +6,7 @@ import LayoutClient from '../../../layout/clientLayout/layoutClient/LayoutClient
 import { ReactComponent as Circle } from '../../../assets/icons/progress.svg'
 import { getTest } from '../../../store/testActions'
 import { ROUTES } from '../../../utils/constants/general'
+import { testSliceActions } from '../../../store'
 
 function CheckingYourDevice() {
    const navigate = useNavigate()
@@ -14,6 +15,7 @@ function CheckingYourDevice() {
    const dispatch = useDispatch()
 
    useEffect(async () => {
+      dispatch(testSliceActions.clearState())
       const { questions, id } = await dispatch(getTest(testById)).unwrap()
 
       const timer = setTimeout(() => {

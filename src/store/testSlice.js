@@ -12,7 +12,15 @@ const initialState = {
 const testSlice = createSlice({
    name: 'testSlise',
    initialState,
-   reducers: {},
+   reducers: {
+      clearState(state) {
+         state.currentQuestion = 0
+         state.questions = null
+         state.active = null
+         state.duration = null
+         state.id = null
+      },
+   },
    extraReducers: {
       [getTest.rejected]: (state) => {
          state.active = false
