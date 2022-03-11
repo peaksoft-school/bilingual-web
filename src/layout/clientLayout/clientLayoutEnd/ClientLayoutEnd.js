@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import Header from '../clientButton/index'
 import MainContainer from '../mainContainerClient/MainContainer'
+import Header from '../clientButton/index'
 
 const StyledCardDiv = styled.div`
    margin-left: auto;
@@ -20,7 +20,7 @@ const StyledContentCard = styled.div`
 
 const ClientLayoutEnd = ({ children }) => {
    return (
-   <>
+      <>
          <Header />
          <MainContainer>
             <StyledCardDiv>
@@ -30,5 +30,4 @@ const ClientLayoutEnd = ({ children }) => {
       </>
    )
 }
-
 export default ClientLayoutEnd

@@ -16,6 +16,7 @@ export const ROUTES = {
    DESCRIBE_IMAGE: 'describe_image',
    RESPOND_IN_AT_LEAST_N_WORDS: 'respond-in-at-least-n-words',
    RECORD_SAYING_STATEMENT: 'record-saying-statement',
+   HIGHLIGHT_THE_ANSWER: 'highlight-the_answer',
    TESTBYID: '/admin/test/addTestPage/:testById',
    HOME_PAGE: '/user/tests/home-page',
    START_PRACTICE_TEST: '/user/start-practice-test/test',
@@ -25,6 +26,7 @@ export const ROUTES = {
    TEST_QUESTIONBYID:
       '/user/start-practice-test/test/:testById/question/:questionById',
    USER_SELECT_REAL_ENGLISH_WORDS: 'user/select-real-english-words',
+   END_TEST: '/user/end_test',
 }
 
 export const BILINGUAL_TOKEN = 'BILINGUAL_TOKEN'

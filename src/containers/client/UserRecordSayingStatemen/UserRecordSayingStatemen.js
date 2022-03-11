@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import MicRecorder from 'mic-recorder-to-mp3'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useDispatch, useSelector, useStore } from 'react-redux'
-import { submitQuestion } from '../../../store/testActions'
+import { useDispatch, useSelector } from 'react-redux'
+import { getTest, submitQuestion } from '../../../store/testActions'
 import { ReactComponent as Head } from '../../../assets/icons/Head.svg'
 import { ReactComponent as Ellipse } from '../../../assets/icons/Ellipse.svg'
 import Button from '../../../components/UI/button/index'
@@ -21,7 +21,6 @@ function UserRecordSayingStatement() {
    const { id: userId } = useSelector((state) => state.auth.user)
    const { questions } = useSelector((state) => state.test)
    const { testId } = useParams()
-   const { getState } = useStore()
    const [state, setState] = useState({
       duration: '',
    })
@@ -31,10 +30,6 @@ function UserRecordSayingStatement() {
       isRecording: false,
       blobURL: '',
    })
-
-   console.log(currentQuestion, 'here')
-   console.log(questions, 'questions')
-   console.log(showButton, 'showButton')
 
    useEffect(() => {
       navigator.getUserMedia(
@@ -55,7 +50,8 @@ function UserRecordSayingStatement() {
       })
    }
 
-   useEffect(() => {
+   useEffect(async () => {
+      const { questions } = await dispatch(getTest(testId)).unwrap()
       setState(questions[currentQuestion] || { ...state })
       if (questions.length === 0) {
          return navigate(`/user/start-practice-test/test/${testId}`)
@@ -63,22 +59,24 @@ function UserRecordSayingStatement() {
       return null
    }, [])
 
-   const stop = () => {
-      Mp3Recorder.stop()
-         .getMp3()
-         .then(([buffer, blob]) => {
-            const blobURL = URL.createObjectURL(blob)
-            setRecord({ blobURL, isRecording: false })
-            const file = new File(buffer, 'me-at-thevoice.mp3', {
-               type: blob.type,
-               lastModified: Date.now(),
-            })
-            dispatch(submitQuestion({ testId, userId, file })).unwrap()
-            const { currentQuestion, questions } = getState().test
-            navigate(
-               `/user/test/${testId}/${ROUTES[questions[currentQuestion].type]}`
-            )
+   const stop = async (e) => {
+      e.preventDefault()
+      await Mp3Recorder.getMp3().then(([buffer, blob]) => {
+         const blobURL = URL.createObjectURL(blob)
+         setRecord({ blobURL, isRecording: false })
+         const answers = new File(buffer, 'me-at-thevoice.mp3', {
+            type: blob.type,
+            lastModified: Date.now(),
          })
+         dispatch(submitQuestion({ testId, userId, answers })).unwrap()
+      })
+      if (questions[currentQuestion]?.type === undefined) {
+         navigate(ROUTES.END_TEST)
+      } else {
+         navigate(
+            `/user/test/${testId}/${ROUTES[questions[currentQuestion].type]}`
+         )
+      }
    }
 
    const onClickHandler = () => {
@@ -88,10 +86,14 @@ function UserRecordSayingStatement() {
    return (
       <LayoutTest>
          <CountTime time={state.duration} totalTime={state.duration} />
-         <HeaderTitle>Record yorself saying the statement below:</HeaderTitle>
+         <HeaderTitle>{state.title}</HeaderTitle>
          <Main>
-            <Head />
-            <H3>My uncle is at work.</H3>
+            <div>
+               <ImHead />
+            </div>
+            <div>
+               <H3>{state.statement}</H3>
+            </div>
          </Main>
          <FooterDiv>
             <audio src={record.blobURL} control="controls" />
@@ -214,6 +216,11 @@ const Main = styled.div`
    justify-content: space-between;
    align-items: center;
 `
+
+const ImHead = styled(Head)`
+   width: 117px;
+   height: 100px;
+`
 const FooterDiv = styled.div`
    border-top: 2px solid #d4d0d0;
    padding-top: 32px;
@@ -226,7 +233,7 @@ const P = styled.p`
    font-size: 16px;
    color: #3a10e5;
 `
-const H3 = styled.h3`
+const H3 = styled.p`
    font-family: 'DINNextRoundedLTW01-Regular';
    font-size: 18px;
    color: #4c4859;

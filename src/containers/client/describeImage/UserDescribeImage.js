@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector, useStore } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Button from '../../../components/UI/button/index'
@@ -56,10 +56,8 @@ const DescribeImage = () => {
       duration: '',
    })
 
-   const { getState } = useStore()
-
    const { testId } = useParams()
-
+   const { questions } = useSelector((state) => state.test)
    const { currentQuestion } = useSelector((state) => state.test)
    const { id: userId } = useSelector((state) => state.auth.user)
 
@@ -76,6 +74,17 @@ const DescribeImage = () => {
 
    const submitTest = async (e) => {
       e.preventDefault()
+      if (questions[currentQuestion]?.type === undefined) {
+         navigate(ROUTES.END_TEST)
+      } else {
+         navigate(
+            `/user/test/${testId}/${ROUTES[questions[currentQuestion].type]}`
+         )
+      }
+      setText('')
+   }
+
+   useEffect(async () => {
       const answers = {
          questionResults: {
             type: 'DESCRIBE_IMAGE',
@@ -83,13 +92,7 @@ const DescribeImage = () => {
          },
       }
       await dispatch(submitQuestion({ testId, userId, answers })).unwrap()
-
-      const { currentQuestion, questions } = getState().test
-      navigate(
-         `/user/test/${testId}/${ROUTES[questions[currentQuestion].type]}`
-      )
-      setText('')
-   }
+   }, [])
 
    const enabled = () => text.trim()
    return (

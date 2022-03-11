@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector, useStore } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Button from '../../../components/UI/button/index'
 import CountTime from '../../../components/UI/progressTime/CountTime'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
-import { submitQuestion } from '../../../store/testActions'
+import { getTest, submitQuestion } from '../../../store/testActions'
 import { ROUTES } from '../../../utils/constants/general'
 
 function UserRespondInAtLeastNWords() {
@@ -26,9 +26,9 @@ function UserRespondInAtLeastNWords() {
          .filter((i) => i).length
    }
 
-   const { getState } = useStore()
+   // const { getState } = useStore()
 
-   const enabled = () => countOfWords() >= 5
+   const enabled = () => countOfWords() >= state.count
 
    const dispatch = useDispatch()
 
@@ -40,7 +40,8 @@ function UserRespondInAtLeastNWords() {
    const { questions } = useSelector((state) => state.test)
    const { currentQuestion } = useSelector((state) => state.test)
 
-   useEffect(() => {
+   useEffect(async () => {
+      const { questions } = await dispatch(getTest(testId)).unwrap()
       setState(questions[currentQuestion] || { ...state })
       if (questions.length === 0) {
          return navigate(`/user/start-practice-test/test/${testId}`)
@@ -48,7 +49,19 @@ function UserRespondInAtLeastNWords() {
       return null
    }, [])
 
-   const respondLeastWordsHandler = async () => {
+   const respondLeastWordsHandler = async (e) => {
+      e.preventDefault()
+      // const { currentQuestion, questions } = getState().test
+      if (questions[currentQuestion]?.type === undefined) {
+         navigate(ROUTES.END_TEST)
+      } else {
+         navigate(
+            `/user/test/${testId}/${ROUTES[questions[currentQuestion]?.type]}`
+         )
+      }
+   }
+
+   useEffect(async () => {
       const answers = {
          questionResults: [
             {
@@ -58,19 +71,15 @@ function UserRespondInAtLeastNWords() {
          ],
       }
       await dispatch(submitQuestion({ testId, userId, answers })).unwrap()
-      const { currentQuestion, questions } = getState().test
-      navigate(
-         `/user/test/${testId}/${ROUTES[questions[currentQuestion].type]}`
-      )
-   }
+   }, [])
 
    return (
       <LayoutTest>
          <CountTime time={state.duration} totalTime={state.duration} />
-         <HeaderTitle>Respond to the question in at least 50 words</HeaderTitle>
+         <HeaderTitle>{state.title}</HeaderTitle>
          <Div>
             <Text>
-               <P>describe a time you were surprised. what happened?”</P>
+               <P>{state.statement}</P>
             </Text>
             <TextAreaDiv>
                <TextArea onChange={onChangeWords} />

@@ -15,6 +15,8 @@ import { ROLES, ROUTES } from '../utils/constants/general'
 import PrivateRoute from './private/PrivateRoute'
 import UserRespondInAtLeastNWords from '../containers/client/userRespondInAtLeastNWords/UserRespondInAtLeastNWords'
 import UserRecordSayingStatement from '../containers/client/UserRecordSayingStatemen/UserRecordSayingStatemen'
+import UserHighlightTheAnswer from '../containers/client/userHighlightTheAnswer/UserHighlightTheAnswer'
+import EndTest from '../containers/client/endTest/EndTest'
 // import EndTest from '../containers/client/endTest/EndTest'
 
 export default function AllRoutes() {
@@ -127,6 +129,24 @@ export default function AllRoutes() {
             element={
                <PrivateRoute
                   Component={<UserRecordSayingStatement />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={`/user/test/:testId/${ROUTES.HIGHLIGHT_THE_ANSWER}`}
+            element={
+               <PrivateRoute
+                  Component={<UserHighlightTheAnswer />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.END_TEST}
+            element={
+               <PrivateRoute
+                  Component={<EndTest />}
                   roles={[ROLES.ROLE_USER]}
                />
             }

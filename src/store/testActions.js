@@ -6,19 +6,7 @@ export const getTest = createAsyncThunk(
    async (testId, thunkAPI) => {
       try {
          const response = await getUserTest(testId)
-         const {
-            duration,
-            questions: updatedQuestions,
-            id,
-            active,
-         } = response.data
-
-         const questions = updatedQuestions.filter(
-            (question) =>
-               question.type === 'DESCRIBE_IMAGE' ||
-               question.type === 'RESPOND_IN_AT_LEAST_N_WORDS' ||
-               question.type === 'RECORD_SAYING_STATEMENT'
-         )
+         const { duration, questions, id, active } = response.data
 
          return { questions, id, active, duration }
       } catch (error) {
