@@ -1,14 +1,21 @@
 import styled from 'styled-components'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import Input from '../../../../components/UI/input'
 import {
    addQuestionRequest,
    postQuestionRequest,
+   putQuestionRequest,
 } from '../../../../api/testService'
 import Button from '../../../../components/UI/button/index'
+import loading from '../../../../assets/icons/refresh.png'
 import { testActions } from '../../../../store'
 import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
+import {
+   GET_FILE_FROM_SERVER,
+   ROUTES,
+} from '../../../../utils/constants/general'
 
 const StyledP = styled('p')`
    padding: 0;
@@ -62,23 +69,64 @@ const ImageUpload = styled('img')`
 const StyledBtn = styled(Button)`
    margin-right: 16px;
 `
+const Styledloading = styled.img`
+   width: 20px;
+   height: 20px;
+   animation-name: rotate;
+   animation-duration: 3s;
+   animation-iteration-count: infinite;
+   animation-timing-function: linear;
+   @keyframes rotate {
+      from {
+         transform: rotate(360deg);
+      }
+      to {
+         transform: rotate(-360deg);
+      }
+   }
+`
 
 const DescribeImage = () => {
-   const [image, setImage] = useState({})
-   const { title, duration, type } = useSelector((state) => state.questions)
-   const transformedType = type.replace(/[\s.,%]/g, '')
-   const [correctAnswer, setcCorrectAnswer] = useState('')
    const dispatch = useDispatch()
+
+   const navigate = useNavigate()
+   const params = useParams()
+   const { testById } = params
+
+   const { title, duration, type, testId, optionss, questionByIdd } =
+      useSelector((state) => state.questions)
+
+   const [image, setImage] = useState({})
+   const [correctAnswer, setcCorrectAnswer] = useState('')
+   const [datas, setDatas] = useState('')
+   const [message, setMessage] = useState('')
+   const [isModal, setIsModal] = useState(false)
+   const [error, setError] = useState(null)
+   const [isLoading, setIsLoading] = useState(false)
+
+   const transformedType = type.replace(/[\s.,%]/g, '')
 
    const correctAnswerChangeHandler = (e) => {
       setcCorrectAnswer(e.target.value)
    }
 
-   const sendFileToApi = () => {
-      const formData = new FormData()
-      formData.append('file', image.file)
-      const response = postQuestionRequest(formData)
-      return response
+   React.useEffect(() => {
+      if (questionByIdd) {
+         setcCorrectAnswer(optionss.correctAnswer)
+         setImage({
+            preview: `${GET_FILE_FROM_SERVER}/${optionss.file}`,
+         })
+      }
+   }, [])
+
+   function sendFileToApi() {
+      if (image.file) {
+         const formData = new FormData()
+         formData.append('file', image.file)
+         const response = postQuestionRequest(formData)
+         return response
+      }
+      return optionss.file
    }
 
    const onChangeHandler = (e) => {
@@ -89,19 +137,13 @@ const DescribeImage = () => {
       })
    }
 
-   const [datas, setDatas] = useState('')
-   const [message, setMessage] = useState('')
-   const [isModal, setIsModal] = useState(false)
-   const [error, setError] = useState(null)
-
    const enabled = () => {
       return (
-         image.file && title.trim() && duration.trim() && correctAnswer.trim()
+         image.preview &&
+         title.trim() &&
+         duration.trim() &&
+         correctAnswer.trim()
       )
-   }
-
-   const onCloseModalHandler = () => {
-      setIsModal((prevState) => !prevState)
    }
 
    const clearStateDescribeImageState = () => {
@@ -115,25 +157,65 @@ const DescribeImage = () => {
          return
       }
       try {
-         const responseImage = await sendFileToApi()
-         const describeImageData = {
-            testId: 1,
-            type: transformedType,
-            title,
-            duration,
-            file: responseImage.data,
-            correctAnswer,
+         if (!questionByIdd) {
+            setIsLoading(true)
+            const responseImage = await sendFileToApi()
+            const describeImageData = {
+               testId: +testId,
+               type: transformedType,
+               title,
+               duration,
+               file: responseImage.data,
+               correctAnswer,
+            }
+            const responseResult = await addQuestionRequest(describeImageData)
+            setDatas(responseResult.status)
          }
-         const responseResult = await addQuestionRequest(describeImageData)
-         setDatas(responseResult.status)
+         if (questionByIdd) {
+            setIsLoading(true)
+            const responseImage = await sendFileToApi()
+            const describeImageData = {
+               testId: +testById,
+               type: transformedType,
+               title,
+               duration,
+               file: responseImage.data ? responseImage.data : responseImage,
+               correctAnswer,
+            }
+            const responseResult = await putQuestionRequest(
+               questionByIdd,
+               describeImageData
+            )
+            setDatas(responseResult.status)
+         }
          setMessage('Question is saved')
          setIsModal(true)
-         dispatch(testActions.resetQuestion())
-         clearStateDescribeImageState()
+         setIsLoading(false)
       } catch (error) {
          setIsModal(true)
          setMessage('Unable to save question')
          setError(error.message)
+      }
+   }
+   const onCloseModalHandler = () => {
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
+      dispatch(testActions.resetQuestion())
+      clearStateDescribeImageState()
+      setIsModal((prevState) => !prevState)
+   }
+   const onGoBackHandler = () => {
+      dispatch(testActions.resetQuestion())
+      clearStateDescribeImageState()
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
       }
    }
 
@@ -169,7 +251,7 @@ const DescribeImage = () => {
                   )}
                </ButtonImage>
             </label>
-            {image ? image.file?.name : ''}
+            {image ? image.file?.name || optionss.file : ''}
          </DivImage>
          <StyledP>Correct answer</StyledP>
          <InputFooter
@@ -179,7 +261,11 @@ const DescribeImage = () => {
             name="correctAnswer"
          />
          <DivFooter>
-            <StyledBtn color="primary" variant="outlined">
+            <StyledBtn
+               onClick={onGoBackHandler}
+               color="primary"
+               variant="outlined"
+            >
                GO BACK
             </StyledBtn>
             <Button
@@ -188,7 +274,11 @@ const DescribeImage = () => {
                color="secondary"
                variant="contained"
             >
-               SAVE
+               {!isLoading ? (
+                  <span>SAVE</span>
+               ) : (
+                  <Styledloading src={loading} alt="loading" />
+               )}
             </Button>
          </DivFooter>
       </form>

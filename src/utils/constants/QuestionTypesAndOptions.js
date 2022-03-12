@@ -8,6 +8,8 @@ export const QUESTION_TYPES = {
    HIGLIGHT_THE_ANSWER: 'HIGHLIGHT_THE_ANSWER',
    SELECT_THE_MAIN_IDEA: 'SELECT_THE_MAIN_IDEA',
    SELECT_BEST_TITLE: 'SELECT_BEST_TITLE',
+   SELECT_MAIN_IDEA: 'SELECT_MAIN_IDEA',
+   SELSECT_BEST_TITLE: 'SELECT_BEST_TITLE',
 }
 
 export const QUESTION_OPTIONS = [
@@ -38,7 +40,7 @@ export const QUESTION_OPTIONS = [
    },
    {
       label: 'Select the main idea',
-      id: QUESTION_TYPES.SELECT_THE_MAIN_IDEA,
+      id: QUESTION_TYPES.SELECT_MAIN_IDEA,
    },
    {
       label: ' Select best title',
