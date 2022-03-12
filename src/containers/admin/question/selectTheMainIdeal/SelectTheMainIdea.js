@@ -28,6 +28,10 @@ const SelectTheMainIdea = () => {
    const transformedType = type.replace(/[\s.,%]/g, '')
    const [words, setWords] = React.useState([])
    const [passage, setPassage] = useState('')
+   const [formValue, setFormValue] = useState('')
+   const [message, setMessage] = useState('')
+   const [isModal, setIsModal] = useState(false)
+   const [error, setError] = useState(null)
    const [isLoading, setIsLoading] = useState(false)
 
    const dispatch = useDispatch()
@@ -42,20 +46,6 @@ const SelectTheMainIdea = () => {
       return (
          words.length > 0 && title.trim() && duration.trim() && passage.trim()
       )
-   }
-
-   const checkedandler = (id) => {
-      const optionsWithSelected = words.map((el) => {
-         if (el.id === id) {
-            return {
-               ...el,
-               correct: !el.correct,
-            }
-         }
-         return el
-      })
-
-      setWords(optionsWithSelected)
    }
 
    const onChangePassage = (e) => {
@@ -84,10 +74,17 @@ const SelectTheMainIdea = () => {
       })
    }
 
-   const [formValue, setFormValue] = useState('')
-   const [message, setMessage] = useState('')
-   const [isModal, setIsModal] = useState(false)
-   const [error, setError] = useState(null)
+   const onChangeRadioBtnHadler = (id) => {
+      setWords((prev) => {
+         const updatedWords = [
+            ...prev.map((word) => {
+               if (word.id === id) return { ...word, correct: !word.correct }
+               return { ...word, correct: false }
+            }),
+         ]
+         return updatedWords
+      })
+   }
 
    const clearSelectMAinIdeaState = () => {
       setPassage('')
@@ -195,7 +192,7 @@ const SelectTheMainIdea = () => {
                         key={option.id}
                         option={option}
                         deletText={deletText}
-                        checkedandler={checkedandler}
+                        onChangeRadioBtnHadler={onChangeRadioBtnHadler}
                      />
                   )
                })}
