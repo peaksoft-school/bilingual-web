@@ -6,7 +6,7 @@ import Button from '../../../components/UI/button/index'
 import CountTimeLong from '../../../components/UI/progressTimeLong/CountTimeLong'
 import LayoutFinal from '../../../layout/clientLayout/LayoutFinal/LayoutFinal'
 import { testSliceActions } from '../../../store'
-import { getTest, submitQuestion } from '../../../store/testActions'
+import { submitQuestion } from '../../../store/testActions'
 import { ROUTES } from '../../../utils/constants/general'
 import UserSelectBestTitleOptions from './UserSelectBestTitleOptions'
 
@@ -20,9 +20,12 @@ function UserSelectBestTitle() {
    const { currentQuestion } = useSelector((state) => state.test)
    const [optionResults, setOptionResults] = useState('')
 
-   useEffect(async () => {
-      await dispatch(getTest(testId)).unwrap()
+   useEffect(() => {
       setState(questions[currentQuestion])
+      if (questions.length === 0) {
+         return navigate('/user/tests')
+      }
+      return null
    }, [])
 
    const onChangeRadioButtonHandler = (checkedData) => {

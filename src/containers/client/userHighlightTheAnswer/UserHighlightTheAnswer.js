@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { TextField } from '@mui/material'
 import Button from '../../../components/UI/button/index'
 import LayoutFinal from '../../../layout/clientLayout/LayoutFinal/LayoutFinal'
-import { getTest, submitQuestion } from '../../../store/testActions'
+import { submitQuestion } from '../../../store/testActions'
 import { ROUTES } from '../../../utils/constants/general'
 import { testSliceActions } from '../../../store'
 import CountTimeLong from '../../../components/UI/progressTimeLong/CountTimeLong'
@@ -23,9 +23,12 @@ function UserHighlightTheAnswer() {
       setAnswer(event.target.value)
    }
 
-   useEffect(async () => {
-      await dispatch(getTest(testId)).unwrap()
+   useEffect(() => {
       setState(questions[currentQuestion])
+      if (questions.length === 0) {
+         return navigate('/user/tests')
+      }
+      return null
    }, [])
 
    const { id: userId } = useSelector((state) => state.auth.user)

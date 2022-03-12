@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Button from '../../../components/UI/button/index'
 import CountTime from '../../../components/UI/progressTime/CountTime'
-import { getTest, submitQuestion } from '../../../store/testActions'
+import { submitQuestion } from '../../../store/testActions'
 import { ROUTES } from '../../../utils/constants/general'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
 import { testSliceActions } from '../../../store'
@@ -61,9 +61,12 @@ const DescribeImage = () => {
 
    const dispatch = useDispatch()
 
-   useEffect(async () => {
-      await dispatch(getTest(testId)).unwrap()
+   useEffect(() => {
       setState(questions[currentQuestion])
+      if (questions.length === 0) {
+         return navigate('/user/tests')
+      }
+      return null
    }, [])
 
    const [text, setText] = useState('')

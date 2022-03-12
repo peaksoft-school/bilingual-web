@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import MicRecorder from 'mic-recorder-to-mp3'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getTest, submitQuestion } from '../../../store/testActions'
+import { submitQuestion } from '../../../store/testActions'
 import { ReactComponent as Head } from '../../../assets/icons/Head.svg'
 import { ReactComponent as Ellipse } from '../../../assets/icons/Ellipse.svg'
 import Button from '../../../components/UI/button/index'
@@ -51,11 +51,10 @@ function UserRecordSayingStatement() {
       })
    }
 
-   useEffect(async () => {
-      const { questions } = await dispatch(getTest(testId)).unwrap()
-      setState(questions[currentQuestion] || { ...state })
+   useEffect(() => {
+      setState(questions[currentQuestion])
       if (questions.length === 0) {
-         return navigate(`/user/start-practice-test/test/${testId}`)
+         return navigate('/user/tests')
       }
       return null
    }, [])
