@@ -1,12 +1,18 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import HighlightTheAnswerTextField from './HighlightTheAnswerTextField'
 import Input from '../../../../components/UI/input/index'
 import Button from '../../../../components/UI/button/index'
-import { addQuestionRequest } from '../../../../api/testService'
+import loading from '../../../../assets/icons/refresh.png'
+import {
+   addQuestionRequest,
+   putQuestionRequest,
+} from '../../../../api/testService'
 import { testActions } from '../../../../store'
 import NotificationIconModal from '../../../../components/UI/modal/NotificationIconModal'
+import { ROUTES } from '../../../../utils/constants/general'
 
 const StyledP = styled('p')`
    padding: 0;
@@ -31,15 +37,36 @@ const StyledSelected = styled('p')`
       color: blue;
    }
 `
+const Styledloading = styled.img`
+   width: 20px;
+   height: 20px;
+   animation-name: rotate;
+   animation-duration: 3s;
+   animation-iteration-count: infinite;
+   animation-timing-function: linear;
+   @keyframes rotate {
+      from {
+         transform: rotate(360deg);
+      }
+      to {
+         transform: rotate(-360deg);
+      }
+   }
+`
 
 const HighLightTheAnswer = () => {
+   const navigate = useNavigate()
+   const params = useParams()
+   const { testById } = params
+
+   const { title, duration, type, testId, optionss, questionByIdd } =
+      useSelector((state) => state.questions)
    const [passage, setPassage] = React.useState('')
    const [highlighted, sethighlighted] = React.useState('')
-   const { title, duration, type } = useSelector((state) => state.questions)
+
    const transformedType = type.replace(/[\s.,%]/g, '')
    const dispatch = useDispatch()
    const [questionStatement, setQuestionStatement] = React.useState('')
-
    const enabled = () => {
       return (
          questionStatement.trim() &&
@@ -49,6 +76,14 @@ const HighLightTheAnswer = () => {
          highlighted.trim()
       )
    }
+
+   React.useEffect(() => {
+      if (questionByIdd) {
+         setQuestionStatement(optionss.statement)
+         setPassage(optionss.passage)
+         sethighlighted(optionss.correctAnswer)
+      }
+   }, [])
 
    const onChangeHandlerinput = (props) => {
       setPassage(props)
@@ -75,10 +110,7 @@ const HighLightTheAnswer = () => {
    const [message, setMesage] = useState('')
    const [isModal, setIsModal] = useState(false)
    const [error, setError] = useState(null)
-
-   const onCloseModalHidLigtHandler = () => {
-      setIsModal((prev) => !prev)
-   }
+   const [isLoading, setIsLoading] = useState(false)
 
    const clearHighLightState = () => {
       setPassage('')
@@ -88,26 +120,65 @@ const HighLightTheAnswer = () => {
    const highlightSumbitHAndler = async (e) => {
       e.preventDefault()
       try {
-         const CorrectAnswer = highlighted
-         const data = {
-            testId: 1,
-            type: transformedType,
-            title,
-            duration,
-            passage,
-            questionStatement,
-            CorrectAnswer,
+         if (!questionByIdd) {
+            setIsLoading(true)
+            const correctAnswer = highlighted
+            const data = {
+               testId: +testId,
+               type: transformedType,
+               title,
+               duration,
+               passage,
+               questionStatement,
+               correctAnswer,
+            }
+            const response = await addQuestionRequest(data)
+            setFormValue(response.status)
          }
-         const response = await addQuestionRequest(data)
-         setFormValue(response.status)
+         if (questionByIdd) {
+            setIsLoading(true)
+            const correctAnswer = highlighted
+            const data = {
+               testId: +testById,
+               type: transformedType,
+               title,
+               duration,
+               passage,
+               questionStatement,
+               correctAnswer,
+            }
+            const response = await putQuestionRequest(questionByIdd, data)
+            setFormValue(response.status)
+         }
          setMesage('Question is saved')
          setIsModal(true)
-         dispatch(testActions.resetQuestion())
-         clearHighLightState()
+         setIsLoading(false)
       } catch (error) {
          setIsModal(true)
          setMesage('Unable to save question')
          setError(error.message)
+      }
+   }
+   const onCloseModalHidLigtHandler = () => {
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
+      }
+      dispatch(testActions.resetQuestion())
+      clearHighLightState()
+      setIsModal((prev) => !prev)
+   }
+
+   const onGoBackHandler = () => {
+      dispatch(testActions.resetQuestion())
+      clearHighLightState()
+      if (questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testById}`)
+      }
+      if (!questionByIdd) {
+         navigate(`${ROUTES.ADD_TEST_PAGE}/${testId}`)
       }
    }
 
@@ -138,7 +209,12 @@ const HighLightTheAnswer = () => {
          </div>
 
          <StyledDivOfFooter>
-            <Button color="primary" variant="outlined" sx={{ mr: '16px' }}>
+            <Button
+               onClick={onGoBackHandler}
+               color="primary"
+               variant="outlined"
+               sx={{ mr: '16px' }}
+            >
                GO BACK
             </Button>
             <Button
@@ -147,7 +223,11 @@ const HighLightTheAnswer = () => {
                color="secondary"
                variant="contained"
             >
-               SAVE
+               {!isLoading ? (
+                  <span>SAVE</span>
+               ) : (
+                  <Styledloading src={loading} alt="loading" />
+               )}
             </Button>
          </StyledDivOfFooter>
       </form>

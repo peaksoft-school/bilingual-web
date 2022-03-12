@@ -3,13 +3,14 @@ import styled from 'styled-components'
 import ReCheckbox from '../../../../components/UI/checkbox'
 import Trash from '../../../../assets/icons/trash.svg'
 
-function WordItem({ words, deleteWord, checkedHandler }) {
+function WordItem({ words, deleteWord, checkedHandler, index }) {
    return (
       <Box>
+         <span>{index}</span>
          <Item>{words.word}</Item>
          <StyledDivIcons>
             <ReCheckbox
-               checked={words.isChecked}
+               checked={words.correct}
                onClick={() => checkedHandler(words.id)}
             />
             <StyledTrash
@@ -37,12 +38,6 @@ const Box = styled.li`
    display: flex;
    justify-content: space-between;
    align-items: center;
-   &::before {
-      content: counter(my-counter);
-      counter-increment: my-counter;
-      color: black;
-      width: 20px;
-   }
 `
 
 const Item = styled.span`
