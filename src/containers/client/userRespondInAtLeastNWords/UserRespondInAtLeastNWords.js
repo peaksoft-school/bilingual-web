@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Button from '../../../components/UI/button/index'
 import CountTime from '../../../components/UI/progressTime/CountTime'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
+import { testSliceActions } from '../../../store'
 import { getTest, submitQuestion } from '../../../store/testActions'
 import { ROUTES } from '../../../utils/constants/general'
 
@@ -26,8 +27,6 @@ function UserRespondInAtLeastNWords() {
          .filter((i) => i).length
    }
 
-   // const { getState } = useStore()
-
    const enabled = () => countOfWords() >= state.count
 
    const dispatch = useDispatch()
@@ -41,36 +40,39 @@ function UserRespondInAtLeastNWords() {
    const { currentQuestion } = useSelector((state) => state.test)
 
    useEffect(async () => {
-      const { questions } = await dispatch(getTest(testId)).unwrap()
-      setState(questions[currentQuestion] || { ...state })
-      if (questions.length === 0) {
-         return navigate(`/user/start-practice-test/test/${testId}`)
-      }
-      return null
+      await dispatch(getTest(testId)).unwrap()
+      setState(questions[currentQuestion])
    }, [])
 
    const respondLeastWordsHandler = async (e) => {
       e.preventDefault()
-      // const { currentQuestion, questions } = getState().test
-      if (questions[currentQuestion]?.type === undefined) {
-         navigate(ROUTES.END_TEST)
-      } else {
-         navigate(
-            `/user/test/${testId}/${ROUTES[questions[currentQuestion]?.type]}`
-         )
+      try {
+         const answers = {
+            questionResults: [
+               {
+                  type: 'RESPOND_IN_AT_LEAST_N_WORDS',
+                  answer,
+               },
+            ],
+         }
+
+         await dispatch(submitQuestion({ testId, userId, answers })).unwrap()
+         if (questions[currentQuestion]?.type === undefined) {
+            navigate(ROUTES.END_TEST)
+         } else {
+            navigate(
+               `/user/test/${testId}/${
+                  ROUTES[questions[currentQuestion]?.type]
+               }`
+            )
+         }
+      } catch (error) {
+         console.log(error)
       }
    }
 
    useEffect(async () => {
-      const answers = {
-         questionResults: [
-            {
-               type: 'RESPOND_IN_AT_LEAST_N_WORDS',
-               answer,
-            },
-         ],
-      }
-      await dispatch(submitQuestion({ testId, userId, answers })).unwrap()
+      dispatch(testSliceActions.incrementState())
    }, [])
 
    return (

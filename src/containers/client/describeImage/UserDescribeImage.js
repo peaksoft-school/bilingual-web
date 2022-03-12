@@ -7,6 +7,7 @@ import CountTime from '../../../components/UI/progressTime/CountTime'
 import { getTest, submitQuestion } from '../../../store/testActions'
 import { ROUTES } from '../../../utils/constants/general'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
+import { testSliceActions } from '../../../store'
 
 const DivStyled = styled('div')`
    margin-top: 50px;
@@ -52,10 +53,7 @@ const ButtonS = styled(Button)`
 
 const DescribeImage = () => {
    const navigate = useNavigate()
-   const [state, setState] = useState({
-      duration: '',
-   })
-
+   const [state, setState] = useState([])
    const { testId } = useParams()
    const { questions } = useSelector((state) => state.test)
    const { currentQuestion } = useSelector((state) => state.test)
@@ -64,8 +62,8 @@ const DescribeImage = () => {
    const dispatch = useDispatch()
 
    useEffect(async () => {
-      const { questions } = await dispatch(getTest(testId)).unwrap()
-      setState(questions[currentQuestion] || { ...state })
+      await dispatch(getTest(testId)).unwrap()
+      setState(questions[currentQuestion])
    }, [])
 
    const [text, setText] = useState('')
@@ -74,24 +72,30 @@ const DescribeImage = () => {
 
    const submitTest = async (e) => {
       e.preventDefault()
-      if (questions[currentQuestion]?.type === undefined) {
-         navigate(ROUTES.END_TEST)
-      } else {
-         navigate(
-            `/user/test/${testId}/${ROUTES[questions[currentQuestion].type]}`
-         )
+      try {
+         const answers = {
+            questionResults: {
+               answer: text,
+            },
+         }
+         await dispatch(submitQuestion({ testId, userId, answers })).unwrap()
+
+         if (questions[currentQuestion]?.type === undefined) {
+            navigate(ROUTES.END_TEST)
+         } else {
+            navigate(
+               `/user/test/${testId}/${ROUTES[questions[currentQuestion].type]}`
+            )
+         }
+         setText('')
+      } catch (error) {
+         console.log(error)
       }
-      setText('')
+      return null
    }
 
    useEffect(async () => {
-      const answers = {
-         questionResults: {
-            type: 'DESCRIBE_IMAGE',
-            answer: text,
-         },
-      }
-      await dispatch(submitQuestion({ testId, userId, answers })).unwrap()
+      dispatch(testSliceActions.incrementState())
    }, [])
 
    const enabled = () => text.trim()
@@ -99,7 +103,7 @@ const DescribeImage = () => {
       <LayoutTest>
          <div>
             <div>
-               <CountTime time={state.duration} totalTime={state.duration} />
+               <CountTime time={state?.duration} totalTime={state?.duration} />
             </div>
             <DivStyled>
                <StyledP>{state?.title}</StyledP>

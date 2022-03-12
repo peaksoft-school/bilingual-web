@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getTest, submitQuestion } from './testActions'
+import { getTest } from './testActions'
 
 const initialState = {
    questions: [],
@@ -20,6 +20,9 @@ const testSlice = createSlice({
          state.duration = null
          state.id = null
       },
+      incrementState(state) {
+         state.currentQuestion += 1
+      },
    },
    extraReducers: {
       [getTest.rejected]: (state) => {
@@ -32,9 +35,6 @@ const testSlice = createSlice({
          state.active = payload.active
          state.duration = payload.duration
          state.id = payload.id
-      },
-      [submitQuestion.fulfilled]: (state) => {
-         state.currentQuestion += 1
       },
    },
 })

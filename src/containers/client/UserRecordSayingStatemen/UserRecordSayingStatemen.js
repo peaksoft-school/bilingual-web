@@ -11,6 +11,7 @@ import Button from '../../../components/UI/button/index'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
 import { ROUTES } from '../../../utils/constants/general'
 import CountTime from '../../../components/UI/progressTime/CountTime'
+import { testSliceActions } from '../../../store'
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 })
 
@@ -78,6 +79,10 @@ function UserRecordSayingStatement() {
          )
       }
    }
+
+   useEffect(async () => {
+      dispatch(testSliceActions.incrementState())
+   }, [])
 
    const onClickHandler = () => {
       setShowButton((prev) => !prev)

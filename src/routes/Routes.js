@@ -17,7 +17,8 @@ import UserRespondInAtLeastNWords from '../containers/client/userRespondInAtLeas
 import UserRecordSayingStatement from '../containers/client/UserRecordSayingStatemen/UserRecordSayingStatemen'
 import UserHighlightTheAnswer from '../containers/client/userHighlightTheAnswer/UserHighlightTheAnswer'
 import EndTest from '../containers/client/endTest/EndTest'
-// import EndTest from '../containers/client/endTest/EndTest'
+import UserSelectBestTitle from '../containers/client/userSelectBestTitle/UserSelectBestTitle'
+import UserSelectTheMainIdea from '../containers/client/userSelectTheMainIdea/UserSelectTheMainIdea'
 
 export default function AllRoutes() {
    const navigate = useNavigate()
@@ -138,6 +139,24 @@ export default function AllRoutes() {
             element={
                <PrivateRoute
                   Component={<UserHighlightTheAnswer />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={`/user/test/:testId/${ROUTES.SELECT_BEST_TITLE}`}
+            element={
+               <PrivateRoute
+                  Component={<UserSelectBestTitle />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={`/user/test/:testId/${ROUTES.SELECT_MAIN_IDEA}`}
+            element={
+               <PrivateRoute
+                  Component={<UserSelectTheMainIdea />}
                   roles={[ROLES.ROLE_USER]}
                />
             }

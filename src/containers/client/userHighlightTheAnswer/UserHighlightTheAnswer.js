@@ -7,7 +7,8 @@ import Button from '../../../components/UI/button/index'
 import LayoutFinal from '../../../layout/clientLayout/LayoutFinal/LayoutFinal'
 import { getTest, submitQuestion } from '../../../store/testActions'
 import { ROUTES } from '../../../utils/constants/general'
-import CountTime from '../../../components/UI/progressTime/CountTime'
+import { testSliceActions } from '../../../store'
+import CountTimeLong from '../../../components/UI/progressTimeLong/CountTimeLong'
 
 function UserHighlightTheAnswer() {
    const [answer, setAnswer] = useState('')
@@ -23,12 +24,8 @@ function UserHighlightTheAnswer() {
    }
 
    useEffect(async () => {
-      const { questions } = await dispatch(getTest(testId)).unwrap()
-      setState(questions[currentQuestion] || { ...state })
-      if (questions.length === 0) {
-         return navigate(`/user/start-practice-test/test/${testId}`)
-      }
-      return null
+      await dispatch(getTest(testId)).unwrap()
+      setState(questions[currentQuestion])
    }, [])
 
    const { id: userId } = useSelector((state) => state.auth.user)
@@ -49,32 +46,37 @@ function UserHighlightTheAnswer() {
       sethighlighted(selectedText.toString())
    }
 
-   const highlightAnswerHandler = (e) => {
+   const highlightAnswerHandler = async (e) => {
       e.preventDefault()
-      if (questions[currentQuestion]?.type === undefined) {
-         navigate(ROUTES.END_TEST)
-      } else {
-         navigate(
-            `/user/test/${testId}/${ROUTES[questions[currentQuestion].type]}`
-         )
+      try {
+         const answers = {
+            questionResults: [
+               {
+                  type: 'HIGHLIGHT_THE_ANSWER',
+                  answer,
+               },
+            ],
+         }
+         await dispatch(submitQuestion({ testId, userId, answers })).unwrap()
+         if (questions[currentQuestion]?.type === undefined) {
+            navigate(ROUTES.END_TEST)
+         } else {
+            navigate(
+               `/user/test/${testId}/${ROUTES[questions[currentQuestion].type]}`
+            )
+         }
+      } catch (error) {
+         console.log(error)
       }
    }
 
-   useEffect(() => {
-      const answers = {
-         questionResults: [
-            {
-               type: 'HIGHLIGHT_THE_ANSWER',
-               answer,
-            },
-         ],
-      }
-      dispatch(submitQuestion({ testId, userId, answers })).unwrap()
+   useEffect(async () => {
+      dispatch(testSliceActions.incrementState())
    }, [])
 
    return (
       <LayoutFinal>
-         <CountTime time={state?.duration} totalTime={state?.duration} />
+         <CountTimeLong time={state?.duration} totalTime={state?.duration} />
          <Div>
             <div>
                <DivInput>PASSAGE</DivInput>
