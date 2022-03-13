@@ -29,7 +29,7 @@ const Header = () => {
                <StyledLogo src={Logo} alt="logo" />
             </StyledLogoDiv>
             <StyledButtonDiv>
-               <StyledNavLink to={ROUTES.USER}>TESTS</StyledNavLink>
+               <StyledNavLink to={ROUTES.ADMIN_TEST}>TESTS</StyledNavLink>
                <StyledNavLink to={ROUTES.SUBMITED_RESULTS}>
                   SEUMBITTED RESULTS
                </StyledNavLink>

@@ -1,8 +1,8 @@
 import React from 'react'
 import { TableHead, TableRow } from '@mui/material'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import Button from '../../../../components/UI/button/index'
-
 import {
    StyletTableRow,
    StyledTableCell,
@@ -10,7 +10,7 @@ import {
    StyledTable,
 } from '../../../../components/UI/table/Table'
 
-function EvaluatingSubmittedResultsTable({ rows }) {
+function EvaluatingSubmittedResultsTable({ userAnswers, paramsUserID }) {
    return (
       <>
          <Linee>
@@ -25,23 +25,41 @@ function EvaluatingSubmittedResultsTable({ rows }) {
                   <StyledHead align="left">Status</StyledHead>
                </TableRow>
             </TableHead>
-            {rows.map((row) => (
-               <StyletTableRow key={row.number} align="center">
-                  <StyledTableCell align="center">{row.number}</StyledTableCell>
-                  <StyledTableCell align="left">{row.question}</StyledTableCell>
-                  <StyledTableCell align="left">{row.score}</StyledTableCell>
-                  <StyledTableCell align="left">{row.status}</StyledTableCell>
+            {/* {userAnswers.length !== 0 && */}
+            {userAnswers.map((row, index) => (
+               <tbody key={row.id}>
+                  <StyletTableRow align="center">
+                     <StyledTableCell align="center">
+                        {index + 1}
+                     </StyledTableCell>
+                     <StyledTableCell align="left">{row.title}</StyledTableCell>
+                     <StyledTableCell align="left">
+                        {row.score ? `${row.score} out of 10` : '0 out of 10'}
+                     </StyledTableCell>
+                     <StyledTableCell align="left">
+                        {row.evaluated ? (
+                           <TrueP>Evaluated</TrueP>
+                        ) : (
+                           <FalseP>Not evaluated</FalseP>
+                        )}
+                     </StyledTableCell>
 
-                  <StyledTableCell align="center">
-                     <Button
-                        color="primary"
-                        variant="outlined"
-                        style={{ padding: '6.5px 13.5px', float: 'right' }}
-                     >
-                        evaluate
-                     </Button>
-                  </StyledTableCell>
-               </StyletTableRow>
+                     <StyledTableCell align="center">
+                        <StyledLink
+                           to={`/admin/submited-results/evaluate-questions/${paramsUserID}/questionType/${row.id}`}
+                           key={row.id}
+                        >
+                           <Button
+                              color="primary"
+                              variant="outlined"
+                              style={{ padding: '6.5px 13.5px' }}
+                           >
+                              evaluate
+                           </Button>
+                        </StyledLink>
+                     </StyledTableCell>
+                  </StyletTableRow>
+               </tbody>
             ))}
          </StyledTable>
       </>
@@ -63,4 +81,23 @@ const Line = styled.div`
    display: flex;
    justify-content: center;
    align-items: center;
+`
+const TrueP = styled.p`
+   font-family: 'DINNextRoundedLTW01-Regular';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 16px;
+   line-height: 18px;
+   color: #2ab930;
+`
+const FalseP = styled.p`
+   font-family: 'DINNextRoundedLTW01-Regular';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 16px;
+   line-height: 18px;
+   color: #f61414;
+`
+const StyledLink = styled(Link)`
+   text-decoration: none;
 `

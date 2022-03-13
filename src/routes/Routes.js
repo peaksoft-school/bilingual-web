@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Navigate, Route, Routes } from 'react-router-dom'
 import SubmittedResultsPage from '../containers/admin/evaluate/submittedResults/SubmittedResultsPage'
+import EvaluatingSubmittedResultsPage from '../containers/admin/evaluate/evaluatingSubmittedResultspage/EvaluatingSubmittedResultsPage'
 import AddQuestionTypePage from '../containers/admin/question/questionType/questionType'
 import AddNewTest from '../containers/admin/tests/addnewTestPage/AddNewTestPage'
 import TestPage from '../containers/admin/tests/testPage/TestPage'
@@ -19,6 +20,7 @@ import UserHighlightTheAnswer from '../containers/client/userHighlightTheAnswer/
 import EndTest from '../containers/client/endTest/EndTest'
 import UserSelectBestTitle from '../containers/client/userSelectBestTitle/UserSelectBestTitle'
 import UserSelectTheMainIdea from '../containers/client/userSelectTheMainIdea/UserSelectTheMainIdea'
+import TypewhatYouHearPage from '../containers/admin/evaluate/whatYouHearePage/TypewhatYouHearPage'
 
 export default function AllRoutes() {
    const navigate = useNavigate()
@@ -98,6 +100,34 @@ export default function AllRoutes() {
                />
             }
          />
+         <Route
+            path={ROUTES.EVALUATE_QUESTIONS}
+            element={
+               <PrivateRoute
+                  Component={<EvaluatingSubmittedResultsPage />}
+                  roles={[ROLES.ROLE_ADMIN]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.EVALUATE_QUESTION_BY_ID}
+            element={
+               <PrivateRoute
+                  Component={<EvaluatingSubmittedResultsPage />}
+                  roles={[ROLES.ROLE_ADMIN]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.EVALUATE_QUESTION_TYPE}
+            element={
+               <PrivateRoute
+                  Component={<TypewhatYouHearPage />}
+                  roles={[ROLES.ROLE_ADMIN]}
+               />
+            }
+         />
+
          <Route
             path={ROUTES.USER}
             element={

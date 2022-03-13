@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getAllTest } from '../../../api/clientService'
-import Header from '../../../layout/adminHeader'
+import Header from '../../../layout/clientLayout/clientButton/index'
 import TestItem from './TestItem'
 
 const HomePage = () => {
@@ -12,7 +12,7 @@ const HomePage = () => {
       setTests(requestConfig.data)
    }
 
-   useEffect(() => getAllLanguagesApi(), [])
+   useEffect(getAllLanguagesApi, [])
    return (
       <>
          <Header />

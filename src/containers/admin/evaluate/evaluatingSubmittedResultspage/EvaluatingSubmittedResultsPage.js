@@ -1,52 +1,77 @@
 import React from 'react'
 import styled from 'styled-components'
-import { TableContainer } from '@mui/material'
-import Header from '../../../../layout/adminHeader/index'
+import { useNavigate, useParams } from 'react-router-dom'
+import ContentCard from '../../../../components/UI/adminContentCard/index'
 import EvaluatingSubmittedResultsTable from './EvaluatingSubmittedResultsTable'
-import MainContainer from '../../../../layout/MainContainer'
 import Button from '../../../../components/UI/button/index'
-import { StyledPaper } from '../../../../components/UI/table/Table'
+import { getUserTestAnswerRequest } from '../../../../api/testService'
+import { ROUTES } from '../../../../utils/constants/general'
 
-function createData(number, question, score, status) {
-   return { number, question, score, status }
-}
-
-const rows = [
-   createData('1', 'Select real English words', '0 out of 10', 'Not evaluated'),
-   createData(
-      '2',
-      'Listen and select English word',
-      '8 out of 10',
-      'Not evaluated'
-   ),
-   createData('3'),
-   createData('4'),
-]
 function EvaluatingSubmittedResultsPage() {
+   const navigate = useNavigate()
+   const params = useParams()
+   const paramsUserID = params.userId
+
+   const [userTest, setUserTest] = React.useState({})
+
+   const [userAnswers, setUserAnswers] = React.useState([])
+
+   const getUserTestById = async () => {
+      const response = await getUserTestAnswerRequest(paramsUserID)
+      setUserTest({
+         user: response.data.user.fullName,
+         title: response.data.mainTest.title,
+      })
+      setUserAnswers(response.data.userResult.questionResults)
+   }
+
+   React.useEffect(() => {
+      getUserTestById()
+   }, [])
+
+   const sendResultsToUserHandler = () => {}
+
+   const onGoBackHandler = () => {
+      navigate(ROUTES.SUBMITED_RESULTS)
+   }
    return (
-      <>
-         <Header />
-         <MainContainer>
-            <TableContainer component={StyledPaper}>
-               <Wrapper>
-                  <Divv>
-                     <span>User: John Smith</span>
-                     <span>Test: Test number 1</span>
-                  </Divv>
-                  <Wrapperr>
-                     <span>Final Score: 0</span>
-                     <span>Final Status: Evalauted</span>
-                  </Wrapperr>
-               </Wrapper>
-               <Div>
-                  <Button color="primary" variant="outlined">
-                     SEND RESULTS TO USER’S EMAIL
-                  </Button>
-               </Div>
-               <EvaluatingSubmittedResultsTable rows={rows} />
-            </TableContainer>
-         </MainContainer>
-      </>
+      <ContentCard>
+         <Wrapper>
+            <Divv>
+               <span>User: {userTest.user} </span>
+               <span>Test: {userTest.title}</span>
+            </Divv>
+            <Wrapperr>
+               <span>Final Score: 0</span>
+               <span>Final Status: Evalauted</span>
+            </Wrapperr>
+         </Wrapper>
+         <Div>
+            <Button
+               onClick={sendResultsToUserHandler}
+               color="primary"
+               variant="outlined"
+            >
+               SEND RESULTS TO USER’S EMAIL
+            </Button>
+         </Div>
+         <EvaluatingSubmittedResultsTable
+            userAnswers={userAnswers}
+            paramsUserID={paramsUserID}
+         />
+         <StyledDivOfModalFooter>
+            <StyledBtn
+               onClick={onGoBackHandler}
+               color="primary"
+               variant="outlined"
+            >
+               GO BACK
+            </StyledBtn>
+            <Button type="submit" color="secondary" variant="contained">
+               SAVE
+            </Button>
+         </StyledDivOfModalFooter>
+      </ContentCard>
    )
 }
 
@@ -54,7 +79,6 @@ export default EvaluatingSubmittedResultsPage
 const Wrapper = styled.div`
    display: flex;
    justify-content: space-between;
-   padding: 0px 115px;
    margin-top: 50px;
 `
 const Wrapperr = styled.div`
@@ -67,8 +91,7 @@ const Wrapperr = styled.div`
 const Div = styled.div`
    display: flex;
    justify-content: flex-end;
-   padding: 20px;
-   margin: 0px 100px;
+   padding: 20px 0px;
    text-align: end;
 `
 const Divv = styled.div`
@@ -76,4 +99,13 @@ const Divv = styled.div`
    flex-direction: column;
    padding: 5px;
    color: #4c4859;
+`
+const StyledDivOfModalFooter = styled.div`
+   width: 100%;
+   display: flex;
+   justify-content: flex-end;
+`
+
+const StyledBtn = styled(Button)`
+   margin-right: 16px;
 `

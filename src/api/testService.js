@@ -56,3 +56,17 @@ export const putQuestionRequest = (id, data) => {
 export const getFileRequest = (fileName) => {
    return axiosInstance.get(`api/files/${fileName}`)
 }
+
+export const getAllUsersRequest = () => {
+   return axiosInstance.get(`api/admin/answer`)
+}
+export const deleteUserRequest = (id) => {
+   return axiosInstance.delete(`/api/admin/${id}`)
+}
+
+export const getUserTestAnswerRequest = (testId) => {
+   return axiosInstance.get(`api/admin/answer/${testId}`)
+}
+export const getUserTestAnswerQuestionRequest = (questionId) => {
+   return axiosInstance.get(`api/admin/answer/question/${questionId}`)
+}

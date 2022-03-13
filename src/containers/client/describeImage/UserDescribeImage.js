@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Button from '../../../components/UI/button/index'
 import CountTime from '../../../components/UI/progressTime/CountTime'
-import { ROUTES } from '../../../utils/constants/general'
+import { GET_FILE_FROM_SERVER, ROUTES } from '../../../utils/constants/general'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
 import { submitQuestion1 } from '../../../store/testActions'
 import { QUESTION_TYPES } from '../../../utils/constants/QuestionTypesAndOptions'
@@ -38,6 +38,7 @@ const Input = styled('textarea')`
    border-radius: 8px;
    margin-left: 24px;
    resize: none;
+   padding: 16px 14px;
 `
 
 const DivButton = styled('div')`
@@ -113,7 +114,7 @@ const DescribeImage = () => {
             </DivStyled>
             <DivImgInput>
                <Img
-                  src={`http://3.65.208.103/api/files/${testQuestion?.file}`}
+                  src={`${GET_FILE_FROM_SERVER}/${testQuestion?.file}`}
                   alt="listen"
                />
                <Input
