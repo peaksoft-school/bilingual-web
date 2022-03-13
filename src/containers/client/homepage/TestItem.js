@@ -26,6 +26,8 @@ const Div = styled('div')`
    display: flex;
    justify-content: space-between;
    align-items: center;
+   width: 800px;
+   margin: 0 auto;
 `
 const H1minutes = styled('h1')`
    font-size: 15px;
@@ -42,8 +44,9 @@ const P2 = styled('p')`
    color: #4c4859;
 `
 const DivText = styled('div')`
+   width: 300px;
    position: relative;
-   right: 150px;
+   right: 100px;
 `
 const DivButton = styled('div')`
    position: relative;

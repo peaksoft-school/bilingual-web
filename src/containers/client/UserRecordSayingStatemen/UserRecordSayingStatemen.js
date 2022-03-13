@@ -65,8 +65,9 @@ function UserRecordSayingStatement() {
             type: blob.type,
             lastModified: Date.now(),
          })
+         console.log(file, 'hello')
          const answers = {
-            answer: file.name,
+            answer: file.size,
             type: QUESTION_TYPES.RECORD_SAYING_STATEMENT,
             questionId: testQuestion.id,
             testResultId: attemptId,

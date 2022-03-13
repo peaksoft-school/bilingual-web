@@ -21,6 +21,7 @@ import EndTest from '../containers/client/endTest/EndTest'
 import UserSelectBestTitle from '../containers/client/userSelectBestTitle/UserSelectBestTitle'
 import UserSelectTheMainIdea from '../containers/client/userSelectTheMainIdea/UserSelectTheMainIdea'
 import TypewhatYouHearPage from '../containers/admin/evaluate/whatYouHearePage/TypewhatYouHearPage'
+import UserTypeWhatYouHear from '../containers/client/userTypeWhatYouHear/UserTypeWhatYouHear'
 
 export default function AllRoutes() {
    const navigate = useNavigate()
@@ -205,6 +206,15 @@ export default function AllRoutes() {
             element={
                <PrivateRoute
                   Component={<UserSelectTheMainIdea />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={`/user/test/:testId/${ROUTES.TYPE_WHAT_YOU_HEAR}`}
+            element={
+               <PrivateRoute
+                  Component={<UserTypeWhatYouHear />}
                   roles={[ROLES.ROLE_USER]}
                />
             }
