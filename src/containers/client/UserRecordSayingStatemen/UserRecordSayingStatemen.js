@@ -2,14 +2,27 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import MicRecorder from 'mic-recorder-to-mp3'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { submitQuestion1 } from '../../../store/testActions'
 import { ReactComponent as Head } from '../../../assets/icons/Head.svg'
 import { ReactComponent as Ellipse } from '../../../assets/icons/Ellipse.svg'
 import Button from '../../../components/UI/button/index'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
+import { ROUTES } from '../../../utils/constants/general'
+import CountTime from '../../../components/UI/progressTime/CountTime'
+import { QUESTION_TYPES } from '../../../utils/constants/QuestionTypesAndOptions'
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 })
 
 function UserRecordSayingStatement() {
+   const navigate = useNavigate()
+   const dispatch = useDispatch()
+   const { currentQuestion } = useSelector((state) => state.test)
+   const { questions } = useSelector((state) => state.test)
+   const { testId } = useParams()
+   const [testQuestion, setTestQuestion] = useState({})
+   const attemptId = useSelector((state) => state.test.attemptId)
    const [showButton, setShowButton] = useState(true)
    const [record, setRecord] = useState({
       isRecording: false,
@@ -27,34 +40,69 @@ function UserRecordSayingStatement() {
          }
       )
    }, [])
+
    const start = () => {
       onClickHandler()
       Mp3Recorder.start().then(() => {
          setRecord({ isRecording: true })
       })
    }
-   const stop = () => {
-      Mp3Recorder.stop()
-         .getMp3()
-         .then(([buffer, blob]) => {
-            const blobURL = URL.createObjectURL(blob)
-            setRecord({ blobURL, isRecording: false })
-            const file = new File(buffer, 'me-at-thevoice.mp3', {
-               type: blob.type,
-               lastModified: Date.now(),
-            })
+
+   useEffect(() => {
+      setTestQuestion(questions[currentQuestion])
+      if (questions.length === 0) {
+         return navigate('/user/tests')
+      }
+      return null
+   }, [])
+
+   const stop = async (e) => {
+      e.preventDefault()
+      await Mp3Recorder.getMp3().then(([buffer, blob]) => {
+         const blobURL = URL.createObjectURL(blob)
+         setRecord({ blobURL, isRecording: false })
+         const file = new File(buffer, 'me-at-thevoice.mp3', {
+            type: blob.type,
+            lastModified: Date.now(),
          })
+         const answers = {
+            answer: file.name,
+            type: QUESTION_TYPES.RECORD_SAYING_STATEMENT,
+            questionId: testQuestion.id,
+            testResultId: attemptId,
+         }
+         dispatch(submitQuestion1(answers)).then(() => {
+            if (questions.length === currentQuestion + 1) {
+               navigate(ROUTES.END_TEST)
+            } else {
+               navigate(
+                  `/user/test/${testId}/${
+                     ROUTES[questions[currentQuestion + 1]?.type]
+                  }`
+               )
+            }
+         })
+      })
    }
 
    const onClickHandler = () => {
       setShowButton((prev) => !prev)
    }
+
    return (
       <LayoutTest>
-         <HeaderTitle>Record yorself saying the statement below:</HeaderTitle>
+         <CountTime
+            time={testQuestion.duration}
+            totalTime={testQuestion.duration}
+         />
+         <HeaderTitle>{testQuestion.title}</HeaderTitle>
          <Main>
-            <Head />
-            <H3>My uncle is at work.</H3>
+            <div>
+               <ImHead />
+            </div>
+            <div>
+               <H3>{testQuestion.statement}</H3>
+            </div>
          </Main>
          <FooterDiv>
             <audio src={record.blobURL} control="controls" />
@@ -177,6 +225,11 @@ const Main = styled.div`
    justify-content: space-between;
    align-items: center;
 `
+
+const ImHead = styled(Head)`
+   width: 117px;
+   height: 100px;
+`
 const FooterDiv = styled.div`
    border-top: 2px solid #d4d0d0;
    padding-top: 32px;
@@ -189,7 +242,7 @@ const P = styled.p`
    font-size: 16px;
    color: #3a10e5;
 `
-const H3 = styled.h3`
+const H3 = styled.p`
    font-family: 'DINNextRoundedLTW01-Regular';
    font-size: 18px;
    color: #4c4859;

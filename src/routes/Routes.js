@@ -1,4 +1,3 @@
-/* eslint-disable no-plusplus */
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Navigate, Route, Routes } from 'react-router-dom'
@@ -10,11 +9,17 @@ import TestPage from '../containers/admin/tests/testPage/TestPage'
 import CheckingYourDevice from '../containers/client/checkingYourDevice/CheckingYourDevice'
 import HomePage from '../containers/client/homepage/HomePage'
 import StartPracticeTest from '../containers/client/startPracticeTest/StartPracticeTest'
-import UserRespondInAtLeastNWords from '../containers/client/userRespondInAtLeastNWords/UserRespondInAtLeastNWords'
 import LoginPage from '../containers/login/LoginPage'
+import DescribeImage from '../containers/client/describeImage/UserDescribeImage'
 import SignUp from '../containers/signUp/SignUp'
 import { ROLES, ROUTES } from '../utils/constants/general'
 import PrivateRoute from './private/PrivateRoute'
+import UserRespondInAtLeastNWords from '../containers/client/userRespondInAtLeastNWords/UserRespondInAtLeastNWords'
+import UserRecordSayingStatement from '../containers/client/UserRecordSayingStatemen/UserRecordSayingStatemen'
+import UserHighlightTheAnswer from '../containers/client/userHighlightTheAnswer/UserHighlightTheAnswer'
+import EndTest from '../containers/client/endTest/EndTest'
+import UserSelectBestTitle from '../containers/client/userSelectBestTitle/UserSelectBestTitle'
+import UserSelectTheMainIdea from '../containers/client/userSelectTheMainIdea/UserSelectTheMainIdea'
 import TypewhatYouHearPage from '../containers/admin/evaluate/whatYouHearePage/TypewhatYouHearPage'
 
 export default function AllRoutes() {
@@ -59,7 +64,6 @@ export default function AllRoutes() {
                />
             }
          />
-
          <Route
             path={ROUTES.QUESTION_TYPE}
             element={
@@ -152,10 +156,64 @@ export default function AllRoutes() {
             }
          />
          <Route
-            path={ROUTES.USER_RESPOND_IN_AT_LEAST_N_WORDS}
+            path={`/user/test/:testId/${ROUTES.DESCRIBE_IMAGE}`}
+            element={
+               <PrivateRoute
+                  Component={<DescribeImage />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={`/user/test/:testId/${ROUTES.RESPOND_IN_AT_LEAST_N_WORDS}`}
             element={
                <PrivateRoute
                   Component={<UserRespondInAtLeastNWords />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={`/user/test/:testId/${ROUTES.RECORD_SAYING_STATEMENT}`}
+            element={
+               <PrivateRoute
+                  Component={<UserRecordSayingStatement />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={`/user/test/:testId/${ROUTES.HIGHLIGHT_THE_ANSWER}`}
+            element={
+               <PrivateRoute
+                  Component={<UserHighlightTheAnswer />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={`/user/test/:testId/${ROUTES.SELECT_BEST_TITLE}`}
+            element={
+               <PrivateRoute
+                  Component={<UserSelectBestTitle />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={`/user/test/:testId/${ROUTES.SELECT_MAIN_IDEA}`}
+            element={
+               <PrivateRoute
+                  Component={<UserSelectTheMainIdea />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.END_TEST}
+            element={
+               <PrivateRoute
+                  Component={<EndTest />}
                   roles={[ROLES.ROLE_USER]}
                />
             }

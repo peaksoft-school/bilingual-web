@@ -28,6 +28,7 @@ export const login = createAsyncThunk(
                fullName: data.fullName,
                gmail: data.gmail,
                role: data.roles[0],
+               id: data.id,
             },
             token: data.token,
          }
@@ -51,6 +52,7 @@ const initialState = {
       gmail: '',
       role: '',
    },
+   id: '',
    token: '',
 }
 
@@ -75,6 +77,7 @@ const authSlice = createSlice({
          state.isAuthorized = true
          state.user = action.payload.user
          state.token = action.payload.token
+         state.id = action.payload.id
       },
       [login.rejected]: (state) => {
          state.isAuthorized = false

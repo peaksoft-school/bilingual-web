@@ -1,39 +1,92 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Button from '../../../components/UI/button/index'
+import CountTimeLong from '../../../components/UI/progressTimeLong/CountTimeLong'
 import LayoutFinal from '../../../layout/clientLayout/LayoutFinal/LayoutFinal'
-import UserSelectBestTitleOptions from './UserSelectBestTitleOptions'
+import { submitQuestion1 } from '../../../store/testActions'
+import { ROUTES } from '../../../utils/constants/general'
+import { QUESTION_TYPES } from '../../../utils/constants/QuestionTypesAndOptions'
+import UserSelectBestTitleOption from './UserSelectBestTitleOption'
 
 function UserSelectBestTitle() {
-   const [state, setState] = useState([])
+   const [testQuestion, setTestQuestion] = useState([])
+   const navigate = useNavigate()
+   const { testId } = useParams()
+   const dispatch = useDispatch()
+   const { questions } = useSelector((state) => state.test)
+   const { currentQuestion } = useSelector((state) => state.test)
+   const [resultOptions, setResultOptions] = useState()
+   const attemptId = useSelector((state) => state.test.attemptId)
 
-   const onChangeRadioButtonHandler = () => {
-      setState()
+   useEffect(() => {
+      setTestQuestion(questions[currentQuestion])
+      if (questions.length === 0) return navigate('/user/tests')
+      return null
+   }, [])
+
+   const onChangeRadioButtonHandler = (checkedData) => {
+      setResultOptions([checkedData])
+   }
+
+   const selectBestTitleHandler = () => {
+      try {
+         const answers = {
+            resultOptions,
+            type: QUESTION_TYPES.SELECT_BEST_TITLE,
+            questionId: testQuestion.id,
+            testResultId: attemptId,
+         }
+         dispatch(submitQuestion1(answers)).then(() => {
+            if (questions.length === currentQuestion + 1) {
+               navigate(ROUTES.END_TEST)
+            } else {
+               navigate(
+                  `/user/test/${testId}/${
+                     ROUTES[questions[currentQuestion + 1]?.type]
+                  }`
+               )
+            }
+         })
+      } catch (error) {
+         console.log(error)
+      }
    }
 
    return (
       <LayoutFinal>
+         <CountTimeLong
+            time={testQuestion.duration}
+            totalTime={testQuestion.duration}
+         />
          <Div>
             <div>
                <DivInput>PASSAGE</DivInput>
                <TextAreaDiv>
-                  <TextArea />
+                  <TextArea value={testQuestion?.title} />
                </TextAreaDiv>
             </div>
             <RightDiv>
                <Text>
-                  <P>Select the best title for the passage</P>
+                  <P>{testQuestion?.passage}</P>
                </Text>
-               {state.map((option) => {
-                  return (
-                     <UserSelectBestTitleOptions
-                        option={option}
-                        onChangeRadioButtonHandler={onChangeRadioButtonHandler}
-                     />
-                  )
-               })}
+               {testQuestion.options &&
+                  testQuestion.options.map((option) => {
+                     return (
+                        <UserSelectBestTitleOption
+                           key={option.id}
+                           name={option.id}
+                           onChangeRadioButtonHandler={
+                              onChangeRadioButtonHandler
+                           }
+                           option={option}
+                        />
+                     )
+                  })}
                <FooterDiv>
                   <Button
+                     onClick={selectBestTitleHandler}
                      color="primary"
                      variant="contained"
                      sx={{ mt: '32px', width: '143px', height: '43px' }}

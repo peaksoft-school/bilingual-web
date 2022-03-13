@@ -1,29 +1,27 @@
 import React from 'react'
 import styled from 'styled-components'
-import RadioButton from '../../../components/UI/radioButton'
 
-function UserSelectBestTitleOptions({ option, onChangeRadioButtonHandler }) {
-   const radioButtonChangeHandler = (id) => {
-      onChangeRadioButtonHandler(id)
+function UserSelectTheMainIdeaOption({ option, onChangeRadioButtonHandler }) {
+   const radioButtonChangeHandler = (optionId) => {
+      onChangeRadioButtonHandler({ optionId, answer: true })
    }
 
    return (
       <Box>
-         <StyledDivIcons
-            checked={option.correct}
-            onChange={() => radioButtonChangeHandler(option.id)}
-         >
-            <RadioButton color="primary" />
+         <StyledDivIcons>
+            <input
+               type="radio"
+               onChange={() => radioButtonChangeHandler(option.id)}
+               color="primary"
+               name="something"
+            />
          </StyledDivIcons>
-         <P>
-            There are many variations of passages of Lorem Ipsum available, but
-            the majority have.
-         </P>
+         <P>{option.word}</P>
       </Box>
    )
 }
 
-export default UserSelectBestTitleOptions
+export default UserSelectTheMainIdeaOption
 
 const P = styled('p')`
    margin: 0 auto;

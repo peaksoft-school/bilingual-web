@@ -1,19 +1,25 @@
 import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import LayoutClient from '../../../layout/clientLayout/layoutClient/LayoutClient'
-import { ROUTES } from '../../../utils/constants/general'
 import { ReactComponent as Circle } from '../../../assets/icons/progress.svg'
+import { getTest } from '../../../store/testActions'
+import { ROUTES } from '../../../utils/constants/general'
+import { testSliceActions } from '../../../store'
 
 function CheckingYourDevice() {
    const navigate = useNavigate()
-   const params = useParams()
+   const { testById } = useParams()
 
-   useEffect(() => {
+   const dispatch = useDispatch()
+
+   useEffect(async () => {
+      dispatch(testSliceActions.clearState())
+      const { questions, id } = await dispatch(getTest(testById)).unwrap()
+
       const timer = setTimeout(() => {
-         navigate(
-            `${ROUTES.USER_RESPOND_IN_AT_LEAST_N_WORDS}/${params.testById}/question/1`
-         )
+         navigate(`/user/test/${id}/${ROUTES[questions[0].type]}`)
       }, 3000)
 
       return () => clearTimeout(timer)
