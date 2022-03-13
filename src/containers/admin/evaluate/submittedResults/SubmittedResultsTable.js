@@ -3,14 +3,15 @@ import { TableContainer, TableHead, TableRow } from '@mui/material'
 import {
    StyletTableRow,
    StyledTableCell,
-   DeleteIcon,
    Div,
    StyledHead,
    StyledTable,
+   TrueP,
+   FalseP,
 } from '../../../../components/UI/table/Table'
-import ReCheckbox from '../../../../components/UI/checkbox'
+import Item from './Item'
 
-export const SubmittedResultsTable = ({ rows }) => {
+export const SubmittedResultsTable = ({ users, onClickToDelete }) => {
    return (
       <TableContainer>
          <StyledTable>
@@ -18,31 +19,43 @@ export const SubmittedResultsTable = ({ rows }) => {
                <TableRow>
                   <StyledHead>#</StyledHead>
                   <StyledHead>User Name</StyledHead>
-                  <StyledHead align="center">Date of Submitiion</StyledHead>
+                  <StyledHead align="center">Date of Submition</StyledHead>
                   <StyledHead align="center">Question Type</StyledHead>
                   <StyledHead align="center">Status</StyledHead>
                </TableRow>
             </TableHead>
-            {rows.map((row) => (
-               <StyletTableRow key={row.number} align="center">
-                  <StyledTableCell align="center">{row.number}</StyledTableCell>
-                  <StyledTableCell align="center">
-                     {row.userName}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{row.time}</StyledTableCell>
-                  <StyledTableCell align="center">
-                     {row.testNumber}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                     {row.evoluate}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                     <Div>
-                        <ReCheckbox />
-                        <DeleteIcon />
-                     </Div>
-                  </StyledTableCell>
-               </StyletTableRow>
+            {users.map((user, index) => (
+               <tbody key={user.userResult.id}>
+                  <StyletTableRow align="center">
+                     <StyledTableCell align="center">
+                        {index + 1}
+                     </StyledTableCell>
+                     <StyledTableCell align="center">
+                        {user.user.fullName}
+                     </StyledTableCell>
+                     <StyledTableCell align="center">
+                        {user.userResult.createdDate}
+                     </StyledTableCell>
+                     <StyledTableCell align="center">
+                        {user.mainTest.title}
+                     </StyledTableCell>
+                     <StyledTableCell align="center">
+                        {user.userResult.evaluated ? (
+                           <TrueP>Evaluated</TrueP>
+                        ) : (
+                           <FalseP>Not evaluated</FalseP>
+                        )}
+                     </StyledTableCell>
+                     <StyledTableCell align="center">
+                        <Div>
+                           <Item
+                              id={user.userResult.id}
+                              onClickToDelete={onClickToDelete}
+                           />
+                        </Div>
+                     </StyledTableCell>
+                  </StyletTableRow>
+               </tbody>
             ))}
          </StyledTable>
       </TableContainer>

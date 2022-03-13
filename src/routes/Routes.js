@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Navigate, Route, Routes } from 'react-router-dom'
 import SubmittedResultsPage from '../containers/admin/evaluate/submittedResults/SubmittedResultsPage'
+import EvaluatingSubmittedResultsPage from '../containers/admin/evaluate/evaluatingSubmittedResultspage/EvaluatingSubmittedResultsPage'
 import AddQuestionTypePage from '../containers/admin/question/questionType/questionType'
 import AddNewTest from '../containers/admin/tests/addnewTestPage/AddNewTestPage'
 import TestPage from '../containers/admin/tests/testPage/TestPage'
@@ -14,6 +15,7 @@ import LoginPage from '../containers/login/LoginPage'
 import SignUp from '../containers/signUp/SignUp'
 import { ROLES, ROUTES } from '../utils/constants/general'
 import PrivateRoute from './private/PrivateRoute'
+import TypewhatYouHearPage from '../containers/admin/evaluate/whatYouHearePage/TypewhatYouHearPage'
 
 export default function AllRoutes() {
    const navigate = useNavigate()
@@ -90,6 +92,33 @@ export default function AllRoutes() {
             element={
                <PrivateRoute
                   Component={<SubmittedResultsPage />}
+                  roles={[ROLES.ROLE_ADMIN]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.EVALUATE_QUESTIONS}
+            element={
+               <PrivateRoute
+                  Component={<EvaluatingSubmittedResultsPage />}
+                  roles={[ROLES.ROLE_ADMIN]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.EVALUATE_QUESTION_BY_ID}
+            element={
+               <PrivateRoute
+                  Component={<EvaluatingSubmittedResultsPage />}
+                  roles={[ROLES.ROLE_ADMIN]}
+               />
+            }
+         />
+         <Route
+            path={ROUTES.EVALUATE_QUESTION_TYPE}
+            element={
+               <PrivateRoute
+                  Component={<TypewhatYouHearPage />}
                   roles={[ROLES.ROLE_ADMIN]}
                />
             }

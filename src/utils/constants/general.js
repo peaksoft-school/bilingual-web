@@ -26,6 +26,11 @@ export const ROUTES = {
    QUESTIONBYID: '/admin/test/addTestPage/:testById/questionType/:questionById',
    USER_RESPOND_IN_AT_LEAST_N_WORDS: '/user/respond-in-at-least-n-words',
    USER_RECORD_SAYING_STATEMENT: '/user/record-saying-statement',
+   EVALUATE_QUESTIONS: '/admin/submited-results/evaluate-questions',
+   EVALUATE_QUESTION_BY_ID:
+      '/admin/submited-results/evaluate-questions/:userId',
+   EVALUATE_QUESTION_TYPE:
+      '/admin/submited-results/evaluate-questions/:UserID/questionType/:questionID',
 }
 
 export const BILINGUAL_TOKEN = 'BILINGUAL_TOKEN'
