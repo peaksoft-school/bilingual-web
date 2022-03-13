@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import QuitButton from '../testLayout/QuitButton'
 import MainContainer from './MainContainer'
 
 const StyledCardDiv = styled.div`
@@ -20,6 +21,7 @@ const StyledContentCard = styled.div`
 const LayoutFinal = ({ children }) => {
    return (
       <div>
+         <QuitButton />
          <MainContainer>
             <StyledCardDiv>
                <StyledContentCard>{children}</StyledContentCard>

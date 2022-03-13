@@ -30,6 +30,7 @@ const CountTime = ({ time, totalTime }) => {
             return updateIn
          })
       }, 1000)
+      return () => clearInterval(myInterval)
    }, [])
 
    return (

@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function UserSelectTheMainIdeaOptions({ option, onChangeRadioButtonHandler }) {
-   const radioButtonChangeHandler = (id) => {
-      onChangeRadioButtonHandler({ id, answer: true })
+function UserSelectBestTitleOption({ option, onChangeRadioButtonHandler }) {
+   const radioButtonChangeHandler = (optionId) => {
+      onChangeRadioButtonHandler({ optionId, answer: true })
    }
 
    return (
@@ -21,7 +21,7 @@ function UserSelectTheMainIdeaOptions({ option, onChangeRadioButtonHandler }) {
    )
 }
 
-export default UserSelectTheMainIdeaOptions
+export default UserSelectBestTitleOption
 
 const P = styled('p')`
    margin: 0 auto;

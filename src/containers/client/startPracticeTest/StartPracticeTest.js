@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import LayoutClient from '../../../layout/clientLayout/layoutClient/LayoutClient'
 import { ReactComponent as Try } from '../../../assets/icons/img-try.svg'
@@ -8,9 +9,11 @@ import { ReactComponent as IconTime } from '../../../assets/icons/icon_time.svg'
 import { ReactComponent as IcPhoto } from '../../../assets/icons/ic-photo.svg'
 import Button from '../../../components/UI/button/index'
 import { ROUTES } from '../../../utils/constants/general'
+import { submitQuestion } from '../../../store/testActions'
 
 function StartPracticeTest() {
    const navigate = useNavigate()
+   const dispatch = useDispatch()
 
    const { testById } = useParams()
 
@@ -19,6 +22,7 @@ function StartPracticeTest() {
    }
 
    const practiceTestHandler = () => {
+      dispatch(submitQuestion(testById))
       navigate(`${ROUTES.START_PRACTICE_TEST}/${testById}/checking-your-device`)
    }
 

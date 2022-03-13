@@ -4,10 +4,10 @@ import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Button from '../../../components/UI/button/index'
 import CountTime from '../../../components/UI/progressTime/CountTime'
-import { submitQuestion } from '../../../store/testActions'
 import { ROUTES } from '../../../utils/constants/general'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
-import { testSliceActions } from '../../../store'
+import { submitQuestion1 } from '../../../store/testActions'
+import { QUESTION_TYPES } from '../../../utils/constants/QuestionTypesAndOptions'
 
 const DivStyled = styled('div')`
    margin-top: 50px;
@@ -53,16 +53,15 @@ const ButtonS = styled(Button)`
 
 const DescribeImage = () => {
    const navigate = useNavigate()
-   const [state, setState] = useState([])
+   const [testQuestion, setTestQuestion] = useState({})
    const { testId } = useParams()
-   const { questions } = useSelector((state) => state.test)
-   const { currentQuestion } = useSelector((state) => state.test)
-   const { id: userId } = useSelector((state) => state.auth.user)
-
    const dispatch = useDispatch()
+   const { questions } = useSelector((state) => state.test)
+   const attemptId = useSelector((state) => state.test.attemptId)
+   const { currentQuestion } = useSelector((state) => state.test)
 
    useEffect(() => {
-      setState(questions[currentQuestion])
+      setTestQuestion(questions[currentQuestion])
       if (questions.length === 0) {
          return navigate('/user/tests')
       }
@@ -70,26 +69,28 @@ const DescribeImage = () => {
    }, [])
 
    const [text, setText] = useState('')
-
    const onChangeText = (e) => setText(e.target.value)
 
-   const submitTest = async (e) => {
+   const submitTest = (e) => {
       e.preventDefault()
       try {
          const answers = {
-            questionResults: {
-               answer: text,
-            },
+            type: QUESTION_TYPES.DESCRIBE_IMAGE,
+            answer: text,
+            questionId: testQuestion.id,
+            testResultId: attemptId,
          }
-         await dispatch(submitQuestion({ testId, userId, answers })).unwrap()
-
-         if (questions[currentQuestion]?.type === undefined) {
-            navigate(ROUTES.END_TEST)
-         } else {
-            navigate(
-               `/user/test/${testId}/${ROUTES[questions[currentQuestion].type]}`
-            )
-         }
+         dispatch(submitQuestion1(answers)).then(() => {
+            if (questions.length === currentQuestion + 1) {
+               navigate(ROUTES.END_TEST)
+            } else {
+               navigate(
+                  `/user/test/${testId}/${
+                     ROUTES[questions[currentQuestion + 1]?.type]
+                  }`
+               )
+            }
+         })
          setText('')
       } catch (error) {
          console.log(error)
@@ -97,23 +98,22 @@ const DescribeImage = () => {
       return null
    }
 
-   useEffect(async () => {
-      dispatch(testSliceActions.incrementState())
-   }, [])
-
    const enabled = () => text.trim()
    return (
       <LayoutTest>
          <div>
             <div>
-               <CountTime time={state?.duration} totalTime={state?.duration} />
+               <CountTime
+                  time={testQuestion?.duration}
+                  totalTime={testQuestion?.duration}
+               />
             </div>
             <DivStyled>
-               <StyledP>{state?.title}</StyledP>
+               <StyledP>{testQuestion?.title}</StyledP>
             </DivStyled>
             <DivImgInput>
                <Img
-                  src={`http://3.65.208.103/api/files/${state?.file}`}
+                  src={`http://3.65.208.103/api/files/${testQuestion?.file}`}
                   alt="listen"
                />
                <Input

@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 import LinearDeterminateLong from './LinearDeterminateLong'
 import { getPercent } from '../../../utils/helpers'
-import { ButtonProggresTime } from './ButtonProggressTime'
 
 const CountTimeLong = ({ time, totalTime }) => {
    const [time1, setTime1] = useState({ min: 0, sec: 0 })
@@ -31,6 +30,7 @@ const CountTimeLong = ({ time, totalTime }) => {
             return updateIn
          })
       }, 1000)
+      return () => clearInterval(myInterval)
    }, [])
 
    return (
@@ -40,9 +40,6 @@ const CountTimeLong = ({ time, totalTime }) => {
                <H2time>
                   {timerMinutes}:{timerSeconds}
                </H2time>
-            </div>
-            <div>
-               <ButtonProggresTime />
             </div>
          </Div>
          <LinearDeterminateLong percent={percent} />

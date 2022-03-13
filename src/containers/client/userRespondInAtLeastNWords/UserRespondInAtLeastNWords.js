@@ -5,20 +5,27 @@ import styled from 'styled-components'
 import Button from '../../../components/UI/button/index'
 import CountTime from '../../../components/UI/progressTime/CountTime'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
-import { testSliceActions } from '../../../store'
-import { getTest, submitQuestion } from '../../../store/testActions'
+import { submitQuestion1 } from '../../../store/testActions'
 import { ROUTES } from '../../../utils/constants/general'
+import { QUESTION_TYPES } from '../../../utils/constants/QuestionTypesAndOptions'
 
 function UserRespondInAtLeastNWords() {
-   const [state, setState] = useState({
-      duration: '',
-   })
-
+   const [testQuestion, setTestQuestion] = useState({})
    const [answer, setAnswer] = useState('')
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const { testId } = useParams()
+   const { questions } = useSelector((state) => state.test)
+   const { currentQuestion } = useSelector((state) => state.test)
+   const attemptId = useSelector((state) => state.test.attemptId)
 
-   const onChangeWords = (event) => {
-      setAnswer(event.target.value)
-   }
+   useEffect(() => {
+      setTestQuestion(questions[currentQuestion])
+      if (questions.length === 0) {
+         return navigate('/user/tests')
+      }
+      return null
+   }, [])
 
    const countOfWords = () => {
       return answer
@@ -27,61 +34,47 @@ function UserRespondInAtLeastNWords() {
          .filter((i) => i).length
    }
 
-   const enabled = () => countOfWords() >= state.count
+   const onChangeWords = (event) => {
+      setAnswer(event.target.value)
+   }
 
-   const dispatch = useDispatch()
-
-   const navigate = useNavigate()
-
-   const { testId } = useParams()
-
-   const { id: userId } = useSelector((state) => state.auth.user)
-   const { questions } = useSelector((state) => state.test)
-   const { currentQuestion } = useSelector((state) => state.test)
-
-   useEffect(async () => {
-      await dispatch(getTest(testId)).unwrap()
-      setState(questions[currentQuestion])
-   }, [])
-
-   const respondLeastWordsHandler = async (e) => {
+   const respondLeastWordsHandler = (e) => {
       e.preventDefault()
       try {
          const answers = {
-            questionResults: [
-               {
-                  type: 'RESPOND_IN_AT_LEAST_N_WORDS',
-                  answer,
-               },
-            ],
+            answer,
+            type: QUESTION_TYPES.RESPOND_IN_AT_LEAST_N_WORDS,
+            questionId: testQuestion.id,
+            testResultId: attemptId,
          }
-
-         await dispatch(submitQuestion({ testId, userId, answers })).unwrap()
-         if (questions[currentQuestion]?.type === undefined) {
-            navigate(ROUTES.END_TEST)
-         } else {
-            navigate(
-               `/user/test/${testId}/${
-                  ROUTES[questions[currentQuestion]?.type]
-               }`
-            )
-         }
+         dispatch(submitQuestion1(answers)).then(() => {
+            if (questions.length === currentQuestion + 1) {
+               navigate(ROUTES.END_TEST)
+            } else {
+               navigate(
+                  `/user/test/${testId}/${
+                     ROUTES[questions[currentQuestion + 1]?.type]
+                  }`
+               )
+            }
+         })
       } catch (error) {
          console.log(error)
       }
    }
 
-   useEffect(async () => {
-      dispatch(testSliceActions.incrementState())
-   }, [])
+   const enabled = () => countOfWords() >= testQuestion.count
 
    return (
       <LayoutTest>
-         <CountTime time={state.duration} totalTime={state.duration} />
-         <HeaderTitle>{state.title}</HeaderTitle>
+         <CountTime
+            time={testQuestion.duration}
+            totalTime={testQuestion.duration}
+         />
+         <HeaderTitle>{testQuestion.title}</HeaderTitle>
          <Div>
             <Text>
-               <P>{state.statement}</P>
+               <P>{testQuestion.statement}</P>
             </Text>
             <TextAreaDiv>
                <TextArea onChange={onChangeWords} />

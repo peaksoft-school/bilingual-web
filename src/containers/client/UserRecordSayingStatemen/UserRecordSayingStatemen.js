@@ -4,14 +4,14 @@ import styled from 'styled-components'
 import MicRecorder from 'mic-recorder-to-mp3'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { submitQuestion } from '../../../store/testActions'
+import { submitQuestion1 } from '../../../store/testActions'
 import { ReactComponent as Head } from '../../../assets/icons/Head.svg'
 import { ReactComponent as Ellipse } from '../../../assets/icons/Ellipse.svg'
 import Button from '../../../components/UI/button/index'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
 import { ROUTES } from '../../../utils/constants/general'
 import CountTime from '../../../components/UI/progressTime/CountTime'
-import { testSliceActions } from '../../../store'
+import { QUESTION_TYPES } from '../../../utils/constants/QuestionTypesAndOptions'
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 })
 
@@ -19,13 +19,10 @@ function UserRecordSayingStatement() {
    const navigate = useNavigate()
    const dispatch = useDispatch()
    const { currentQuestion } = useSelector((state) => state.test)
-   const { id: userId } = useSelector((state) => state.auth.user)
    const { questions } = useSelector((state) => state.test)
    const { testId } = useParams()
-   const [state, setState] = useState({
-      duration: '',
-   })
-
+   const [testQuestion, setTestQuestion] = useState({})
+   const attemptId = useSelector((state) => state.test.attemptId)
    const [showButton, setShowButton] = useState(true)
    const [record, setRecord] = useState({
       isRecording: false,
@@ -52,7 +49,7 @@ function UserRecordSayingStatement() {
    }
 
    useEffect(() => {
-      setState(questions[currentQuestion])
+      setTestQuestion(questions[currentQuestion])
       if (questions.length === 0) {
          return navigate('/user/tests')
       }
@@ -64,24 +61,29 @@ function UserRecordSayingStatement() {
       await Mp3Recorder.getMp3().then(([buffer, blob]) => {
          const blobURL = URL.createObjectURL(blob)
          setRecord({ blobURL, isRecording: false })
-         const answers = new File(buffer, 'me-at-thevoice.mp3', {
+         const file = new File(buffer, 'me-at-thevoice.mp3', {
             type: blob.type,
             lastModified: Date.now(),
          })
-         dispatch(submitQuestion({ testId, userId, answers })).unwrap()
+         const answers = {
+            answer: file.name,
+            type: QUESTION_TYPES.RECORD_SAYING_STATEMENT,
+            questionId: testQuestion.id,
+            testResultId: attemptId,
+         }
+         dispatch(submitQuestion1(answers)).then(() => {
+            if (questions.length === currentQuestion + 1) {
+               navigate(ROUTES.END_TEST)
+            } else {
+               navigate(
+                  `/user/test/${testId}/${
+                     ROUTES[questions[currentQuestion + 1]?.type]
+                  }`
+               )
+            }
+         })
       })
-      if (questions[currentQuestion]?.type === undefined) {
-         navigate(ROUTES.END_TEST)
-      } else {
-         navigate(
-            `/user/test/${testId}/${ROUTES[questions[currentQuestion].type]}`
-         )
-      }
    }
-
-   useEffect(async () => {
-      dispatch(testSliceActions.incrementState())
-   }, [])
 
    const onClickHandler = () => {
       setShowButton((prev) => !prev)
@@ -89,14 +91,17 @@ function UserRecordSayingStatement() {
 
    return (
       <LayoutTest>
-         <CountTime time={state.duration} totalTime={state.duration} />
-         <HeaderTitle>{state.title}</HeaderTitle>
+         <CountTime
+            time={testQuestion.duration}
+            totalTime={testQuestion.duration}
+         />
+         <HeaderTitle>{testQuestion.title}</HeaderTitle>
          <Main>
             <div>
                <ImHead />
             </div>
             <div>
-               <H3>{state.statement}</H3>
+               <H3>{testQuestion.statement}</H3>
             </div>
          </Main>
          <FooterDiv>

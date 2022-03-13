@@ -5,76 +5,76 @@ import styled from 'styled-components'
 import Button from '../../../components/UI/button/index'
 import CountTimeLong from '../../../components/UI/progressTimeLong/CountTimeLong'
 import LayoutFinal from '../../../layout/clientLayout/LayoutFinal/LayoutFinal'
-import { testSliceActions } from '../../../store'
-import { submitQuestion } from '../../../store/testActions'
+import { submitQuestion1 } from '../../../store/testActions'
 import { ROUTES } from '../../../utils/constants/general'
-import UserSelectBestTitleOptions from './UserSelectBestTitleOptions'
+import { QUESTION_TYPES } from '../../../utils/constants/QuestionTypesAndOptions'
+import UserSelectBestTitleOption from './UserSelectBestTitleOption'
 
 function UserSelectBestTitle() {
-   const [state, setState] = useState([])
+   const [testQuestion, setTestQuestion] = useState([])
    const navigate = useNavigate()
    const { testId } = useParams()
    const dispatch = useDispatch()
-   const { id: userId } = useSelector((state) => state.auth.user)
    const { questions } = useSelector((state) => state.test)
    const { currentQuestion } = useSelector((state) => state.test)
-   const [optionResults, setOptionResults] = useState('')
+   const [resultOptions, setResultOptions] = useState()
+   const attemptId = useSelector((state) => state.test.attemptId)
 
    useEffect(() => {
-      setState(questions[currentQuestion])
-      if (questions.length === 0) {
-         return navigate('/user/tests')
-      }
+      setTestQuestion(questions[currentQuestion])
+      if (questions.length === 0) return navigate('/user/tests')
       return null
    }, [])
 
    const onChangeRadioButtonHandler = (checkedData) => {
-      setOptionResults(checkedData)
+      setResultOptions([checkedData])
    }
 
-   const selectBestTitleHandler = async () => {
+   const selectBestTitleHandler = () => {
       try {
          const answers = {
-            questionResults: [{ type: 'SELECT_BEST_TITLE', optionResults }],
+            resultOptions,
+            type: QUESTION_TYPES.SELECT_BEST_TITLE,
+            questionId: testQuestion.id,
+            testResultId: attemptId,
          }
-         await dispatch(submitQuestion({ testId, userId, answers })).unwrap()
-         dispatch(testSliceActions.incrementState())
-         if (questions[currentQuestion]?.type === undefined) {
-            navigate(ROUTES.END_TEST)
-         } else {
-            navigate(
-               `/user/test/${testId}/${
-                  ROUTES[questions[currentQuestion]?.type]
-               }`
-            )
-         }
+         dispatch(submitQuestion1(answers)).then(() => {
+            if (questions.length === currentQuestion + 1) {
+               navigate(ROUTES.END_TEST)
+            } else {
+               navigate(
+                  `/user/test/${testId}/${
+                     ROUTES[questions[currentQuestion + 1]?.type]
+                  }`
+               )
+            }
+         })
       } catch (error) {
          console.log(error)
       }
    }
 
-   useEffect(async () => {
-      dispatch(testSliceActions.incrementState())
-   }, [])
-
    return (
       <LayoutFinal>
-         <CountTimeLong time={state.duration} totalTime={state.duration} />
+         <CountTimeLong
+            time={testQuestion.duration}
+            totalTime={testQuestion.duration}
+         />
          <Div>
             <div>
                <DivInput>PASSAGE</DivInput>
                <TextAreaDiv>
-                  <TextArea value={state?.title} />
+                  <TextArea value={testQuestion?.title} />
                </TextAreaDiv>
             </div>
             <RightDiv>
                <Text>
-                  <P>{state?.passage}</P>
+                  <P>{testQuestion?.passage}</P>
                </Text>
-               {state.options &&
-                  state.options.map((option) => {
+               {testQuestion.options &&
+                  testQuestion.options.map((option) => {
                      return (
-                        <UserSelectBestTitleOptions
+                        <UserSelectBestTitleOption
                            key={option.id}
                            name={option.id}
                            onChangeRadioButtonHandler={
