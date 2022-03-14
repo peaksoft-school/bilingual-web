@@ -11,7 +11,7 @@ import { ROUTES } from '../../../utils/constants/general'
 import { QUESTION_TYPES } from '../../../utils/constants/QuestionTypesAndOptions'
 
 function UserSelectRealEnglishWords() {
-   const [select, setSelect] = useState({})
+   const [select, setSelect] = useState({ options: [] })
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { testId } = useParams()
@@ -36,14 +36,14 @@ function UserSelectRealEnglishWords() {
       })
       setSelect({ ...select, options: updates })
    }
-   // const enabled = () => {}
+
+   const enabled = select.options.filter((item) => item?.isActive)
 
    const submitBtn = (e) => {
       e.preventDefault()
       const actives = select.options
          .filter(({ isActive }) => isActive)
          .map(({ id }) => ({ optionId: id, answer: true }))
-      console.log(actives)
       try {
          const answers = {
             type: QUESTION_TYPES.SELECT_THE_REAL_ENGLISH_WORD,
@@ -94,7 +94,7 @@ function UserSelectRealEnglishWords() {
             </Div>
             <FooterDiv>
                <Button
-                  // disabled={!enabled()}
+                  disabled={enabled.length === 0}
                   color="primary"
                   variant="contained"
                   sx={{ width: '143px' }}

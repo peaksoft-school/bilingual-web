@@ -11,13 +11,14 @@ import { GET_FILE_FROM_SERVER, ROUTES } from '../../../utils/constants/general'
 import { QUESTION_TYPES } from '../../../utils/constants/QuestionTypesAndOptions'
 
 function UserListenAndRealEnglishWords() {
-   const [select, setSelect] = useState({})
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { testId } = useParams()
    const { questions } = useSelector((state) => state.test)
    const { currentQuestion } = useSelector((state) => state.test)
    const attemptId = useSelector((state) => state.test.attemptId)
+   const [select, setSelect] = useState({ options: [] })
+
    useEffect(() => {
       setSelect(questions[currentQuestion])
       if (questions.length === 0) {
@@ -25,6 +26,8 @@ function UserListenAndRealEnglishWords() {
       }
       return null
    }, [])
+
+   const enabled = select.options.filter((item) => item?.isActive)
 
    const onSelectHandler = (id) => {
       const updates = select.options.map((item) => {
@@ -115,6 +118,7 @@ function UserListenAndRealEnglishWords() {
             </MainDiv>
             <FooterDiv>
                <Button
+                  disabled={enabled.length === 0}
                   color="primary"
                   variant="contained"
                   sx={{ width: '143px' }}
