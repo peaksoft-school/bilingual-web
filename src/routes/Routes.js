@@ -21,6 +21,8 @@ import UserHighlightTheAnswer from '../containers/client/userHighlightTheAnswer/
 import EndTest from '../containers/client/endTest/EndTest'
 import UserSelectBestTitle from '../containers/client/userSelectBestTitle/UserSelectBestTitle'
 import UserSelectTheMainIdea from '../containers/client/userSelectTheMainIdea/UserSelectTheMainIdea'
+import UserSelectRealEnglishWords from '../containers/client/userSelectRealEnglishWords/UserSelectRealEnglishWords'
+import UserListenAndRealEnglishWords from '../containers/client/userListenAndRealEnglishWords/UserListenAndRealEnglishWords'
 import UserTypeWhatYouHear from '../containers/client/userTypeWhatYouHear/UserTypeWhatYouHear'
 
 export default function AllRoutes() {
@@ -206,6 +208,24 @@ export default function AllRoutes() {
             element={
                <PrivateRoute
                   Component={<UserSelectTheMainIdea />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={`/user/test/:testId/${ROUTES.SELECT_REAL_ENGLISH_WORDS}`}
+            element={
+               <PrivateRoute
+                  Component={<UserSelectRealEnglishWords />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={`/user/test/:testId/${ROUTES.LISTEN_AND_SELECT_REAL_ENGLISH_WORD}`}
+            element={
+               <PrivateRoute
+                  Component={<UserListenAndRealEnglishWords />}
                   roles={[ROLES.ROLE_USER]}
                />
             }

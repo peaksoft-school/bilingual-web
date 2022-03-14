@@ -79,7 +79,7 @@ const QuestionType = () => {
          {type === QUESTION_TYPES.SELECT_MAIN_IDEA && (
             <SelectMainIdea userAnswer={userAnswer} testTitle={testTitle} />
          )}
-         {type === QUESTION_TYPES.HIGLIGHT_THE_ANSWER && (
+         {type === QUESTION_TYPES.HIGHLIGHT_THE_ANSWER && (
             <HighlightTheAnswer testTitle={testTitle} />
          )}
          {type === QUESTION_TYPES.SELSECT_BEST_TITLE && (

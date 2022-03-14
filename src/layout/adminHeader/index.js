@@ -31,7 +31,7 @@ const Header = () => {
             <StyledButtonDiv>
                <StyledNavLink to={ROUTES.ADMIN_TEST}>TESTS</StyledNavLink>
                <StyledNavLink to={ROUTES.SUBMITED_RESULTS}>
-                  SEUMBITTED RESULTS
+                  SUBMITTED RESULTS
                </StyledNavLink>
                <StyledNavLinkLogOut onClick={modalHandler}>
                   log out

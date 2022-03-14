@@ -1,29 +1,76 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Button from '../../../components/UI/button/index'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
 import { ReactComponent as Sound } from '../../../assets/icons/volume-1.svg'
 import { ReactComponent as Check } from '../../../assets/icons/check.svg'
+import { submitQuestion1 } from '../../../store/testActions'
+import { GET_FILE_FROM_SERVER, ROUTES } from '../../../utils/constants/general'
+import { QUESTION_TYPES } from '../../../utils/constants/QuestionTypesAndOptions'
 
 function UserListenAndRealEnglishWords() {
-   const [select, setSelect] = useState([])
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const { testId } = useParams()
+   const { questions } = useSelector((state) => state.test)
+   const { currentQuestion } = useSelector((state) => state.test)
+   const attemptId = useSelector((state) => state.test.attemptId)
+   const [select, setSelect] = useState({ options: [] })
+
+   useEffect(() => {
+      setSelect(questions[currentQuestion])
+      if (questions.length === 0) {
+         return navigate('/user/tests')
+      }
+      return null
+   }, [])
+
+   const enabled = select.options.filter((item) => item?.isActive)
 
    const onSelectHandler = (id) => {
-      const updated = select.map((item) => {
+      const updates = select.options.map((item) => {
          if (item.id === id) {
             return { ...item, isActive: !item.isActive }
          }
          return item
       })
-      setSelect([...updated])
+      setSelect({ ...select, options: updates })
    }
 
    const submitBtn = (e) => {
       e.preventDefault()
-      const actives = select
+      const actives = select.options
          .filter(({ isActive }) => isActive)
-         .map(({ text }) => text)
+         .map(({ id }) => ({ optionId: id, answer: true }))
+      try {
+         const answers = {
+            type: QUESTION_TYPES.LISTEN_AND_SELECT_REAL_ENGLISH_WORD,
+            questionId: select.id,
+            resultOptions: actives,
+            testResultId: attemptId,
+         }
+         dispatch(submitQuestion1(answers)).then(() => {
+            if (questions.length === currentQuestion + 1) {
+               navigate(ROUTES.END_TEST)
+            } else {
+               navigate(
+                  `/user/test/${testId}/${
+                     ROUTES[questions[currentQuestion + 1]?.type]
+                  }`
+               )
+            }
+         })
+      } catch (error) {
+         console.log(error)
+      }
    }
+   const playAudioHandler = (file) => {
+      const audio = new Audio(`${GET_FILE_FROM_SERVER}/${file}`)
+      audio.play()
+   }
+
    return (
       <LayoutTest>
          <>
@@ -32,41 +79,46 @@ function UserListenAndRealEnglishWords() {
             </HeaderTitle>
             <MainDiv>
                <Div>
-                  {select.map((item) => {
-                     return (
-                        <StyledInput
-                           key={item.id}
-                           style={{
-                              border: item.isActive
-                                 ? '2px solid #3a10e5'
-                                 : '2px solid #d4d0d0',
-                           }}
-                        >
-                           <InnerDivv>
-                              <Sound /> <P>{item.text}</P>
-                           </InnerDivv>
-                           <CheckDiv
-                              onClick={() => onSelectHandler(item.id)}
+                  {select.options &&
+                     select.options.map((item) => {
+                        return (
+                           <StyledInput
+                              key={item.id}
                               style={{
-                                 background: item.isActive ? '#3a10e5' : '',
-                                 borderLeft: item.isActive
-                                    ? '#3a10e5'
+                                 border: item.isActive
+                                    ? '2px solid #3a10e5'
                                     : '2px solid #d4d0d0',
                               }}
                            >
-                              <Check
+                              <InnerDivv>
+                                 <Sound
+                                    onClick={() => playAudioHandler(item.file)}
+                                 />{' '}
+                                 <P>{item.word}</P>
+                              </InnerDivv>
+                              <CheckDiv
+                                 onClick={() => onSelectHandler(item.id)}
                                  style={{
-                                    color: item.isActive ? '#FEFEFF' : '',
+                                    background: item.isActive ? '#3a10e5' : '',
+                                    borderLeft: item.isActive
+                                       ? '#3a10e5'
+                                       : '2px solid #d4d0d0',
                                  }}
-                              />
-                           </CheckDiv>
-                        </StyledInput>
-                     )
-                  })}
+                              >
+                                 <Check
+                                    style={{
+                                       color: item.isActive ? '#FEFEFF' : '',
+                                    }}
+                                 />
+                              </CheckDiv>
+                           </StyledInput>
+                        )
+                     })}
                </Div>
             </MainDiv>
             <FooterDiv>
                <Button
+                  disabled={enabled.length === 0}
                   color="primary"
                   variant="contained"
                   sx={{ width: '143px' }}

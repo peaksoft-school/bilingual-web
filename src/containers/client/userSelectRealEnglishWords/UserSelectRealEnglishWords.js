@@ -1,51 +1,100 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Button from '../../../components/UI/button/index'
+import CountTime from '../../../components/UI/progressTime/CountTime'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
+import { submitQuestion1 } from '../../../store/testActions'
+
+import { ROUTES } from '../../../utils/constants/general'
+import { QUESTION_TYPES } from '../../../utils/constants/QuestionTypesAndOptions'
 
 function UserSelectRealEnglishWords() {
-   const [select, setSelect] = useState([])
+   const [select, setSelect] = useState({ options: [] })
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const { testId } = useParams()
+   const { questions } = useSelector((state) => state.test)
+   const { currentQuestion } = useSelector((state) => state.test)
+   const attemptId = useSelector((state) => state.test.attemptId)
+
+   useEffect(() => {
+      setSelect(questions[currentQuestion])
+      if (questions.length === 0) {
+         return navigate('/user/tests')
+      }
+      return null
+   }, [])
 
    const onSelectHandler = (id) => {
-      const updates = select.map((item) => {
+      const updates = select.options.map((item) => {
          if (item.id === id) {
             return { ...item, isActive: !item.isActive }
          }
          return item
       })
-      setSelect([...updates])
+      setSelect({ ...select, options: updates })
    }
+
+   const enabled = select.options.filter((item) => item?.isActive)
 
    const submitBtn = (e) => {
       e.preventDefault()
-      const actives = select
+      const actives = select.options
          .filter(({ isActive }) => isActive)
-         .map(({ text }) => text)
+         .map(({ id }) => ({ optionId: id, answer: true }))
+      try {
+         const answers = {
+            type: QUESTION_TYPES.SELECT_THE_REAL_ENGLISH_WORD,
+            questionId: select.id,
+            resultOptions: actives,
+            testResultId: attemptId,
+         }
+         dispatch(submitQuestion1(answers)).then(() => {
+            if (questions.length === currentQuestion + 1) {
+               navigate(ROUTES.END_TEST)
+            } else {
+               navigate(
+                  `/user/test/${testId}/${
+                     ROUTES[questions[currentQuestion + 1]?.type]
+                  }`
+               )
+            }
+         })
+      } catch (error) {
+         console.log(error)
+      }
    }
 
    return (
       <LayoutTest>
          <>
+            <CountTime time={select?.duration} totalTime={select?.duration} />
             <HeaderTitle>
                Select the real English words in this list
             </HeaderTitle>
             <Div>
-               {select.map((item) => {
-                  return (
-                     <InnerDiv
-                        key={item.id}
-                        onClick={() => onSelectHandler(item.id)}
-                        style={{ background: item.isActive ? '#3a10e5' : '' }}
-                     >
-                        <P style={{ color: item.isActive ? '#FEFEFF' : '' }}>
-                           {item.text}
-                        </P>
-                     </InnerDiv>
-                  )
-               })}
+               {select.options &&
+                  select.options.map((item) => {
+                     return (
+                        <InnerDiv
+                           key={item.id}
+                           onClick={() => onSelectHandler(item.id)}
+                           style={{
+                              background: item.isActive ? '#3a10e5' : '',
+                           }}
+                        >
+                           <P style={{ color: item.isActive ? '#FEFEFF' : '' }}>
+                              {item.word}
+                           </P>
+                        </InnerDiv>
+                     )
+                  })}
             </Div>
             <FooterDiv>
                <Button
+                  disabled={enabled.length === 0}
                   color="primary"
                   variant="contained"
                   sx={{ width: '143px' }}
@@ -68,9 +117,9 @@ const Div = styled.span`
 `
 
 const InnerDiv = styled.div`
-   min-width: 50px;
    margin-left: 10px;
    margin-bottom: 10px;
+   padding: 0px 31px;
    display: flex;
    justify-content: center;
    align-items: center;

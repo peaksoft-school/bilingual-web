@@ -65,6 +65,7 @@ const HighLightTheAnswer = () => {
    const [highlighted, sethighlighted] = React.useState('')
 
    const transformedType = type.replace(/[\s.,%]/g, '')
+   console.log(useSelector((state) => state.questions))
    const dispatch = useDispatch()
    const [questionStatement, setQuestionStatement] = React.useState('')
    const enabled = () => {
