@@ -20,6 +20,7 @@ export const Title = styled.h3`
    color: #4c4859;
 `
 export const Data = styled.span`
+   margin-left: 5px;
    font-weight: 500;
    font-size: 16px;
    font-family: 'DINNextRoundedLTW01-Regular';

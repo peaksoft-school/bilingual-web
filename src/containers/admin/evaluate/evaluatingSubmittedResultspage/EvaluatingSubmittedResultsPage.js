@@ -16,6 +16,9 @@ function EvaluatingSubmittedResultsPage() {
 
    const [userAnswers, setUserAnswers] = React.useState([])
 
+   const [userScore, setuserScore] = React.useState()
+   const [userEvaluated, setuserEvaluated] = React.useState()
+
    const getUserTestById = async () => {
       const response = await getUserTestAnswerRequest(paramsUserID)
       setUserTest({
@@ -23,6 +26,8 @@ function EvaluatingSubmittedResultsPage() {
          title: response.data.mainTest.title,
       })
       setUserAnswers(response.data.userResult.questionResults)
+      setuserScore(response.data.userResult.score)
+      setuserEvaluated(response.data.userResult.evaluated)
    }
 
    React.useEffect(() => {
@@ -42,8 +47,15 @@ function EvaluatingSubmittedResultsPage() {
                <span>Test: {userTest.title}</span>
             </Divv>
             <Wrapperr>
-               <span>Final Score: 0</span>
-               <span>Final Status: Evalauted</span>
+               <span>Final Score: {userScore}</span>
+               <span>
+                  Final Status:
+                  {userEvaluated ? (
+                     <TrueP>Evaluated</TrueP>
+                  ) : (
+                     <FalseP>Not evaluated</FalseP>
+                  )}
+               </span>
             </Wrapperr>
          </Wrapper>
          <Div>
@@ -108,4 +120,21 @@ const StyledDivOfModalFooter = styled.div`
 
 const StyledBtn = styled(Button)`
    margin-right: 16px;
+`
+
+const TrueP = styled.p`
+   font-family: 'DINNextRoundedLTW01-Regular';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 16px;
+   line-height: 18px;
+   color: #2ab930;
+`
+const FalseP = styled.p`
+   font-family: 'DINNextRoundedLTW01-Regular';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 16px;
+   line-height: 18px;
+   color: #f61414;
 `

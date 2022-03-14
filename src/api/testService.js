@@ -70,3 +70,8 @@ export const getUserTestAnswerRequest = (testId) => {
 export const getUserTestAnswerQuestionRequest = (questionId) => {
    return axiosInstance.get(`api/admin/answer/question/${questionId}`)
 }
+
+export const postUserQuestionScoreRequest = (questionId, score) => {
+   console.log(score, 'testService')
+   return axiosInstance.post(`api/admin/answer/question/${questionId}`, score)
+}

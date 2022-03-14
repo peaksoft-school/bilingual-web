@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import styled from 'styled-components'
 import Button from '../../../../components/UI/button/index'
-import { ReactComponent as Icon } from '../../../../assets/icons/play-circle.svg'
 import Input from '../../../../components/UI/input/index'
 import {
    User,
@@ -10,35 +10,36 @@ import {
    Title,
    SecondaryTitle,
    Score,
-   Btn,
-   IconWrapper,
    Btnfooter,
 } from '../../../../components/UI/evaluation'
 import Layout from '../../../../components/UI/adminContentCard'
+import { ROUTES } from '../../../../utils/constants/general'
 import {
-   GET_FILE_FROM_SERVER,
-   ROUTES,
-} from '../../../../utils/constants/general'
-import { postUserQuestionScoreRequest } from '../../../../api/testService'
+   getUserTestAnswerQuestionRequest,
+   postUserQuestionScoreRequest,
+} from '../../../../api/testService'
 
-function TypewhatYouHearPage({ userAnswer, testTitle }) {
+function HighlightTheAnswer({ testTitle }) {
    const navigate = useNavigate()
    const params = useParams()
-
    const paramsUserID = params.UserID
-
    const idQuestion = params.questionID
 
-   const gobackHandler = () => {
-      navigate(`${ROUTES.EVALUATE_QUESTIONS}/${paramsUserID}`)
-   }
-   const playAudioHandler = () => {
-      const audio = new Audio(
-         `${GET_FILE_FROM_SERVER}/${userAnswer.mainQuestion?.file}`
-      )
-      audio.play()
-   }
    const [userScore, setUserScore] = React.useState('')
+   const [userAnswer, setuserAnswer] = React.useState({})
+
+   const getQuestionById = async () => {
+      try {
+         const response = await getUserTestAnswerQuestionRequest(idQuestion)
+         setuserAnswer(response.data)
+      } catch (error) {
+         console.log(error)
+      }
+   }
+
+   React.useEffect(() => {
+      getQuestionById()
+   }, [])
 
    const inputCgangeHandler = (e) => {
       setUserScore({ score: e.target.value })
@@ -46,6 +47,9 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
    const submitHandler = (e) => {
       e.preventDefault()
       postUserQuestionScoreRequest(idQuestion, userScore)
+      navigate(`${ROUTES.EVALUATE_QUESTIONS}/${paramsUserID}`)
+   }
+   const gobackHandler = () => {
       navigate(`${ROUTES.EVALUATE_QUESTIONS}/${paramsUserID}`)
    }
    return (
@@ -66,9 +70,6 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
                   <br />
                   <SecondaryTitle>Question Type:</SecondaryTitle>
                   <Data>{userAnswer.mainQuestion?.type}</Data>
-                  <br />
-                  <SecondaryTitle>Minimum number of words:</SecondaryTitle>
-                  <Data>{userAnswer.mainQuestion?.count}</Data>
                </div>
                <div>
                   <Title>Evaluation</Title>
@@ -87,30 +88,19 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
                   />
                </div>
             </ContentWrapper>
-            <Btn>
-               <Button
-                  onClick={playAudioHandler}
-                  variant="outlined"
-                  sx={{ mr: '18px' }}
-               >
-                  <IconWrapper>
-                     <Icon />
-                  </IconWrapper>
-                  PLAY AUDIO
-               </Button>
-               <Data>
-                  Correct answer: {userAnswer.mainQuestion?.correctAnswer}
-               </Data>
-            </Btn>
-            <div>
-               <Title>User’s Answer</Title>
-               <SecondaryTitle>Entered Statement: </SecondaryTitle>
-               <Data>{userAnswer.userResult?.answer} </Data>
-               <br />
-               <SecondaryTitle>Number of plays:</SecondaryTitle>
-               <Data>{userAnswer.userResult?.count}</Data>
-               <br />
-            </div>
+            <br />
+            <SecondaryTitleDiv>Passage: </SecondaryTitleDiv>
+            <DataDiv>{userAnswer.mainQuestion?.passage}</DataDiv>
+            <br />
+            <SecondaryTitle>Question Statement:</SecondaryTitle>
+            <Data>{userAnswer.mainQuestion?.statement}</Data>
+            <br />
+            <SecondaryTitle>Correct answer: </SecondaryTitle>
+            <Data>{userAnswer.mainQuestion?.correctAnswer}</Data>
+            <br />
+            <Title>User’s Answer</Title>
+            <SecondaryTitleDiv>Respond: </SecondaryTitleDiv>
+            <DataDiv>{userAnswer.userResult?.answer}</DataDiv>
             <Btnfooter>
                <Button
                   color="primary"
@@ -129,4 +119,25 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
    )
 }
 
-export default TypewhatYouHearPage
+export default HighlightTheAnswer
+
+const SecondaryTitleDiv = styled.p`
+   width: 65px;
+   font-weight: 600;
+   vertical-align: top;
+   margin: 10px 10px 0px 0px;
+   color: #4c4859;
+   display: inline-block;
+   font-family: 'DINNextRoundedLTW01-Regular';
+`
+
+const DataDiv = styled.div`
+   width: 830px;
+   display: inline-block;
+   text-align: justify;
+   margin-top: 10px;
+   margin-left: 5px;
+   font-weight: 500;
+   font-size: 16px;
+   font-family: 'DINNextRoundedLTW01-Regular';
+`

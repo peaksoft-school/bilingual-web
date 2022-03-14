@@ -14,13 +14,13 @@ import DescribeImage from '../containers/client/describeImage/UserDescribeImage'
 import SignUp from '../containers/signUp/SignUp'
 import { ROLES, ROUTES } from '../utils/constants/general'
 import PrivateRoute from './private/PrivateRoute'
+import QuestionType from '../containers/admin/evaluate/questionType/QuestionType'
 import UserRespondInAtLeastNWords from '../containers/client/userRespondInAtLeastNWords/UserRespondInAtLeastNWords'
 import UserRecordSayingStatement from '../containers/client/UserRecordSayingStatemen/UserRecordSayingStatemen'
 import UserHighlightTheAnswer from '../containers/client/userHighlightTheAnswer/UserHighlightTheAnswer'
 import EndTest from '../containers/client/endTest/EndTest'
 import UserSelectBestTitle from '../containers/client/userSelectBestTitle/UserSelectBestTitle'
 import UserSelectTheMainIdea from '../containers/client/userSelectTheMainIdea/UserSelectTheMainIdea'
-import TypewhatYouHearPage from '../containers/admin/evaluate/whatYouHearePage/TypewhatYouHearPage'
 import UserSelectRealEnglishWords from '../containers/client/userSelectRealEnglishWords/UserSelectRealEnglishWords'
 import UserListenAndRealEnglishWords from '../containers/client/userListenAndRealEnglishWords/UserListenAndRealEnglishWords'
 import UserTypeWhatYouHear from '../containers/client/userTypeWhatYouHear/UserTypeWhatYouHear'
@@ -125,7 +125,7 @@ export default function AllRoutes() {
             path={ROUTES.EVALUATE_QUESTION_TYPE}
             element={
                <PrivateRoute
-                  Component={<TypewhatYouHearPage />}
+                  Component={<QuestionType />}
                   roles={[ROLES.ROLE_ADMIN]}
                />
             }

@@ -1,7 +1,7 @@
 import React from 'react'
+import styled from 'styled-components'
 import { useNavigate, useParams } from 'react-router-dom'
 import Button from '../../../../components/UI/button/index'
-import { ReactComponent as Icon } from '../../../../assets/icons/play-circle.svg'
 import Input from '../../../../components/UI/input/index'
 import {
    User,
@@ -10,8 +10,6 @@ import {
    Title,
    SecondaryTitle,
    Score,
-   Btn,
-   IconWrapper,
    Btnfooter,
 } from '../../../../components/UI/evaluation'
 import Layout from '../../../../components/UI/adminContentCard'
@@ -21,7 +19,7 @@ import {
 } from '../../../../utils/constants/general'
 import { postUserQuestionScoreRequest } from '../../../../api/testService'
 
-function TypewhatYouHearPage({ userAnswer, testTitle }) {
+function DescribeImagePage({ userAnswer, testTitle }) {
    const navigate = useNavigate()
    const params = useParams()
 
@@ -32,12 +30,8 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
    const gobackHandler = () => {
       navigate(`${ROUTES.EVALUATE_QUESTIONS}/${paramsUserID}`)
    }
-   const playAudioHandler = () => {
-      const audio = new Audio(
-         `${GET_FILE_FROM_SERVER}/${userAnswer.mainQuestion?.file}`
-      )
-      audio.play()
-   }
+   console.log(userAnswer.mainQuestion, 'surot')
+
    const [userScore, setUserScore] = React.useState('')
 
    const inputCgangeHandler = (e) => {
@@ -52,9 +46,9 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
       <Layout>
          <form onSubmit={submitHandler}>
             <User>User:</User>
-            <Data>{userAnswer.user?.fullName} </Data> <br />
+            <Data>{userAnswer.user?.fullName}</Data> <br />
             <User>Test: </User>
-            <Data> {testTitle} </Data>
+            <Data>{testTitle}</Data>
             <ContentWrapper>
                <div style={{ paddingBottom: '33px' }}>
                   <Title>Test Question </Title>
@@ -74,10 +68,8 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
                   <Title>Evaluation</Title>
                   <Score>Score (1 -10)</Score>
                   <Input
-                     type="number"
-                     min="1"
-                     max="10"
                      onChange={inputCgangeHandler}
+                     type="number"
                      inputProps={{
                         style: {
                            height: '13px',
@@ -87,29 +79,20 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
                   />
                </div>
             </ContentWrapper>
-            <Btn>
-               <Button
-                  onClick={playAudioHandler}
-                  variant="outlined"
-                  sx={{ mr: '18px' }}
-               >
-                  <IconWrapper>
-                     <Icon />
-                  </IconWrapper>
-                  PLAY AUDIO
-               </Button>
-               <Data>
-                  Correct answer: {userAnswer.mainQuestion?.correctAnswer}
-               </Data>
-            </Btn>
+            <ImgWrapper>
+               <StyledImg
+                  src={`${GET_FILE_FROM_SERVER}/${userAnswer.mainQuestion?.file}`}
+                  alt="imgFromServer"
+               />
+               {/* <Photo style={{ marginRight: '31px' }} /> */}
+               <ThirdlyTitle>
+                  Correct answer:
+                  <Data>{userAnswer.mainQuestion?.correctAnswer}</Data>
+               </ThirdlyTitle>
+            </ImgWrapper>
             <div>
-               <Title>User’s Answer</Title>
-               <SecondaryTitle>Entered Statement: </SecondaryTitle>
-               <Data>{userAnswer.userResult?.answer} </Data>
-               <br />
-               <SecondaryTitle>Number of plays:</SecondaryTitle>
-               <Data>{userAnswer.userResult?.count}</Data>
-               <br />
+               <Title>User’s Answer </Title>
+               <Data>{userAnswer.userResult?.answer}</Data>
             </div>
             <Btnfooter>
                <Button
@@ -128,5 +111,26 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
       </Layout>
    )
 }
+export default DescribeImagePage
+const ImgWrapper = styled.div`
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   margin: 43px 0px 43px 0px;
+   color: #4c4859;
+   font-weight: 500;
+   font-family: 'DINNextRoundedLTW01-Regular';
+`
+const StyledImg = styled.img`
+   width: 182px;
+   height: 178px;
+   border-radius: 5px;
+`
 
-export default TypewhatYouHearPage
+const ThirdlyTitle = styled.h4`
+   font-weight: 600;
+   margin-left: 40px;
+   color: #4c4859;
+   display: inline-block;
+   font-family: 'DINNextRoundedLTW01-Regular';
+`
