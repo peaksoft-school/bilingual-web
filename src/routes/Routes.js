@@ -23,6 +23,7 @@ import UserSelectTheMainIdea from '../containers/client/userSelectTheMainIdea/Us
 import TypewhatYouHearPage from '../containers/admin/evaluate/whatYouHearePage/TypewhatYouHearPage'
 import UserSelectRealEnglishWords from '../containers/client/userSelectRealEnglishWords/UserSelectRealEnglishWords'
 import UserListenAndRealEnglishWords from '../containers/client/userListenAndRealEnglishWords/UserListenAndRealEnglishWords'
+import UserTypeWhatYouHear from '../containers/client/userTypeWhatYouHear/UserTypeWhatYouHear'
 
 export default function AllRoutes() {
    const navigate = useNavigate()
@@ -225,6 +226,15 @@ export default function AllRoutes() {
             element={
                <PrivateRoute
                   Component={<UserListenAndRealEnglishWords />}
+                  roles={[ROLES.ROLE_USER]}
+               />
+            }
+         />
+         <Route
+            path={`/user/test/:testId/${ROUTES.TYPE_WHAT_YOU_HEAR}`}
+            element={
+               <PrivateRoute
+                  Component={<UserTypeWhatYouHear />}
                   roles={[ROLES.ROLE_USER]}
                />
             }

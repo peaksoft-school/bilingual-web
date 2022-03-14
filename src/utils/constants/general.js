@@ -15,6 +15,7 @@ export const ROUTES = {
    DESCRIBE_IMAGE: 'describe_image',
    SELECT_BEST_TITLE: 'select-best-title',
    RESPOND_IN_AT_LEAST_N_WORDS: 'respond-in-at-least-n-words',
+   TYPE_WHAT_YOU_HEAR: 'type-what-you-hear',
    RECORD_SAYING_STATEMENT: 'record-saying-statement',
    SELECT_REAL_ENGLISH_WORDS: 'select-real-english-words',
    LISTEN_AND_SELECT_REAL_ENGLISH_WORD: 'listen-and-select-real-english-words',
