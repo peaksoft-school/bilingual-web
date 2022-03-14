@@ -36,7 +36,7 @@ export const QUESTION_OPTIONS = [
    },
    {
       label: 'Highlight the answer',
-      id: QUESTION_TYPES.HIGLIGHT_THE_ANSWER,
+      id: QUESTION_TYPES.HIGHLIGHT_THE_ANSWER,
    },
    {
       label: 'Select the main idea',
