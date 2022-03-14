@@ -75,7 +75,7 @@ function UserRecordSayingStatement() {
          const data = await sendFileToApi(file)
 
          const answers = {
-            answer: data.data,
+            file: data.data,
             type: QUESTION_TYPES.RECORD_SAYING_STATEMENT,
             questionId: testQuestion.id,
             testResultId: attemptId,

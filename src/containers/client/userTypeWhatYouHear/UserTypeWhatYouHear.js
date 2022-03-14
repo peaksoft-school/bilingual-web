@@ -59,8 +59,8 @@ const UserTypeWhatYouHear = () => {
    const [testQuestion, setTestQuestion] = useState({})
    const [text, setText] = useState('')
    const [playCount, setPlayCount] = useState(0)
-   const [minusCount, setMinusCount] = useState(0)
    const { currentQuestion } = useSelector((state) => state.test)
+   const [minusCount, setMinusCount] = useState(0)
    const { questions } = useSelector((state) => state.test)
    const attemptId = useSelector((state) => state.test.attemptId)
    const { testId } = useParams()
@@ -75,10 +75,10 @@ const UserTypeWhatYouHear = () => {
             return navigate('/user/tests')
          }
          const newAudio = new Audio(
-            `${GET_FILE_FROM_SERVER}/${questions[0].file}`
+            `${GET_FILE_FROM_SERVER}/${questions[currentQuestion].file}`
          )
          setAudio(newAudio)
-         return setMinusCount(questions[0].count)
+         return setMinusCount(questions[currentQuestion].count)
       } catch (error) {
          console.log(error.message)
       }
