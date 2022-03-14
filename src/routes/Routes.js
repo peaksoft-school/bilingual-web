@@ -15,7 +15,7 @@ import LoginPage from '../containers/login/LoginPage'
 import SignUp from '../containers/signUp/SignUp'
 import { ROLES, ROUTES } from '../utils/constants/general'
 import PrivateRoute from './private/PrivateRoute'
-import TypewhatYouHearPage from '../containers/admin/evaluate/whatYouHearePage/TypewhatYouHearPage'
+import QuestionType from '../containers/admin/evaluate/questionType/QuestionType'
 
 export default function AllRoutes() {
    const navigate = useNavigate()
@@ -118,7 +118,7 @@ export default function AllRoutes() {
             path={ROUTES.EVALUATE_QUESTION_TYPE}
             element={
                <PrivateRoute
-                  Component={<TypewhatYouHearPage />}
+                  Component={<QuestionType />}
                   roles={[ROLES.ROLE_ADMIN]}
                />
             }

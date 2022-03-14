@@ -1,8 +1,9 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import styled from 'styled-components'
+import Layout from '../../../../components/UI/adminContentCard'
 import Button from '../../../../components/UI/button/index'
 import { ReactComponent as Icon } from '../../../../assets/icons/play-circle.svg'
-import Input from '../../../../components/UI/input/index'
 import {
    User,
    Data,
@@ -14,14 +15,17 @@ import {
    IconWrapper,
    Btnfooter,
 } from '../../../../components/UI/evaluation'
-import Layout from '../../../../components/UI/adminContentCard'
+import Input from '../../../../components/UI/input/index'
 import {
    GET_FILE_FROM_SERVER,
    ROUTES,
 } from '../../../../utils/constants/general'
-import { postUserQuestionScoreRequest } from '../../../../api/testService'
+import {
+   getUserTestAnswerQuestionRequest,
+   postUserQuestionScoreRequest,
+} from '../../../../api/testService'
 
-function TypewhatYouHearPage({ userAnswer, testTitle }) {
+function RecordSayingStatementPage({ testTitle }) {
    const navigate = useNavigate()
    const params = useParams()
 
@@ -32,10 +36,27 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
    const gobackHandler = () => {
       navigate(`${ROUTES.EVALUATE_QUESTIONS}/${paramsUserID}`)
    }
+
+   const [userAnswer, setuserAnswer] = React.useState({})
+
+   const getQuestionById = async () => {
+      try {
+         const response = await getUserTestAnswerQuestionRequest(idQuestion)
+         setuserAnswer(response.data)
+      } catch (error) {
+         console.log(error)
+      }
+   }
+
+   React.useEffect(() => {
+      getQuestionById()
+   }, [])
+
    const playAudioHandler = () => {
       const audio = new Audio(
-         `${GET_FILE_FROM_SERVER}/${userAnswer.mainQuestion?.file}`
+         `${GET_FILE_FROM_SERVER}/${userAnswer.userResult?.file}`
       )
+      console.log(userAnswer.userResult?.file, 'userAnswer.userResult?.file')
       audio.play()
    }
    const [userScore, setUserScore] = React.useState('')
@@ -43,6 +64,7 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
    const inputCgangeHandler = (e) => {
       setUserScore({ score: e.target.value })
    }
+   console.log(userScore, 'userScore in page')
    const submitHandler = (e) => {
       e.preventDefault()
       postUserQuestionScoreRequest(idQuestion, userScore)
@@ -52,13 +74,14 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
       <Layout>
          <form onSubmit={submitHandler}>
             <User>User:</User>
-            <Data>{userAnswer.user?.fullName} </Data> <br />
-            <User>Test: </User>
-            <Data> {testTitle} </Data>
+            <Data>{userAnswer.user?.fullName}</Data>
+            <br />
+            <User>Test:</User>
+            <Data>{testTitle}</Data>
             <ContentWrapper>
-               <div style={{ paddingBottom: '33px' }}>
-                  <Title>Test Question </Title>
-                  <SecondaryTitle>Question Title: </SecondaryTitle>
+               <Div>
+                  <Title>Test Question</Title>
+                  <SecondaryTitle>Question Title:</SecondaryTitle>
                   <Data>{userAnswer.mainQuestion?.title}</Data>
                   <br />
                   <SecondaryTitle>Duration (in minutes):</SecondaryTitle>
@@ -67,16 +90,14 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
                   <SecondaryTitle>Question Type:</SecondaryTitle>
                   <Data>{userAnswer.mainQuestion?.type}</Data>
                   <br />
-                  <SecondaryTitle>Minimum number of words:</SecondaryTitle>
-                  <Data>{userAnswer.mainQuestion?.count}</Data>
-               </div>
+                  <SecondaryTitle>Statement:</SecondaryTitle>
+                  <Data>{userAnswer.mainQuestion?.statement}</Data>
+               </Div>
                <div>
                   <Title>Evaluation</Title>
                   <Score>Score (1 -10)</Score>
                   <Input
                      type="number"
-                     min="1"
-                     max="10"
                      onChange={inputCgangeHandler}
                      inputProps={{
                         style: {
@@ -96,21 +117,9 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
                   <IconWrapper>
                      <Icon />
                   </IconWrapper>
-                  PLAY AUDIO
+                  PLAY RECORD AUDIO
                </Button>
-               <Data>
-                  Correct answer: {userAnswer.mainQuestion?.correctAnswer}
-               </Data>
             </Btn>
-            <div>
-               <Title>User’s Answer</Title>
-               <SecondaryTitle>Entered Statement: </SecondaryTitle>
-               <Data>{userAnswer.userResult?.answer} </Data>
-               <br />
-               <SecondaryTitle>Number of plays:</SecondaryTitle>
-               <Data>{userAnswer.userResult?.count}</Data>
-               <br />
-            </div>
             <Btnfooter>
                <Button
                   color="primary"
@@ -118,7 +127,7 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
                   sx={{ mr: '16px' }}
                   onClick={gobackHandler}
                >
-                  GO BACK
+                  Go BACK
                </Button>
                <Button type="submit" color="secondary" variant="contained">
                   Save
@@ -128,5 +137,7 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
       </Layout>
    )
 }
-
-export default TypewhatYouHearPage
+export default RecordSayingStatementPage
+const Div = styled.div`
+   padding-bottom: 33px;
+`

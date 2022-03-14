@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import styled from 'styled-components'
 import Button from '../../../../components/UI/button/index'
-import { ReactComponent as Icon } from '../../../../assets/icons/play-circle.svg'
 import Input from '../../../../components/UI/input/index'
 import {
    User,
@@ -11,34 +11,39 @@ import {
    SecondaryTitle,
    Score,
    Btn,
-   IconWrapper,
    Btnfooter,
 } from '../../../../components/UI/evaluation'
 import Layout from '../../../../components/UI/adminContentCard'
+import { ROUTES } from '../../../../utils/constants/general'
 import {
-   GET_FILE_FROM_SERVER,
-   ROUTES,
-} from '../../../../utils/constants/general'
-import { postUserQuestionScoreRequest } from '../../../../api/testService'
+   getUserTestAnswerQuestionRequest,
+   postUserQuestionScoreRequest,
+} from '../../../../api/testService'
+import ReCheckbox from '../../../../components/UI/checkbox'
 
-function TypewhatYouHearPage({ userAnswer, testTitle }) {
+function SelectRealEnglishWords({ userAnswer, testTitle }) {
    const navigate = useNavigate()
    const params = useParams()
-
    const paramsUserID = params.UserID
-
    const idQuestion = params.questionID
 
-   const gobackHandler = () => {
-      navigate(`${ROUTES.EVALUATE_QUESTIONS}/${paramsUserID}`)
-   }
-   const playAudioHandler = () => {
-      const audio = new Audio(
-         `${GET_FILE_FROM_SERVER}/${userAnswer.mainQuestion?.file}`
-      )
-      audio.play()
-   }
+   const [words, setWords] = React.useState([])
    const [userScore, setUserScore] = React.useState('')
+   const [usersAnsver, setusersAnsver] = React.useState([])
+
+   const getQuestionById = async () => {
+      try {
+         const response = await getUserTestAnswerQuestionRequest(idQuestion)
+         setWords(response.data.mainQuestion.options)
+         setusersAnsver(response.data.userResult.optionResults)
+      } catch (error) {
+         console.log(error)
+      }
+   }
+
+   React.useEffect(() => {
+      getQuestionById()
+   }, [])
 
    const inputCgangeHandler = (e) => {
       setUserScore({ score: e.target.value })
@@ -46,6 +51,9 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
    const submitHandler = (e) => {
       e.preventDefault()
       postUserQuestionScoreRequest(idQuestion, userScore)
+      navigate(`${ROUTES.EVALUATE_QUESTIONS}/${paramsUserID}`)
+   }
+   const gobackHandler = () => {
       navigate(`${ROUTES.EVALUATE_QUESTIONS}/${paramsUserID}`)
    }
    return (
@@ -67,8 +75,6 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
                   <SecondaryTitle>Question Type:</SecondaryTitle>
                   <Data>{userAnswer.mainQuestion?.type}</Data>
                   <br />
-                  <SecondaryTitle>Minimum number of words:</SecondaryTitle>
-                  <Data>{userAnswer.mainQuestion?.count}</Data>
                </div>
                <div>
                   <Title>Evaluation</Title>
@@ -88,27 +94,36 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
                </div>
             </ContentWrapper>
             <Btn>
-               <Button
-                  onClick={playAudioHandler}
-                  variant="outlined"
-                  sx={{ mr: '18px' }}
-               >
-                  <IconWrapper>
-                     <Icon />
-                  </IconWrapper>
-                  PLAY AUDIO
-               </Button>
-               <Data>
-                  Correct answer: {userAnswer.mainQuestion?.correctAnswer}
-               </Data>
+               <StyledContainer>
+                  {words.map((option, index) => {
+                     return (
+                        <Box key={option.id}>
+                           <span>{index}</span>
+                           <Item>{option.word}</Item>
+                           <StyledDivIcons>
+                              <ReCheckbox checked={option.correct} />
+                           </StyledDivIcons>
+                        </Box>
+                     )
+                  })}
+               </StyledContainer>
             </Btn>
             <div>
                <Title>User’s Answer</Title>
-               <SecondaryTitle>Entered Statement: </SecondaryTitle>
-               <Data>{userAnswer.userResult?.answer} </Data>
-               <br />
-               <SecondaryTitle>Number of plays:</SecondaryTitle>
-               <Data>{userAnswer.userResult?.count}</Data>
+               <StyledContainer>
+                  {usersAnsver.map((option, index) => {
+                     return (
+                        <Box key={option.id}>
+                           <span>{index}</span>
+                           <Item>{option.word}</Item>
+                           <StyledDivIcons>
+                              <ReCheckbox checked={option.answer} />
+                           </StyledDivIcons>
+                        </Box>
+                     )
+                  })}
+               </StyledContainer>
+
                <br />
             </div>
             <Btnfooter>
@@ -129,4 +144,43 @@ function TypewhatYouHearPage({ userAnswer, testTitle }) {
    )
 }
 
-export default TypewhatYouHearPage
+export default SelectRealEnglishWords
+
+const StyledContainer = styled('ul')`
+   width: 100%;
+   padding: 0px;
+   display: flex;
+   flex-wrap: wrap;
+   box-sizing: border-box;
+`
+
+const Box = styled.li`
+   width: 280px;
+   height: 46px;
+   margin-top: 18px;
+   margin-right: 18px;
+   padding: 14px 16px;
+   background: #ffffff;
+   border: 1.53px solid #d4d0d0;
+   box-sizing: border-box;
+   border-radius: 8px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+`
+
+const Item = styled.span`
+   font-family: 'DINNextRoundedLTW01-Regular';
+   font-style: normal;
+   font-weight: 700;
+   font-size: 18px;
+   line-height: 16px;
+   color: #4c4859;
+   margin-right: 10px;
+   margin-left: 17px;
+`
+const StyledDivIcons = styled.div`
+   width: 66px;
+   display: flex;
+   justify-content: space-between;
+`
