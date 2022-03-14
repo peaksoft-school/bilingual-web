@@ -65,14 +65,19 @@ const UserTypeWhatYouHear = () => {
    const attemptId = useSelector((state) => state.test.attemptId)
    const { testId } = useParams()
    const dispatch = useDispatch()
-   console.log(minusCount)
+   const [audio, setAudio] = useState(null)
 
    useEffect(() => {
       try {
          setTestQuestion(questions[currentQuestion])
+
          if (questions.length === 0) {
             return navigate('/user/tests')
          }
+         const newAudio = new Audio(
+            `${GET_FILE_FROM_SERVER}/${questions[0].file}`
+         )
+         setAudio(newAudio)
          return setMinusCount(questions[0].count)
       } catch (error) {
          console.log(error.message)
@@ -82,7 +87,6 @@ const UserTypeWhatYouHear = () => {
 
    const playAudioHandler = () => {
       if (testQuestion.count === playCount) return null
-      const audio = new Audio(`${GET_FILE_FROM_SERVER}/${testQuestion?.file}`)
       audio.play()
       setMinusCount((prev) => prev - 1)
       return setPlayCount(playCount + 1)
