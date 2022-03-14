@@ -13,7 +13,6 @@ const TestItem = ({ onClickToDelete, id, active, toggleHandler }) => {
       setAccessToTest((accessToTest) => !accessToTest)
       toggleHandler({ id, isActive: !accessToTest })
    }
-   console.log(id, 'admin id')
 
    const [confirmDeleteModal, setConfirmDeleteModal] = React.useState(false)
    const modalHandler = () => {
