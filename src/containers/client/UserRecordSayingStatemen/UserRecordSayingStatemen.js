@@ -12,6 +12,7 @@ import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
 import { ROUTES } from '../../../utils/constants/general'
 import CountTime from '../../../components/UI/progressTime/CountTime'
 import { QUESTION_TYPES } from '../../../utils/constants/QuestionTypesAndOptions'
+import { postQuestionRequest } from '../../../api/testService'
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 })
 
@@ -56,17 +57,25 @@ function UserRecordSayingStatement() {
       return null
    }, [])
 
+   function sendFileToApi(file) {
+      const formData = new FormData()
+      formData.append('file', file)
+      return postQuestionRequest(formData)
+   }
+
    const stop = async (e) => {
       e.preventDefault()
-      await Mp3Recorder.getMp3().then(([buffer, blob]) => {
+      await Mp3Recorder.getMp3().then(async ([buffer, blob]) => {
          const blobURL = URL.createObjectURL(blob)
          setRecord({ blobURL, isRecording: false })
          const file = new File(buffer, 'me-at-thevoice.mp3', {
             type: blob.type,
             lastModified: Date.now(),
          })
+         const data = await sendFileToApi(file)
+
          const answers = {
-            answer: file.name,
+            file: data.data,
             type: QUESTION_TYPES.RECORD_SAYING_STATEMENT,
             questionId: testQuestion.id,
             testResultId: attemptId,
