@@ -1,39 +1,80 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Button from '../../../components/UI/button/index'
+import CountTime from '../../../components/UI/progressTime/CountTime'
 import LayoutTest from '../../../layout/clientLayout/testLayout/LayoutTest'
+import { submitQuestion1 } from '../../../store/testActions'
+import { ROUTES } from '../../../utils/constants/general'
+import { QUESTION_TYPES } from '../../../utils/constants/QuestionTypesAndOptions'
 
 function UserRespondInAtLeastNWords() {
+   const [testQuestion, setTestQuestion] = useState({})
    const [answer, setAnswer] = useState('')
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const { testId } = useParams()
+   const { questions } = useSelector((state) => state.test)
+   const { currentQuestion } = useSelector((state) => state.test)
+   const attemptId = useSelector((state) => state.test.attemptId)
+
+   useEffect(() => {
+      setTestQuestion(questions[currentQuestion])
+      if (questions.length === 0) {
+         return navigate('/user/tests')
+      }
+      return null
+   }, [])
+
+   const countOfWords = () => {
+      return answer
+         .trim()
+         .split(' ')
+         .filter((i) => i).length
+   }
 
    const onChangeWords = (event) => {
       setAnswer(event.target.value)
    }
 
-   const countOfWords = () => {
-      return answer
-         .trim()
-         .replace(/[ ]+/g, ' ')
-         .split(' ')
-         .filter((i) => i).length
-   }
-
-   const enabled = () => countOfWords() >= 5
-
-   const respondLeastWordsHandler = () => {
-      const userAnswer = {
-         questionId: 1,
-         type: 'RESPOND_IN_AT_LEAST_N_WORDS',
-         answer,
+   const respondLeastWordsHandler = (e) => {
+      e.preventDefault()
+      try {
+         const answers = {
+            answer,
+            type: QUESTION_TYPES.RESPOND_IN_AT_LEAST_N_WORDS,
+            questionId: testQuestion.id,
+            testResultId: attemptId,
+         }
+         dispatch(submitQuestion1(answers)).then(() => {
+            if (questions.length === currentQuestion + 1) {
+               navigate(ROUTES.END_TEST)
+            } else {
+               navigate(
+                  `/user/test/${testId}/${
+                     ROUTES[questions[currentQuestion + 1]?.type]
+                  }`
+               )
+            }
+         })
+      } catch (error) {
+         console.log(error)
       }
    }
 
+   const enabled = () => countOfWords() >= testQuestion.count
+
    return (
       <LayoutTest>
-         <HeaderTitle>Respond to the question in at least 50 words</HeaderTitle>
+         <CountTime
+            time={testQuestion.duration}
+            totalTime={testQuestion.duration}
+         />
+         <HeaderTitle>{testQuestion.title}</HeaderTitle>
          <Div>
             <Text>
-               <P>describe a time you were surprised. what happened?”</P>
+               <P>{testQuestion.statement}</P>
             </Text>
             <TextAreaDiv>
                <TextArea onChange={onChangeWords} />

@@ -1,18 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import { TextField } from '@mui/material'
 import Button from '../../../components/UI/button/index'
 import LayoutFinal from '../../../layout/clientLayout/LayoutFinal/LayoutFinal'
+import { ROUTES } from '../../../utils/constants/general'
+import CountTimeLong from '../../../components/UI/progressTimeLong/CountTimeLong'
+import { submitQuestion1 } from '../../../store/testActions'
+import { QUESTION_TYPES } from '../../../utils/constants/QuestionTypesAndOptions'
 
 function UserHighlightTheAnswer() {
-   const [passage, setPassage] = useState('')
    const [highlighted, sethighlighted] = useState('')
+   const [state, setState] = useState({})
+   const navigate = useNavigate()
+   const dispatch = useDispatch()
+   const attemptId = useSelector((state) => state.test.attemptId)
+   const { questions } = useSelector((state) => state.test)
+   const { currentQuestion } = useSelector((state) => state.test)
+   const { testId } = useParams()
 
-   const enabled = () => highlighted.trim()
-
-   const onChangeHandlerInput = (event) => {
-      setPassage(event.target.value)
-   }
+   useEffect(() => {
+      setState(questions[currentQuestion])
+      if (questions.length === 0) {
+         return navigate('/user/tests')
+      }
+      return null
+   }, [])
 
    const onMouse = () => {
       let selectedText = ''
@@ -26,18 +40,41 @@ function UserHighlightTheAnswer() {
 
       sethighlighted(selectedText.toString())
    }
+   const highlightAnswerHandler = (e) => {
+      e.preventDefault()
+      try {
+         const answers = {
+            type: QUESTION_TYPES.HIGHLIGHT_THE_ANSWER,
+            answer: highlighted,
+            questionId: state.id,
+            testResultId: attemptId,
+         }
+         dispatch(submitQuestion1(answers)).then(() => {
+            if (questions.length === currentQuestion + 1) {
+               navigate(ROUTES.END_TEST)
+            } else {
+               navigate(
+                  `/user/test/${testId}/${
+                     ROUTES[questions[currentQuestion + 1]?.type]
+                  }`
+               )
+            }
+         })
+      } catch (error) {
+         console.log(error)
+      }
+   }
+
+   const enabled = () => highlighted.trim()
 
    return (
       <LayoutFinal>
+         <CountTimeLong time={state?.duration} totalTime={state?.duration} />
          <Div>
             <div>
                <DivInput>PASSAGE</DivInput>
                <TextAreaDiv>
-                  <TextArea
-                     onMouseUp={onMouse}
-                     onChange={onChangeHandlerInput}
-                     value={passage}
-                  />
+                  <TextArea onMouseUp={onMouse} value={state.passage} />
                </TextAreaDiv>
             </div>
             <RightDiv>
@@ -46,13 +83,12 @@ function UserHighlightTheAnswer() {
                      Click and drad text to highlight the answer to the question
                      below
                   </P>
-                  <Question>
-                     What did residents think couild happen with new bridge?
-                  </Question>
+                  <Question>{state.statement}</Question>
                   <Inputt value={highlighted} multiline fullWidth />
                </Text>
                <FooterDiv>
                   <Button
+                     onClick={highlightAnswerHandler}
                      disabled={!enabled()}
                      color="primary"
                      variant="contained"

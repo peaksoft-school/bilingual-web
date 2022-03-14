@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import QuitButton from '../testLayout/QuitButton'
-import MainContainer from './MainContainer'
+import MainContainer from '../mainContainerClient/MainContainer'
+import Header from '../clientButton/index'
 
 const StyledCardDiv = styled.div`
    margin-left: auto;
    margin-right: auto;
-   width: 100%;
+   width: 755px;
 `
 const StyledContentCard = styled.div`
    margin-top: 66px;
@@ -18,16 +18,16 @@ const StyledContentCard = styled.div`
    display: block;
 `
 
-const LayoutFinal = ({ children }) => {
+const ClientLayoutEnd = ({ children }) => {
    return (
-      <div>
-         <QuitButton />
+      <>
+         <Header />
          <MainContainer>
             <StyledCardDiv>
                <StyledContentCard>{children}</StyledContentCard>
             </StyledCardDiv>
          </MainContainer>
-      </div>
+      </>
    )
 }
-export default LayoutFinal
+export default ClientLayoutEnd
